@@ -9,6 +9,7 @@ import ProductPage from './pages/ProductPage';
 import Cart from './pages/Cart';
 import AdminLogin from './pages/AdminLogin';
 import AdminOrders from './pages/AdminOrders';
+import AdminRoute from './components/admin/AdminRoute';
 
 const PlaceholderPage: React.FC<{ title: string; description?: string }> = ({
   title,
@@ -46,7 +47,14 @@ const App: React.FC = () => {
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/carrinho" element={<Cart />} />
         <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/orders" element={<AdminOrders />} />
+        <Route
+          path="/admin/orders"
+          element={
+            <AdminRoute>
+              <AdminOrders />
+            </AdminRoute>
+          }
+        />
         <Route
           path="/checkout"
           element={

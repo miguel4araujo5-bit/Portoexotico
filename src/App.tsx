@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import Header from './components/layout/Header';
 
 const Home: React.FC = () => {
   return (
@@ -73,6 +74,8 @@ const App: React.FC = () => {
           content="Loja online discreta e elegante para produtos íntimos, com uma experiência premium, navegação simples e pagamentos seguros."
         />
       </Helmet>
+
+      <Header />
 
       <Routes>
         <Route path="/" element={<Home />} />

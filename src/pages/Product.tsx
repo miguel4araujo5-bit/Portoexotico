@@ -1,133 +1,126 @@
-export type ProductCategory =
-  | 'lingerie'
-  | 'acessorios'
-  | 'cosmetica'
-  | 'prazer'
-  | 'kits'
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { getProductBySlug } from '../data/products';
 
-export type Product = {
-  id: string
-  slug: string
-  name: string
-  category: ProductCategory
-  shortDescription: string
-  description: string
-  price: number
-  compareAtPrice?: number
-  tags: string[]
-}
+const Product: React.FC = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const product = slug ? getProductBySlug(slug) : undefined;
 
-export const productCategories: Array<{
-  value: ProductCategory
-  label: string
-}> = [
-  { value: 'lingerie', label: 'Lingerie' },
-  { value: 'acessorios', label: 'Acessórios' },
-  { value: 'cosmetica', label: 'Cosmética' },
-  { value: 'prazer', label: 'Prazer' },
-  { value: 'kits', label: 'Kits' },
-]
+  if (!product) {
+    return (
+      <main className="min-h-screen bg-neutral-950 px-6 py-16 text-white md:px-10">
+        <div className="mx-auto max-w-5xl">
+          <span className="inline-block rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.3em] text-white/60">
+            Produto
+          </span>
 
-export const products: Product[] = [
-  {
-    id: 'body-rendado-seducao',
-    slug: 'body-rendado-seducao',
-    name: 'Body Rendado Sedução',
-    category: 'lingerie',
-    shortDescription: 'Peça sensual e elegante para um visual marcante.',
-    description:
-      'Um body rendado pensado para valorizar a silhueta com sofisticação, conforto e um toque ousado.',
-    price: 29.9,
-    compareAtPrice: 36.9,
-    tags: ['body', 'renda', 'sensual', 'lingerie'],
-  },
-  {
-    id: 'conjunto-noite-privada',
-    slug: 'conjunto-noite-privada',
-    name: 'Conjunto Noite Privada',
-    category: 'lingerie',
-    shortDescription: 'Conjunto delicado para momentos íntimos e especiais.',
-    description:
-      'Um conjunto feminino de acabamento cuidado, criado para unir conforto, elegância e sedução.',
-    price: 39.9,
-    compareAtPrice: 47.9,
-    tags: ['conjunto', 'lingerie', 'romântico', 'sedução'],
-  },
-  {
-    id: 'oleo-massagem-veludo',
-    slug: 'oleo-massagem-veludo',
-    name: 'Óleo de Massagem Veludo',
-    category: 'cosmetica',
-    shortDescription: 'Textura suave e aroma envolvente para uma experiência sensorial.',
-    description:
-      'Óleo de massagem com toque sedoso e fragrância discreta, ideal para criar um ambiente íntimo e relaxante.',
-    price: 18.9,
-    tags: ['massagem', 'óleo', 'sensual', 'bem-estar'],
-  },
-  {
-    id: 'vela-massagem-ambar',
-    slug: 'vela-massagem-ambar',
-    name: 'Vela de Massagem Âmbar',
-    category: 'cosmetica',
-    shortDescription: 'Ambiente quente e envolvente com um toque luxuoso.',
-    description:
-      'Uma vela aromática pensada para transformar o momento a dois numa experiência mais intensa e confortável.',
-    price: 21.9,
-    tags: ['vela', 'massagem', 'aroma', 'casal'],
-  },
-  {
-    id: 'algemas-acetinadas',
-    slug: 'algemas-acetinadas',
-    name: 'Algemas Acetinadas',
-    category: 'acessorios',
-    shortDescription: 'Acessório discreto para explorar novas dinâmicas com conforto.',
-    description:
-      'Algemas de toque suave e ajuste confortável, ideais para quem quer experimentar com elegância e descrição.',
-    price: 16.9,
-    tags: ['acessório', 'jogo', 'fantasia', 'explorar'],
-  },
-  {
-    id: 'kit-desejo-secreto',
-    slug: 'kit-desejo-secreto',
-    name: 'Kit Desejo Secreto',
-    category: 'kits',
-    shortDescription: 'Seleção pensada para oferecer ou surpreender.',
-    description:
-      'Um kit composto por essenciais sensuais para elevar a intimidade com discrição, estilo e curiosidade.',
-    price: 49.9,
-    compareAtPrice: 59.9,
-    tags: ['kit', 'presente', 'íntimo', 'romântico'],
-  },
-  {
-    id: 'vibrador-mini-discreto',
-    slug: 'vibrador-mini-discreto',
-    name: 'Vibrador Mini Discreto',
-    category: 'prazer',
-    shortDescription: 'Compacto, elegante e pensado para máxima discrição.',
-    description:
-      'Um artigo compacto e silencioso, ideal para quem procura prazer com uma abordagem discreta e sofisticada.',
-    price: 34.9,
-    compareAtPrice: 41.9,
-    tags: ['prazer', 'discreto', 'silencioso', 'compacto'],
-  },
-  {
-    id: 'kit-intimidade-luxo',
-    slug: 'kit-intimidade-luxo',
-    name: 'Kit Intimidade Luxo',
-    category: 'kits',
-    shortDescription: 'Experiência premium para momentos mais intensos.',
-    description:
-      'Uma combinação exclusiva de produtos pensada para criar uma experiência íntima envolvente, elegante e memorável.',
-    price: 64.9,
-    compareAtPrice: 79.9,
-    tags: ['premium', 'kit', 'luxo', 'casal'],
-  },
-]
+          <h1 className="mt-6 text-3xl font-semibold md:text-5xl">
+            Produto não encontrado
+          </h1>
 
-export const getProductBySlug = (slug: string) => {
-  return products.find((product) => product.slug === slug)
-}
+          <p className="mt-4 max-w-2xl text-white/70">
+            Este produto não existe ou foi removido.
+          </p>
 
-export const getProductsByCategory = (category: ProductCategory) => {
-  return products.filter((product) => product.category === category)
-}
+          <Link
+            to="/loja"
+            className="mt-8 inline-flex items-center rounded-full border border-white/15 bg-white px-6 py-3 text-sm font-medium text-neutral-950 transition hover:bg-white/90"
+          >
+            Voltar à loja
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-neutral-950 px-6 py-16 text-white md:px-10">
+      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+        <section className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5">
+          <div className="flex aspect-[4/5] items-center justify-center bg-gradient-to-br from-fuchsia-500/10 via-transparent to-amber-400/10 p-8">
+            <div className="text-center">
+              <span className="inline-block rounded-full border border-white/10 bg-black/20 px-4 py-1 text-xs uppercase tracking-[0.3em] text-white/60">
+                Porto Exótico
+              </span>
+
+              <h2 className="mt-6 text-2xl font-semibold md:text-4xl">
+                {product.name}
+              </h2>
+
+              <p className="mt-4 text-sm uppercase tracking-[0.25em] text-white/45">
+                {product.category}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="flex flex-col justify-center">
+          <span className="inline-block rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.3em] text-white/60">
+            Produto
+          </span>
+
+          <h1 className="mt-6 text-3xl font-semibold md:text-5xl">
+            {product.name}
+          </h1>
+
+          <div className="mt-6 flex items-center gap-3">
+            <span className="text-2xl font-semibold md:text-3xl">
+              {product.price.toFixed(2).replace('.', ',')} €
+            </span>
+
+            {product.compareAtPrice ? (
+              <span className="text-base text-white/35 line-through">
+                {product.compareAtPrice.toFixed(2).replace('.', ',')} €
+              </span>
+            ) : null}
+          </div>
+
+          <p className="mt-6 max-w-2xl text-base leading-7 text-white/70">
+            {product.description}
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            {product.tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.2em] text-white/60"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-medium text-neutral-950 transition hover:bg-white/90"
+            >
+              Adicionar ao carrinho
+            </button>
+
+            <Link
+              to="/loja"
+              className="inline-flex items-center justify-center rounded-full border border-white/15 bg-transparent px-6 py-3 text-sm font-medium text-white transition hover:bg-white/5"
+            >
+              Continuar a explorar
+            </Link>
+          </div>
+
+          <div className="mt-10 grid gap-3 text-sm text-white/55 sm:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
+              Envio discreto
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
+              Compra segura
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
+              Privacidade garantida
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+};
+
+export default Product;

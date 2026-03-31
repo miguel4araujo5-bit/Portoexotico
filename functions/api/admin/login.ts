@@ -3,8 +3,9 @@ import {
   badRequest,
   buildSessionCookie,
   createSessionToken,
+  getClientIp,
   json,
-  methodNotAllowed,
+  verifyPassword,
   type Env
 } from '../../_utils/auth';
 
@@ -12,6 +13,9 @@ type LoginBody = {
   username?: string;
   password?: string;
 };
+
+const MAX_ATTEMPTS = 7;
+const WINDOW_SECONDS = 15 * 60;
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   let body: LoginBody;
@@ -29,8 +33,45 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return badRequest('Credenciais inválidas');
   }
 
-  if (username !== env.ADMIN_USERNAME || password !== env.ADMIN_PASSWORD) {
+  const ip = getClientIp(request);
+
+  if (env.ADMIN_RATE_LIMIT_KV) {
+    const rateKey = `admin-login:${ip}`;
+    const current = await env.ADMIN_RATE_LIMIT_KV.get(rateKey);
+    const attempts = current ? Number(current) : 0;
+
+    if (attempts >= MAX_ATTEMPTS) {
+      return json(
+        { ok: false, error: 'Demasiadas tentativas. Tenta novamente mais tarde.' },
+        { status: 429 }
+      );
+    }
+  }
+
+  const usernameMatches = username === env.ADMIN_USERNAME;
+  const passwordMatches = await verifyPassword(
+    password,
+    env.ADMIN_PASSWORD_SALT,
+    env.ADMIN_PASSWORD_HASH
+  );
+
+  if (!usernameMatches || !passwordMatches) {
+    if (env.ADMIN_RATE_LIMIT_KV) {
+      const rateKey = `admin-login:${ip}`;
+      const current = await env.ADMIN_RATE_LIMIT_KV.get(rateKey);
+      const attempts = current ? Number(current) : 0;
+
+      await env.ADMIN_RATE_LIMIT_KV.put(rateKey, String(attempts + 1), {
+        expirationTtl: WINDOW_SECONDS
+      });
+    }
+
     return json({ ok: false, error: 'Credenciais inválidas' }, { status: 401 });
+  }
+
+  if (env.ADMIN_RATE_LIMIT_KV) {
+    const rateKey = `admin-login:${ip}`;
+    await env.ADMIN_RATE_LIMIT_KV.delete(rateKey);
   }
 
   const token = await createSessionToken(username, env.ADMIN_SESSION_SECRET);
@@ -48,12 +89,4 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       }
     }
   );
-};
-
-export const onRequest: PagesFunction<Env> = async ({ request }) => {
-  if (request.method === 'POST') {
-    return methodNotAllowed();
-  }
-
-  return methodNotAllowed();
 };

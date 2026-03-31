@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
+
+  --muted: #a1a1aa;
+  --border: rgba(255, 255, 255, 0.08);
+
+  --primary: #e7c9a5;
+  --primary-foreground: #0a0a0a;
+
+  --accent: #7c3aed;
+  --accent-foreground: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-neutral-950 text-white antialiased;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+}
+
+::selection {
+  background: rgba(231, 201, 165, 0.3);
+  color: white;
+}
+
+* {
+  @apply border-border;
+}
+
+/* Scrollbar (discreta, premium) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Utility classes base */
+
+.container-custom {
+  @apply mx-auto w-full max-w-7xl px-6 md:px-10;
+}
+
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+.glass {
+  @apply bg-white/5 backdrop-blur-md border border-white/10;
+}
+
+.button-primary {
+  @apply rounded-full bg-white text-neutral-950 px-6 py-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02];
+}
+
+.button-secondary {
+  @apply rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:bg-white/10;
+}
+
+.card {
+  @apply rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10;
+}
+
+/* Inputs */
+.input {
+  @apply w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-white/30 focus:bg-white/10;
+}
+
+/* Fade animations suaves */
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

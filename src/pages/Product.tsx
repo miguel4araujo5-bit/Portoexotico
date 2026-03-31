@@ -123,4 +123,4 @@ const Product: React.FC = () => {
   );
 };
 
-export default Product;
+export default Product; 

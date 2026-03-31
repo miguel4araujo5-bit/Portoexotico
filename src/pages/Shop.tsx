@@ -2,12 +2,10 @@ import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, Search } from 'lucide-react';
 import { productCategories, products, type ProductCategory } from '../data/products';
-import { useCart } from '../context/CartContext';
 
 const Shop: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'all'>('all');
   const [search, setSearch] = useState('');
-  const { addToCart, itemCount } = useCart();
 
   const filteredProducts = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -27,168 +25,124 @@ const Shop: React.FC = () => {
   }, [search, selectedCategory]);
 
   return (
-    <main className="bg-neutral-950 text-white">
+    <main className="bg-neutral-950 text-white min-h-screen">
+      
       <section className="border-b border-white/10">
-        <div className="mx-auto w-full max-w-7xl px-6 py-16 md:px-10 md:py-20">
-          <div className="max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.3em] text-white/45">
-              Porto Exótico
-            </p>
-            <h1 className="mt-3 text-4xl font-semibold leading-tight md:text-6xl">
-              Loja
-            </h1>
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-white/65 md:text-base">
-              Explora uma seleção sensual e discreta, pensada para despertar desejo,
-              curiosidade e confiança em cada escolha.
-            </p>
-          </div>
-        </div>
-      </section>
+        <div className="mx-auto max-w-7xl px-6 py-16 md:px-10">
+          <h1 className="text-4xl md:text-6xl font-semibold leading-tight max-w-3xl">
+            Descobre o prazer com elegância e discrição.
+          </h1>
 
-      <section className="mx-auto w-full max-w-7xl px-6 py-10 md:px-10 md:py-12">
-        <div className="grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)]">
-          <aside className="h-fit rounded-[2rem] border border-white/10 bg-white/5 p-5">
-            <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-white/45">
-                Procurar
-              </p>
-              <div className="relative mt-4">
-                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Pesquisar produtos"
-                  className="w-full rounded-full border border-white/10 bg-white/5 py-3 pl-11 pr-4 text-sm text-white placeholder:text-white/35 outline-none transition-colors duration-200 focus:border-white/20 focus:bg-white/10"
-                />
-              </div>
-            </div>
+          <p className="mt-6 text-white/60 max-w-2xl">
+            Produtos selecionados para elevar a tua experiência íntima — com qualidade, design e total confidencialidade.
+          </p>
 
-            <div className="mt-8">
-              <p className="text-xs uppercase tracking-[0.3em] text-white/45">
-                Categorias
-              </p>
+          <div className="mt-10 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+            
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className={`px-4 py-2 rounded-full text-sm border transition ${
+                  selectedCategory === 'all'
+                    ? 'bg-white text-black border-white'
+                    : 'border-white/10 text-white/70 hover:text-white hover:border-white/30'
+                }`}
+              >
+                Todos
+              </button>
 
-              <div className="mt-4 flex flex-wrap gap-3 lg:flex-col">
+              {productCategories.map((cat) => (
                 <button
-                  type="button"
-                  onClick={() => setSelectedCategory('all')}
-                  className={`rounded-full border px-4 py-2 text-sm transition-all duration-200 lg:text-left ${
-                    selectedCategory === 'all'
-                      ? 'border-white/20 bg-white text-neutral-950'
-                      : 'border-white/10 bg-white/5 text-white/75 hover:bg-white/10 hover:text-white'
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-2 rounded-full text-sm border transition ${
+                    selectedCategory === cat
+                      ? 'bg-white text-black border-white'
+                      : 'border-white/10 text-white/70 hover:text-white hover:border-white/30'
                   }`}
                 >
-                  Ver tudo
+                  {cat}
                 </button>
-
-                {productCategories.map((category) => (
-                  <button
-                    key={category.value}
-                    type="button"
-                    onClick={() => setSelectedCategory(category.value)}
-                    className={`rounded-full border px-4 py-2 text-sm transition-all duration-200 lg:text-left ${
-                      selectedCategory === category.value
-                        ? 'border-white/20 bg-white text-neutral-950'
-                        : 'border-white/10 bg-white/5 text-white/75 hover:bg-white/10 hover:text-white'
-                    }`}
-                  >
-                    {category.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </aside>
-
-          <div>
-            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-white/60">
-                {filteredProducts.length}{' '}
-                {filteredProducts.length === 1 ? 'produto encontrado' : 'produtos encontrados'}
-              </p>
-
-              <Link
-                to="/carrinho"
-                className="inline-flex items-center gap-2 text-sm text-white/75 transition-colors duration-200 hover:text-white"
-              >
-                Ver carrinho {itemCount > 0 ? `(${itemCount})` : ''}
-                <ChevronRight className="h-4 w-4" />
-              </Link>
+              ))}
             </div>
 
-            {filteredProducts.length === 0 ? (
-              <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8">
-                <h2 className="text-2xl font-semibold">Sem resultados</h2>
-                <p className="mt-3 max-w-xl text-sm leading-7 text-white/65">
-                  Não encontrámos produtos com esses critérios. Experimenta outra
-                  pesquisa ou escolhe uma categoria diferente.
-                </p>
-              </div>
-            ) : (
-              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-                {filteredProducts.map((product) => (
-                  <article
-                    key={product.id}
-                    className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 transition-all duration-200 hover:-translate-y-1 hover:bg-white/[0.07]"
-                  >
-                    <Link to={`/produto/${product.slug}`} className="block">
-                      <div className="aspect-[4/5] overflow-hidden rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-white/10 to-transparent" />
-                    </Link>
+            <div className="relative w-full md:w-80">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+              <input
+                type="text"
+                placeholder="Pesquisar produtos..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm focus:outline-none focus:border-white/30"
+              />
+            </div>
 
-                    <div className="mt-5">
-                      <p className="text-xs uppercase tracking-[0.3em] text-white/40">
-                        {
-                          productCategories.find(
-                            (category) => category.value === product.category
-                          )?.label
-                        }
-                      </p>
-
-                      <Link to={`/produto/${product.slug}`} className="block">
-                        <h2 className="mt-3 text-xl font-semibold transition-colors duration-200 group-hover:text-white/85">
-                          {product.name}
-                        </h2>
-                      </Link>
-
-                      <p className="mt-3 text-sm leading-6 text-white/65">
-                        {product.shortDescription}
-                      </p>
-
-                      <div className="mt-5 flex items-center gap-3">
-                        <span className="text-lg font-semibold text-white">
-                          {product.price.toFixed(2).replace('.', ',')} €
-                        </span>
-                        {product.compareAtPrice ? (
-                          <span className="text-sm text-white/35 line-through">
-                            {product.compareAtPrice.toFixed(2).replace('.', ',')} €
-                          </span>
-                        ) : null}
-                      </div>
-
-                      <div className="mt-6 flex flex-col gap-3">
-                        <Link
-                          to={`/produto/${product.slug}`}
-                          className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-medium text-neutral-950 transition-transform duration-200 hover:scale-[1.01]"
-                        >
-                          Ver produto
-                        </Link>
-
-                        <button
-                          type="button"
-                          onClick={() => addToCart(product)}
-                          className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-white/10"
-                        >
-                          Adicionar ao carrinho
-                        </button>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
           </div>
         </div>
       </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-16 md:px-10">
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          {filteredProducts.map((product) => (
+            <Link
+              to={`/product/${product.id}`}
+              key={product.id}
+              className="group relative"
+            >
+              <div className="relative overflow-hidden rounded-3xl bg-neutral-900 border border-white/5">
+                
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-[420px] object-cover transition duration-700 group-hover:scale-105"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-80" />
+
+                {product.isNew && (
+                  <span className="absolute top-4 left-4 text-xs bg-white text-black px-3 py-1 rounded-full">
+                    Novo
+                  </span>
+                )}
+
+                {product.isBestSeller && (
+                  <span className="absolute top-4 right-4 text-xs bg-amber-400 text-black px-3 py-1 rounded-full">
+                    Popular
+                  </span>
+                )}
+
+                <div className="absolute bottom-0 p-6">
+                  <h3 className="text-lg font-medium">{product.name}</h3>
+                  <p className="text-white/60 text-sm mt-1">
+                    {product.shortDescription}
+                  </p>
+
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="text-lg font-semibold">
+                      {product.price}€
+                    </span>
+
+                    <span className="flex items-center gap-1 text-sm text-white/70 group-hover:text-white transition">
+                      Ver
+                      <ChevronRight className="w-4 h-4" />
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-20 text-white/50">
+            Nenhum produto encontrado.
+          </div>
+        )}
+
+      </section>
+
     </main>
   );
 };

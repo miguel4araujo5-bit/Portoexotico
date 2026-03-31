@@ -84,7 +84,7 @@ const ProductPage: React.FC = () => {
             <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-neutral-900">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_45%)]" />
               <img
-                src={product.image}
+                src={product.image || 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80'}
                 alt={product.name}
                 className="h-[420px] w-full object-cover md:h-[560px]"
               />

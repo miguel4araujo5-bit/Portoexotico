@@ -7,7 +7,13 @@
     {
       "binding": "DB",
       "database_name": "portoexotico-db",
-      "database_id": "3423242b-2a3d-4a41-9f7f-1a730171e98c"
+      "database_id": "COLOCA_AQUI_O_DATABASE_ID"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "ADMIN_RATE_LIMIT_KV",
+      "id": "COLOCA_AQUI_O_KV_ID"
     }
   ]
 }

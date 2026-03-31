@@ -5,6 +5,7 @@ import Header from './components/layout/Header';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Product from './pages/Product';
+import Cart from './pages/Cart';
 
 const PlaceholderPage: React.FC<{ title: string; description?: string }> = ({
   title,
@@ -39,15 +40,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/loja" element={<Shop />} />
         <Route path="/produto/:slug" element={<Product />} />
-        <Route
-          path="/carrinho"
-          element={
-            <PlaceholderPage
-              title="Carrinho"
-              description="Resumo da encomenda, quantidades, subtotal e ligação para checkout."
-            />
-          }
-        />
+        <Route path="/carrinho" element={<Cart />} />
         <Route
           path="/checkout"
           element={

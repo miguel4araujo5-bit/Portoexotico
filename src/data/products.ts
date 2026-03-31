@@ -15,6 +15,9 @@ export type Product = {
   price: number;
   compareAtPrice?: number;
   tags: string[];
+  image?: string;
+  isNew?: boolean;
+  isBestSeller?: boolean;
 };
 
 export const productCategories: Array<{
@@ -40,6 +43,8 @@ export const products: Product[] = [
     price: 29.9,
     compareAtPrice: 36.9,
     tags: ['body', 'renda', 'sensual', 'lingerie'],
+    image: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?q=80&w=1200&auto=format&fit=crop',
+    isBestSeller: true,
   },
   {
     id: 'conjunto-noite-privada',
@@ -52,6 +57,8 @@ export const products: Product[] = [
     price: 39.9,
     compareAtPrice: 47.9,
     tags: ['conjunto', 'lingerie', 'romântico', 'sedução'],
+    image: 'https://images.unsplash.com/photo-1593032465171-8f0b0f92c9c8?q=80&w=1200&auto=format&fit=crop',
+    isNew: true,
   },
   {
     id: 'oleo-massagem-veludo',
@@ -63,6 +70,7 @@ export const products: Product[] = [
       'Óleo de massagem com toque sedoso e fragrância discreta, ideal para criar um ambiente íntimo e relaxante.',
     price: 18.9,
     tags: ['massagem', 'óleo', 'sensual', 'bem-estar'],
+    image: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?q=80&w=1200&auto=format&fit=crop',
   },
   {
     id: 'vela-massagem-ambar',
@@ -74,6 +82,7 @@ export const products: Product[] = [
       'Uma vela aromática pensada para transformar o momento a dois numa experiência mais intensa e confortável.',
     price: 21.9,
     tags: ['vela', 'massagem', 'aroma', 'casal'],
+    image: 'https://images.unsplash.com/photo-1603006905393-c0d78e7c1d4d?q=80&w=1200&auto=format&fit=crop',
   },
   {
     id: 'algemas-acetinadas',
@@ -85,6 +94,7 @@ export const products: Product[] = [
       'Algemas de toque suave e ajuste confortável, ideais para quem quer experimentar com elegância e descrição.',
     price: 16.9,
     tags: ['acessório', 'jogo', 'fantasia', 'explorar'],
+    image: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=1200&auto=format&fit=crop',
   },
   {
     id: 'kit-desejo-secreto',
@@ -97,6 +107,8 @@ export const products: Product[] = [
     price: 49.9,
     compareAtPrice: 59.9,
     tags: ['kit', 'presente', 'íntimo', 'romântico'],
+    image: 'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?q=80&w=1200&auto=format&fit=crop',
+    isBestSeller: true,
   },
   {
     id: 'vibrador-mini-discreto',
@@ -109,6 +121,8 @@ export const products: Product[] = [
     price: 34.9,
     compareAtPrice: 41.9,
     tags: ['prazer', 'discreto', 'silencioso', 'compacto'],
+    image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1f0?q=80&w=1200&auto=format&fit=crop',
+    isNew: true,
   },
   {
     id: 'kit-intimidade-luxo',
@@ -121,6 +135,8 @@ export const products: Product[] = [
     price: 64.9,
     compareAtPrice: 79.9,
     tags: ['premium', 'kit', 'luxo', 'casal'],
+    image: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=1200&auto=format&fit=crop',
+    isBestSeller: true,
   },
 ];
 

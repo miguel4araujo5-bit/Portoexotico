@@ -3,6 +3,9 @@ import { Link, useParams } from 'react-router-dom';
 import { ChevronRight, Heart, ShieldCheck, ShoppingBag, Truck } from 'lucide-react';
 import { products } from '../data/products';
 
+const fallbackImage =
+  'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80';
+
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const product = products.find((item) => item.id === id);
@@ -22,7 +25,7 @@ const ProductPage: React.FC = () => {
       <main className="min-h-screen bg-neutral-950 text-white">
         <section className="mx-auto max-w-7xl px-6 py-24 md:px-10">
           <Link
-            to="/shop"
+            to="/loja"
             className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.28em] text-white/60 transition hover:text-white"
           >
             Voltar à loja
@@ -36,7 +39,7 @@ const ProductPage: React.FC = () => {
             </p>
 
             <Link
-              to="/shop"
+              to="/loja"
               className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:scale-[1.02]"
             >
               Explorar produtos
@@ -69,7 +72,7 @@ const ProductPage: React.FC = () => {
               Início
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
-            <Link to="/shop" className="transition hover:text-white">
+            <Link to="/loja" className="transition hover:text-white">
               Shop
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
@@ -84,7 +87,7 @@ const ProductPage: React.FC = () => {
             <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-neutral-900">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_45%)]" />
               <img
-                src={product.image || 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80'}
+                src={product.image || fallbackImage}
                 alt={product.name}
                 className="h-[420px] w-full object-cover md:h-[560px]"
               />
@@ -103,7 +106,7 @@ const ProductPage: React.FC = () => {
                 <p className="mt-1 text-sm text-white/55">Processamento simples e seguro.</p>
               </div>
 
-              <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4 col-span-2 sm:col-span-1">
+              <div className="col-span-2 rounded-[1.5rem] border border-white/10 bg-white/5 p-4 sm:col-span-1">
                 <Heart className="h-5 w-5 text-white/80" />
                 <p className="mt-3 text-sm font-medium">Seleção cuidada</p>
                 <p className="mt-1 text-sm text-white/55">Produtos pensados para bem-estar e prazer.</p>
@@ -217,7 +220,7 @@ const ProductPage: React.FC = () => {
               </div>
 
               <Link
-                to="/shop"
+                to="/loja"
                 className="hidden text-sm text-white/60 transition hover:text-white md:inline-flex"
               >
                 Ver todos
@@ -228,12 +231,12 @@ const ProductPage: React.FC = () => {
               {relatedProducts.map((item) => (
                 <Link
                   key={item.id}
-                  to={`/product/${item.id}`}
+                  to={`/produto/${item.slug}`}
                   className="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] transition hover:-translate-y-1 hover:border-white/20"
                 >
                   <div className="relative overflow-hidden">
                     <img
-                      src={item.image}
+                      src={item.image || fallbackImage}
                       alt={item.name}
                       className="h-80 w-full object-cover transition duration-700 group-hover:scale-105"
                     />

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, ShoppingBag, X } from 'lucide-react';
+import { useCart } from '../../context/CartContext';
 
 const navigation = [
   { label: 'Início', to: '/' },
@@ -12,6 +13,7 @@ const navigation = [
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { itemCount } = useCart();
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -25,6 +27,12 @@ const Header: React.FC = () => {
 
     document.body.style.overflow = '';
   }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     [
@@ -68,12 +76,14 @@ const Header: React.FC = () => {
               <Link
                 to="/carrinho"
                 className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all duration-200 hover:bg-white/10"
-                aria-label="Abrir carrinho"
+                aria-label={`Abrir carrinho${itemCount > 0 ? ` com ${itemCount} item${itemCount > 1 ? 's' : ''}` : ''}`}
               >
                 <ShoppingBag className="h-5 w-5" />
-                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-[10px] font-semibold text-neutral-950">
-                  0
-                </span>
+                {itemCount > 0 ? (
+                  <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-[10px] font-semibold text-neutral-950">
+                    {itemCount}
+                  </span>
+                ) : null}
               </Link>
 
               <button

@@ -1,8 +1,10 @@
 export interface Env {
   DB: D1Database;
   ADMIN_USERNAME: string;
-  ADMIN_PASSWORD: string;
+  ADMIN_PASSWORD_HASH: string;
+  ADMIN_PASSWORD_SALT: string;
   ADMIN_SESSION_SECRET: string;
+  ADMIN_RATE_LIMIT_KV?: KVNamespace;
 }
 
 type SessionPayload = {
@@ -11,6 +13,7 @@ type SessionPayload = {
 };
 
 const encoder = new TextEncoder();
+const decoder = new TextDecoder();
 const SESSION_COOKIE = 'pe_admin_session';
 
 function toBase64Url(input: ArrayBuffer | Uint8Array | string) {
@@ -61,6 +64,50 @@ async function signValue(value: string, secret: string) {
   return toBase64Url(signature);
 }
 
+function timingSafeEqual(a: string, b: string) {
+  const aBytes = encoder.encode(a);
+  const bBytes = encoder.encode(b);
+
+  if (aBytes.length !== bBytes.length) {
+    return false;
+  }
+
+  let result = 0;
+  for (let i = 0; i < aBytes.length; i += 1) {
+    result |= aBytes[i] ^ bBytes[i];
+  }
+
+  return result === 0;
+}
+
+export async function hashPassword(password: string, salt: string) {
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(password),
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits']
+  );
+
+  const derivedBits = await crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt: encoder.encode(salt),
+      iterations: 210000,
+      hash: 'SHA-256'
+    },
+    keyMaterial,
+    256
+  );
+
+  return toBase64Url(derivedBits);
+}
+
+export async function verifyPassword(password: string, salt: string, expectedHash: string) {
+  const computedHash = await hashPassword(password, salt);
+  return timingSafeEqual(computedHash, expectedHash);
+}
+
 export async function createSessionToken(username: string, secret: string, maxAgeSeconds = 60 * 60 * 24 * 7) {
   const payload: SessionPayload = {
     u: username,
@@ -80,12 +127,13 @@ export async function verifySessionToken(token: string, secret: string) {
   }
 
   const expected = await signValue(encodedPayload, secret);
-  if (expected !== signature) {
+
+  if (!timingSafeEqual(expected, signature)) {
     return null;
   }
 
   try {
-    const payloadJson = new TextDecoder().decode(fromBase64Url(encodedPayload));
+    const payloadJson = decoder.decode(fromBase64Url(encodedPayload));
     const payload = JSON.parse(payloadJson) as SessionPayload;
 
     if (!payload.u || !payload.exp) {
@@ -104,14 +152,14 @@ export async function verifySessionToken(token: string, secret: string) {
 
 export function parseCookies(request: Request) {
   const header = request.headers.get('Cookie') || '';
-  const pairs = header.split(';').map((part) => part.trim()).filter(Boolean);
+  const parts = header.split(';').map((value) => value.trim()).filter(Boolean);
   const cookies: Record<string, string> = {};
 
-  for (const pair of pairs) {
-    const index = pair.indexOf('=');
+  for (const part of parts) {
+    const index = part.indexOf('=');
     if (index === -1) continue;
-    const key = pair.slice(0, index).trim();
-    const value = pair.slice(index + 1).trim();
+    const key = part.slice(0, index).trim();
+    const value = part.slice(index + 1).trim();
     cookies[key] = value;
   }
 
@@ -160,4 +208,12 @@ export function badRequest(message: string) {
 
 export function methodNotAllowed() {
   return json({ ok: false, error: 'Method not allowed' }, { status: 405 });
+}
+
+export function getClientIp(request: Request) {
+  return (
+    request.headers.get('CF-Connecting-IP') ||
+    request.headers.get('x-forwarded-for') ||
+    'unknown'
+  );
 }

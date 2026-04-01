@@ -49,12 +49,13 @@ const Shop: React.FC = () => {
             </div>
 
             <h1 className="text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
-              Descubra uma seleção íntima com envio discreto e compra segura.
+              Descubra uma coleção pensada para comprar com discrição, conforto e confiança.
             </h1>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-neutral-700 md:text-lg">
-              Explore lingerie, acessórios, cosmética, prazer e kits pensados para quem procura
-              discrição, conforto e uma experiência de compra mais elegante.
+              Explore lingerie, acessórios, cosmética, artigos de prazer e kits selecionados para
+              quem valoriza privacidade, elegância e uma experiência de compra mais simples e
+              cuidada.
             </p>
           </div>
 
@@ -63,7 +64,7 @@ const Shop: React.FC = () => {
               <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a55b7d]" />
               <input
                 type="text"
-                placeholder="Pesquisar produtos ou categorias"
+                placeholder="Pesquisar por produto, categoria ou característica"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] py-3 pl-11 pr-4 text-sm text-neutral-800 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
@@ -107,7 +108,7 @@ const Shop: React.FC = () => {
                 <div>
                   <p className="text-sm font-medium text-[#6f2947]">Envio discreto</p>
                   <p className="mt-1 text-sm leading-6 text-neutral-600">
-                    Embalagem neutra e sem referências exteriores.
+                    Embalagem neutra e maior reserva em cada encomenda.
                   </p>
                 </div>
               </div>
@@ -117,9 +118,9 @@ const Shop: React.FC = () => {
               <div className="flex items-start gap-3">
                 <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
                 <div>
-                  <p className="text-sm font-medium text-[#6f2947]">Pagamento seguro</p>
+                  <p className="text-sm font-medium text-[#6f2947]">Compra segura</p>
                   <p className="mt-1 text-sm leading-6 text-neutral-600">
-                    Checkout protegido e experiência simples de compra.
+                    Um processo de compra simples, claro e pensado para gerar confiança.
                   </p>
                 </div>
               </div>
@@ -129,9 +130,9 @@ const Shop: React.FC = () => {
               <div className="flex items-start gap-3">
                 <Lock className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
                 <div>
-                  <p className="text-sm font-medium text-[#6f2947]">Compra confidencial</p>
+                  <p className="text-sm font-medium text-[#6f2947]">Privacidade garantida</p>
                   <p className="mt-1 text-sm leading-6 text-neutral-600">
-                    Privacidade e conforto em toda a jornada.
+                    Uma experiência reservada, confortável e cuidada do início ao fim.
                   </p>
                 </div>
               </div>
@@ -148,6 +149,9 @@ const Shop: React.FC = () => {
               {filteredProducts.length} produto{filteredProducts.length === 1 ? '' : 's'} encontrado
               {filteredProducts.length === 1 ? '' : 's'}
             </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-neutral-600">
+              Descubra uma seleção cuidada para diferentes preferências, momentos e estilos.
+            </p>
           </div>
         </div>
 
@@ -155,7 +159,7 @@ const Shop: React.FC = () => {
           <div className="rounded-[2rem] border border-dashed border-[#8f355d]/15 bg-white px-6 py-14 text-center shadow-[0_18px_50px_rgba(143,53,93,0.05)]">
             <h3 className="text-xl font-medium text-[#6f2947]">Nenhum produto encontrado</h3>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-neutral-600">
-              Ajusta a pesquisa ou escolhe outra categoria para encontrares sugestões mais adequadas.
+              Ajuste a pesquisa ou selecione outra categoria para descobrir opções mais adequadas.
             </p>
           </div>
         ) : (

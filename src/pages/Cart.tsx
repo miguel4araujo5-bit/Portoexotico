@@ -181,6 +181,34 @@ const Cart: React.FC = () => {
               </Link>
             </div>
 
+            <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-neutral-950/40 p-4">
+              <p className="text-[11px] uppercase tracking-[0.28em] text-white/45">
+                Pagamentos disponíveis
+              </p>
+
+              <div className="mt-4 flex flex-wrap items-center gap-4">
+                <img
+                  src="/stripe.svg"
+                  alt="Stripe"
+                  className="h-5 w-auto opacity-75 transition hover:opacity-100"
+                />
+                <img
+                  src="/paypal.svg"
+                  alt="PayPal"
+                  className="h-5 w-auto opacity-75 transition hover:opacity-100"
+                />
+                <img
+                  src="/mbway.svg"
+                  alt="MB Way"
+                  className="h-5 w-auto opacity-75 transition hover:opacity-100"
+                />
+              </div>
+
+              <p className="mt-4 text-sm leading-6 text-white/60">
+                Checkout protegido com opções de pagamento práticas, seguras e discretas.
+              </p>
+            </div>
+
             <div className="mt-8 grid gap-3 text-sm text-white/65">
               <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-4">
                 Envio discreto e embalagem neutra.

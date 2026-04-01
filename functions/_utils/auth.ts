@@ -1,6 +1,7 @@
 export interface Env {
   DB: D1Database;
   ADMIN_USERNAME: string;
+  ADMIN_PASSWORD?: string;
   ADMIN_PASSWORD_HASH: string;
   ADMIN_PASSWORD_SALT: string;
   ADMIN_SESSION_SECRET: string;
@@ -106,6 +107,18 @@ export async function hashPassword(password: string, salt: string) {
 export async function verifyPassword(password: string, salt: string, expectedHash: string) {
   const computedHash = await hashPassword(password, salt);
   return timingSafeEqual(computedHash, expectedHash);
+}
+
+export async function verifyAdminPassword(password: string, env: Env) {
+  if (env.ADMIN_PASSWORD) {
+    return timingSafeEqual(password, env.ADMIN_PASSWORD);
+  }
+
+  if (!env.ADMIN_PASSWORD_SALT || !env.ADMIN_PASSWORD_HASH) {
+    return false;
+  }
+
+  return verifyPassword(password, env.ADMIN_PASSWORD_SALT, env.ADMIN_PASSWORD_HASH);
 }
 
 export async function createSessionToken(username: string, secret: string, maxAgeSeconds = 60 * 60 * 24 * 7) {

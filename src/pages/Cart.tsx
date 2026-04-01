@@ -197,11 +197,13 @@ const Cart: React.FC = () => {
                   alt="PayPal"
                   className="h-5 w-auto opacity-75 transition hover:opacity-100"
                 />
-                <img
-                  src="/mbway.svg"
-                  alt="MB Way"
-                  className="h-5 w-auto opacity-75 transition hover:opacity-100"
-                />
+                <div className="inline-flex rounded-md bg-white p-1 shadow-sm">
+                  <img
+                    src="/mbway.svg"
+                    alt="MB Way"
+                    className="block h-5 w-auto opacity-100"
+                  />
+                </div>
               </div>
 
               <p className="mt-4 text-sm leading-6 text-white/60">

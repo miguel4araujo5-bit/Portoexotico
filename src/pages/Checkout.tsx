@@ -111,11 +111,6 @@ const Checkout: React.FC = () => {
                 />
                 <input
                   type="text"
-                  placeholder="NIF"
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
-                />
-                <input
-                  type="text"
                   placeholder="Morada"
                   className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30 md:col-span-2"
                 />

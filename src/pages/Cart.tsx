@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { productCategories } from '../data/products';
 
 const fallbackImage =
   'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80';
@@ -9,16 +10,33 @@ const fallbackImage =
 const Cart: React.FC = () => {
   const { items, subtotal, updateQuantity, removeFromCart, clearCart } = useCart();
 
+  const totalQuantity = useMemo(
+    () => items.reduce((total, item) => total + item.quantity, 0),
+    [items]
+  );
+
+  const compareSubtotal = useMemo(
+    () =>
+      items.reduce((total, item) => {
+        const referencePrice = item.product.compareAtPrice ?? item.product.price;
+        return total + referencePrice * item.quantity;
+      }, 0),
+    [items]
+  );
+
+  const savings = Math.max(compareSubtotal - subtotal, 0);
+
   if (items.length === 0) {
     return (
       <main className="min-h-screen bg-neutral-950 px-6 py-16 text-white md:px-10">
         <div className="mx-auto max-w-5xl">
           <p className="text-xs uppercase tracking-[0.3em] text-white/40">Carrinho</p>
           <h1 className="mt-3 text-3xl font-semibold md:text-5xl">
-            O teu carrinho está vazio
+            O seu carrinho está vazio
           </h1>
           <p className="mt-4 max-w-2xl text-white/70">
-            Explora a nossa seleção e adiciona os produtos que mais combinam contigo.
+            Explore a nossa seleção e adicione os artigos que pretende comprar com discrição,
+            conforto e confiança.
           </p>
 
           <div className="mt-8">
@@ -40,9 +58,10 @@ const Cart: React.FC = () => {
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-white/40">Carrinho</p>
-            <h1 className="mt-3 text-3xl font-semibold md:text-5xl">A tua seleção</h1>
+            <h1 className="mt-3 text-3xl font-semibold md:text-5xl">A sua seleção</h1>
             <p className="mt-4 max-w-2xl text-white/70">
-              Revê os produtos, ajusta as quantidades e segue para checkout com total discrição.
+              Reveja os artigos, ajuste as quantidades e avance para checkout com total discrição e
+              confiança.
             </p>
           </div>
 
@@ -59,6 +78,9 @@ const Cart: React.FC = () => {
           <section className="space-y-4">
             {items.map((item) => {
               const lineTotal = item.product.price * item.quantity;
+              const categoryLabel =
+                productCategories.find((category) => category.value === item.product.category)
+                  ?.label ?? item.product.category;
 
               return (
                 <article
@@ -81,7 +103,7 @@ const Cart: React.FC = () => {
                       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                         <div className="min-w-0">
                           <p className="text-xs uppercase tracking-[0.3em] text-white/35">
-                            {item.product.category}
+                            {categoryLabel}
                           </p>
 
                           <Link
@@ -152,7 +174,8 @@ const Cart: React.FC = () => {
             <h2 className="mt-3 text-2xl font-semibold text-white">Detalhes da encomenda</h2>
 
             <p className="mt-3 text-sm text-white/60">
-              {items.length} artigo{items.length === 1 ? '' : 's'} no carrinho
+              {totalQuantity} artigo{totalQuantity === 1 ? '' : 's'} selecionado
+              {totalQuantity === 1 ? '' : 's'}
             </p>
 
             <div className="mt-8 space-y-4">
@@ -165,6 +188,13 @@ const Cart: React.FC = () => {
                 <span>Envio</span>
                 <span className="text-white">Calculado no checkout</span>
               </div>
+
+              {savings > 0 ? (
+                <div className="flex items-center justify-between gap-4 text-sm text-emerald-200/85">
+                  <span>Poupança atual</span>
+                  <span>{savings.toFixed(2).replace('.', ',')} €</span>
+                </div>
+              ) : null}
 
               <div className="h-px bg-white/10" />
 
@@ -183,11 +213,15 @@ const Cart: React.FC = () => {
                   <p className="mt-2 text-sm text-white/80">Discreto e neutro</p>
                 </div>
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">Pagamento</p>
+                  <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">
+                    Pagamento
+                  </p>
                   <p className="mt-2 text-sm text-white/80">Seguro no checkout</p>
                 </div>
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">Privacidade</p>
+                  <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">
+                    Privacidade
+                  </p>
                   <p className="mt-2 text-sm text-white/80">Compra confidencial</p>
                 </div>
               </div>
@@ -198,11 +232,11 @@ const Cart: React.FC = () => {
                 to="/checkout"
                 className="inline-flex w-full items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-medium text-neutral-950 transition hover:scale-[1.01]"
               >
-                Avançar para checkout
+                Finalizar compra com discrição
               </Link>
 
               <p className="text-center text-xs leading-6 text-white/45">
-                Embalagem discreta, checkout protegido e experiência reservada.
+                Embalagem discreta, checkout protegido e uma experiência reservada do início ao fim.
               </p>
 
               <Link
@@ -221,11 +255,11 @@ const Cart: React.FC = () => {
               <div className="mt-4 space-y-3">
                 <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-14 items-center justify-center">
+                    <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
                       <img
                         src="/paypal.svg"
                         alt="PayPal"
-                        className="max-h-7 w-auto object-contain opacity-95"
+                        className="h-[33px] w-auto object-contain opacity-100"
                       />
                     </div>
                     <span className="text-sm text-white">PayPal</span>
@@ -238,11 +272,11 @@ const Cart: React.FC = () => {
 
                 <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-14 items-center justify-center">
+                    <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
                       <img
                         src="/stripe.svg"
                         alt="Stripe"
-                        className="max-h-7 w-auto object-contain opacity-95"
+                        className="h-[33px] w-auto object-contain opacity-100"
                       />
                     </div>
                     <span className="text-sm text-white">Stripe</span>
@@ -255,11 +289,11 @@ const Cart: React.FC = () => {
 
                 <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-14 items-center justify-center rounded-md bg-white p-1 shadow-sm">
+                    <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
                       <img
                         src="/mbway.svg"
                         alt="MB WAY"
-                        className="max-h-6 w-auto object-contain opacity-100"
+                        className="h-[30px] w-auto object-contain opacity-100"
                       />
                     </div>
                     <span className="text-sm text-white">MB WAY</span>
@@ -272,19 +306,20 @@ const Cart: React.FC = () => {
               </div>
 
               <p className="mt-4 text-sm leading-6 text-white/60">
-                Checkout protegido com opções de pagamento práticas, seguras e discretas.
+                Checkout protegido com opções de pagamento práticas, seguras e adequadas a uma
+                compra discreta.
               </p>
             </div>
 
             <div className="mt-8 grid gap-3 text-sm text-white/65">
               <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-4">
-                Envio discreto e embalagem neutra.
+                Envio discreto com embalagem neutra e maior privacidade.
               </div>
               <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-4">
-                Compra segura com checkout protegido.
+                Compra segura com um processo de checkout simples e protegido.
               </div>
               <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-4">
-                Privacidade e discrição cuidadosa em toda a experiência.
+                Discrição, conforto e confidencialidade em toda a experiência.
               </div>
             </div>
           </aside>

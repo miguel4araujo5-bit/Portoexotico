@@ -11,10 +11,10 @@ import {
   ShoppingBag,
 } from 'lucide-react';
 
-const supportEmail = '';
-const supportWhatsApp = '';
-const instagramUrl = '';
-const instagramHandle = '';
+const supportEmail: string = '';
+const supportWhatsApp: string = '';
+const instagramUrl: string = '';
+const instagramHandle: string = '';
 
 const channels = [
   supportEmail

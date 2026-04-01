@@ -1,309 +1,326 @@
 import React, { useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { ChevronRight, Heart, ShieldCheck, ShoppingBag, Truck } from 'lucide-react';
-import { products } from '../data/products';
+import { Link } from 'react-router-dom';
+import { CheckCircle2, CreditCard, Lock, Package, Wallet } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
-const fallbackImage =
-  'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80';
+type PaymentMethod = 'paypal' | 'stripe' | 'mbway';
 
-const ProductPage: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const product = products.find((item) => item.slug === slug);
+const paymentOptions: Array<{
+  id: PaymentMethod;
+  label: string;
+  status: 'available' | 'soon';
+  description: string;
+}> = [
+  {
+    id: 'paypal',
+    label: 'PayPal',
+    status: 'available',
+    description: 'Disponível para ser integrado como primeiro método de pagamento.',
+  },
+  {
+    id: 'stripe',
+    label: 'Stripe',
+    status: 'soon',
+    description: 'Brevemente disponível após validação da conta.',
+  },
+  {
+    id: 'mbway',
+    label: 'MB WAY',
+    status: 'soon',
+    description: 'Brevemente disponível após ativação e validação.',
+  },
+];
 
-  const relatedProducts = useMemo(() => {
-    if (!product) return [];
+const Checkout: React.FC = () => {
+  const { items, subtotal } = useCart();
+  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>('paypal');
 
-    return products
-      .filter((item) => item.id !== product.id && item.category === product.category)
-      .slice(0, 3);
-  }, [product]);
+  const selectedOption = useMemo(
+    () => paymentOptions.find((option) => option.id === selectedPayment),
+    [selectedPayment]
+  );
 
-  const [quantity, setQuantity] = useState(1);
-
-  if (!product) {
+  if (items.length === 0) {
     return (
-      <main className="min-h-screen bg-neutral-950 text-white">
-        <section className="mx-auto max-w-7xl px-6 py-24 md:px-10">
+      <main className="min-h-screen bg-neutral-950 px-6 py-16 text-white md:px-10">
+        <div className="mx-auto max-w-4xl">
+          <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.3em] text-white/60">
+            Checkout
+          </span>
+
+          <h1 className="mt-6 text-3xl font-semibold md:text-5xl">
+            O teu carrinho está vazio
+          </h1>
+
+          <p className="mt-4 max-w-2xl text-white/70">
+            Antes de avançares para pagamento, adiciona pelo menos um produto ao carrinho.
+          </p>
+
           <Link
             to="/loja"
-            className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.28em] text-white/60 transition hover:text-white"
+            className="mt-8 inline-flex rounded-full border border-white/15 bg-white px-6 py-3 text-sm font-medium text-black transition hover:scale-[1.02]"
           >
-            Voltar à loja
+            Ir para a loja
           </Link>
-
-          <div className="mt-12 max-w-2xl rounded-[2rem] border border-white/10 bg-white/5 p-8 md:p-10">
-            <p className="text-sm uppercase tracking-[0.3em] text-white/50">Produto</p>
-            <h1 className="mt-4 text-3xl font-semibold md:text-4xl">Produto não encontrado</h1>
-            <p className="mt-4 text-white/65">
-              O produto que procuras não está disponível ou foi removido da loja.
-            </p>
-
-            <Link
-              to="/loja"
-              className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:scale-[1.02]"
-            >
-              Explorar produtos
-            </Link>
-          </div>
-        </section>
+        </div>
       </main>
     );
   }
 
-  const description =
-    'description' in product &&
-    typeof product.description === 'string' &&
-    product.description.trim().length > 0
-      ? product.description
-      : product.shortDescription;
-
-  const decreaseQuantity = () => {
-    setQuantity((prev) => Math.max(1, prev - 1));
-  };
-
-  const increaseQuantity = () => {
-    setQuantity((prev) => prev + 1);
-  };
-
   return (
-    <main className="min-h-screen bg-neutral-950 text-white">
-      <section className="border-b border-white/10">
-        <div className="mx-auto max-w-7xl px-6 py-6 md:px-10">
-          <nav className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.25em] text-white/45">
-            <Link to="/" className="transition hover:text-white">
-              Início
-            </Link>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <Link to="/loja" className="transition hover:text-white">
-              Loja
-            </Link>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-white/75">{product.name}</span>
-          </nav>
+    <main className="min-h-screen bg-neutral-950 px-6 py-16 text-white md:px-10">
+      <div className="mx-auto max-w-7xl">
+        <div className="max-w-3xl">
+          <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.3em] text-white/60">
+            Checkout
+          </span>
+
+          <h1 className="mt-6 text-3xl font-semibold md:text-5xl">
+            Finaliza a tua encomenda com discrição
+          </h1>
+
+          <p className="mt-4 max-w-2xl text-white/70">
+            Confirma os teus dados, escolhe o método de pagamento e prepara-te para uma
+            experiência simples, segura e confidencial.
+          </p>
         </div>
-      </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-12 md:px-10 md:py-16">
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-          <div className="space-y-4">
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-neutral-900">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_45%)]" />
-              <img
-                src={product.image || fallbackImage}
-                alt={product.name}
-                className="h-[420px] w-full object-cover md:h-[560px]"
-              />
+        <div className="mt-12 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+          <section className="space-y-8">
+            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
+              <div className="flex items-center gap-3">
+                <Package className="h-5 w-5 text-white/80" />
+                <h2 className="text-xl font-semibold">Dados de entrega</h2>
+              </div>
+
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                <input
+                  type="text"
+                  placeholder="Nome completo"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
+                />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
+                />
+                <input
+                  type="tel"
+                  placeholder="Telefone"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
+                />
+                <input
+                  type="text"
+                  placeholder="NIF"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
+                />
+                <input
+                  type="text"
+                  placeholder="Morada"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30 md:col-span-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Código-postal"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
+                />
+                <input
+                  type="text"
+                  placeholder="Localidade"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
+                />
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
-                <ShieldCheck className="h-5 w-5 text-white/80" />
-                <p className="mt-3 text-sm font-medium">Envio discreto</p>
-                <p className="mt-1 text-sm text-white/55">Embalagem neutra e sem referências exteriores.</p>
+            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
+              <div className="flex items-center gap-3">
+                <Wallet className="h-5 w-5 text-white/80" />
+                <h2 className="text-xl font-semibold">Método de pagamento</h2>
               </div>
 
-              <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
-                <Truck className="h-5 w-5 text-white/80" />
-                <p className="mt-3 text-sm font-medium">Entrega rápida</p>
-                <p className="mt-1 text-sm text-white/55">Processamento simples, cómodo e confidencial.</p>
-              </div>
+              <div className="mt-6 space-y-4">
+                {paymentOptions.map((option) => {
+                  const isSoon = option.status === 'soon';
+                  const isSelected = selectedPayment === option.id;
+                  const logoSrc =
+                    option.id === 'paypal'
+                      ? '/paypal.svg'
+                      : option.id === 'stripe'
+                        ? '/stripe.svg'
+                        : '/mbway.svg';
 
-              <div className="col-span-2 rounded-[1.5rem] border border-white/10 bg-white/5 p-4 sm:col-span-1">
-                <Heart className="h-5 w-5 text-white/80" />
-                <p className="mt-3 text-sm font-medium">Escolha segura</p>
-                <p className="mt-1 text-sm text-white/55">Uma seleção premium pensada para comprar com confiança.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:sticky lg:top-24">
-            <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur md:p-8">
-              <p className="text-xs uppercase tracking-[0.32em] text-white/45">{product.category}</p>
-
-              <h1 className="mt-4 text-3xl font-semibold leading-tight md:text-5xl">
-                {product.name}
-              </h1>
-
-              <p className="mt-5 text-base leading-7 text-white/68 md:text-lg">
-                {description}
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-end gap-x-3 gap-y-2">
-                <span className="text-3xl font-semibold md:text-4xl">
-                  {product.price.toFixed(2).replace('.', ',')} €
-                </span>
-                <span className="pb-1 text-sm text-white/45">IVA incluído</span>
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-emerald-200">
-                  Compra segura
-                </span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-white/65">
-                  Envio discreto
-                </span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-white/65">
-                  Entrega rápida
-                </span>
-              </div>
-
-              <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
-                <p className="text-sm font-medium text-white/88">Porque este produto vende bem</p>
-                <ul className="mt-3 space-y-2 text-sm leading-6 text-white/60">
-                  <li>Design elegante e apresentação mais discreta</li>
-                  <li>Ideal para oferecer ou explorar com mais confiança</li>
-                  <li>Boa escolha para quem procura conforto, estética e prazer</li>
-                </ul>
-              </div>
-
-              <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
-                <div className="grid gap-3 sm:grid-cols-3">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/40">Envio</p>
-                    <p className="mt-2 text-sm text-white/80">Discreto e neutro</p>
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/40">Pagamento</p>
-                    <p className="mt-2 text-sm text-white/80">Seguro no checkout</p>
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/40">Experiência</p>
-                    <p className="mt-2 text-sm text-white/80">Simples e confidencial</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 flex items-center gap-3">
-                <span className="text-sm text-white/60">Quantidade</span>
-
-                <div className="ml-auto inline-flex items-center overflow-hidden rounded-full border border-white/10 bg-white/5">
-                  <button
-                    type="button"
-                    onClick={decreaseQuantity}
-                    className="flex h-11 w-11 items-center justify-center text-lg text-white/80 transition hover:bg-white/10 hover:text-white"
-                    aria-label="Diminuir quantidade"
-                  >
-                    −
-                  </button>
-
-                  <span className="flex h-11 min-w-[52px] items-center justify-center text-sm font-medium">
-                    {quantity}
-                  </span>
-
-                  <button
-                    type="button"
-                    onClick={increaseQuantity}
-                    className="flex h-11 w-11 items-center justify-center text-lg text-white/80 transition hover:bg-white/10 hover:text-white"
-                    aria-label="Aumentar quantidade"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition hover:scale-[1.02]"
-                >
-                  <ShoppingBag className="h-4 w-4" />
-                  Adicionar ao carrinho
-                </button>
-
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-medium text-white transition hover:border-white/30 hover:bg-white/10"
-                >
-                  Comprar agora
-                </button>
-              </div>
-
-              <p className="mt-4 text-xs leading-6 text-white/45">
-                Compra discreta, checkout protegido e experiência pensada para total conforto.
-              </p>
-
-              <div className="mt-8 border-t border-white/10 pt-6">
-                <div className="flex flex-wrap gap-2">
-                  {product.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs uppercase tracking-[0.18em] text-white/55"
+                  return (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => {
+                        if (!isSoon) {
+                          setSelectedPayment(option.id);
+                        }
+                      }}
+                      className={[
+                        'w-full rounded-[1.5rem] border p-5 text-left transition',
+                        isSelected
+                          ? 'border-white/30 bg-white/10'
+                          : 'border-white/10 bg-black/20 hover:border-white/20 hover:bg-white/5',
+                        isSoon ? 'cursor-not-allowed' : '',
+                      ].join(' ')}
                     >
-                      {tag}
-                    </span>
-                  ))}
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-3">
+                            {option.id === 'mbway' ? (
+                              <div className="inline-flex rounded-md bg-white p-1 shadow-sm">
+                                <img
+                                  src={logoSrc}
+                                  alt={option.label}
+                                  className="block h-5 w-auto opacity-100"
+                                />
+                              </div>
+                            ) : (
+                              <img
+                                src={logoSrc}
+                                alt={option.label}
+                                className="h-6 w-auto shrink-0 opacity-90"
+                              />
+                            )}
+
+                            <span className="text-base font-medium text-white">{option.label}</span>
+
+                            <span
+                              className={[
+                                'rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.25em]',
+                                isSoon
+                                  ? 'border-white/10 bg-white/5 text-amber-200/85'
+                                  : 'border-white/10 bg-white/5 text-emerald-200/85',
+                              ].join(' ')}
+                            >
+                              {isSoon ? 'Brevemente' : 'Disponível'}
+                            </span>
+                          </div>
+
+                          <p className="mt-3 text-sm leading-6 text-white/65">
+                            {option.description}
+                          </p>
+                        </div>
+
+                        {!isSoon ? (
+                          <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-white" />
+                        ) : null}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                <div className="flex items-center gap-3">
+                  <CreditCard className="h-5 w-5 text-white/80" />
+                  <h3 className="text-base font-medium">Estado atual</h3>
+                </div>
+
+                <p className="mt-3 text-sm leading-6 text-white/70">
+                  {selectedOption?.id === 'paypal'
+                    ? 'O PayPal é o método prioritário para a próxima integração funcional do checkout.'
+                    : 'Este método ficará visível no checkout, mas será ativado quando a validação da conta estiver concluída.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
+              <div className="flex items-center gap-3">
+                <Lock className="h-5 w-5 text-white/80" />
+                <h2 className="text-xl font-semibold">Privacidade e discrição</h2>
+              </div>
+
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
+                  <p className="text-sm font-medium text-white">Embalagem neutra</p>
+                  <p className="mt-2 text-sm leading-6 text-white/60">
+                    Sem referências visíveis ao conteúdo exterior.
+                  </p>
+                </div>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
+                  <p className="text-sm font-medium text-white">Processo seguro</p>
+                  <p className="mt-2 text-sm leading-6 text-white/60">
+                    Estrutura preparada para checkout protegido e estável.
+                  </p>
+                </div>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
+                  <p className="text-sm font-medium text-white">Confidencialidade</p>
+                  <p className="mt-2 text-sm leading-6 text-white/60">
+                    Experiência pensada para ser elegante, simples e reservada.
+                  </p>
                 </div>
               </div>
-
-              <div className="mt-8 space-y-3 rounded-[1.5rem] border border-white/10 bg-black/20 p-4 text-sm text-white/58">
-                <p>Envio discreto e embalagem neutra.</p>
-                <p>Pagamentos seguros disponíveis no checkout.</p>
-                <p>Suporte pensado para uma compra cómoda e confidencial.</p>
-              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {relatedProducts.length > 0 && (
-        <section className="border-t border-white/10">
-          <div className="mx-auto max-w-7xl px-6 py-16 md:px-10">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-white/45">Sugestões</p>
-                <h2 className="mt-3 text-2xl font-semibold md:text-3xl">
-                  Combina também com estes produtos
-                </h2>
-              </div>
+          <aside className="h-fit rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <h2 className="text-xl font-semibold">Resumo da encomenda</h2>
 
-              <Link
-                to="/loja"
-                className="hidden text-sm text-white/60 transition hover:text-white md:inline-flex"
-              >
-                Ver todos
-              </Link>
-            </div>
-
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
-              {relatedProducts.map((item) => (
-                <Link
-                  key={item.id}
-                  to={`/produto/${item.slug}`}
-                  className="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] transition hover:-translate-y-1 hover:border-white/20"
+            <div className="mt-6 space-y-4">
+              {items.map((item) => (
+                <div
+                  key={item.product.id}
+                  className="flex items-start justify-between gap-4 border-b border-white/10 pb-4"
                 >
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={item.image || fallbackImage}
-                      alt={item.name}
-                      className="h-80 w-full object-cover transition duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  </div>
-
-                  <div className="p-5">
-                    <p className="text-xs uppercase tracking-[0.25em] text-white/40">{item.category}</p>
-                    <h3 className="mt-3 text-lg font-medium">{item.name}</h3>
-                    <p className="mt-2 line-clamp-2 text-sm leading-6 text-white/58">
-                      {item.shortDescription}
+                  <div>
+                    <p className="text-sm font-medium text-white">{item.product.name}</p>
+                    <p className="mt-1 text-sm text-white/55">
+                      {item.quantity} × {item.product.price.toFixed(2).replace('.', ',')} €
                     </p>
-
-                    <div className="mt-5 flex items-center justify-between">
-                      <span className="text-lg font-semibold">
-                        {item.price.toFixed(2).replace('.', ',')} €
-                      </span>
-                      <span className="text-sm text-white/60 transition group-hover:text-white">
-                        Ver produto
-                      </span>
-                    </div>
                   </div>
-                </Link>
+
+                  <p className="text-sm font-medium text-white">
+                    {(item.product.price * item.quantity).toFixed(2).replace('.', ',')} €
+                  </p>
+                </div>
               ))}
             </div>
-          </div>
-        </section>
-      )}
+
+            <div className="mt-6 space-y-3 text-sm">
+              <div className="flex items-center justify-between text-white/70">
+                <span>Subtotal</span>
+                <span>{subtotal.toFixed(2).replace('.', ',')} €</span>
+              </div>
+
+              <div className="flex items-center justify-between text-white/70">
+                <span>Envio</span>
+                <span>A calcular</span>
+              </div>
+
+              <div className="flex items-center justify-between border-t border-white/10 pt-4 text-base font-semibold text-white">
+                <span>Total estimado</span>
+                <span>{subtotal.toFixed(2).replace('.', ',')} €</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:scale-[1.01]"
+            >
+              Continuar com {selectedPayment === 'paypal' ? 'PayPal' : 'disponível brevemente'}
+            </button>
+
+            <p className="mt-4 text-xs leading-6 text-white/50">
+              O fluxo visual do checkout está preparado. A ligação final ao gateway será ativada
+              por método.
+            </p>
+
+            <Link
+              to="/carrinho"
+              className="mt-4 inline-flex text-sm text-white/70 transition hover:text-white"
+            >
+              Voltar ao carrinho
+            </Link>
+          </aside>
+        </div>
+      </div>
     </main>
   );
 };
 
-export default ProductPage;
+export default Checkout;

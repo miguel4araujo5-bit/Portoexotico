@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
               <Link to="/loja" className="transition hover:text-white">
                 Loja
               </Link>
-              <Link to="/cart" className="transition hover:text-white">
+              <Link to="/carrinho" className="transition hover:text-white">
                 Carrinho
               </Link>
               <Link to="/checkout" className="transition hover:text-white">
@@ -66,7 +66,7 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-5 text-xs text-white/40 md:px-10 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-5 text-xs text-white/40 md:flex-row md:items-center md:justify-between md:px-10">
           <p>© 2026 Porto Exótico. Todos os direitos reservados.</p>
           <p>Envio discreto. Checkout protegido. Privacidade em primeiro lugar.</p>
         </div>

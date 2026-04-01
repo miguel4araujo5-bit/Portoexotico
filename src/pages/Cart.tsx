@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
+const fallbackImage =
+  'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80';
+
 const Cart: React.FC = () => {
   const { items, subtotal, updateQuantity, removeFromCart, clearCart } = useCart();
 
@@ -67,7 +70,11 @@ const Cart: React.FC = () => {
                       to={`/produto/${item.product.slug}`}
                       className="block shrink-0 overflow-hidden rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-white/10 to-transparent md:w-44"
                     >
-                      <div className="aspect-[4/5] w-full" />
+                      <img
+                        src={item.product.image || fallbackImage}
+                        alt={item.product.name}
+                        className="aspect-[4/5] h-full w-full object-cover transition duration-500 hover:scale-105"
+                      />
                     </Link>
 
                     <div className="flex min-w-0 flex-1 flex-col justify-between gap-5">
@@ -144,6 +151,10 @@ const Cart: React.FC = () => {
             <p className="text-xs uppercase tracking-[0.3em] text-white/40">Resumo</p>
             <h2 className="mt-3 text-2xl font-semibold text-white">Detalhes da encomenda</h2>
 
+            <p className="mt-3 text-sm text-white/60">
+              {items.length} artigo{items.length === 1 ? '' : 's'} no carrinho
+            </p>
+
             <div className="mt-8 space-y-4">
               <div className="flex items-center justify-between gap-4 text-sm text-white/70">
                 <span>Subtotal</span>
@@ -165,6 +176,23 @@ const Cart: React.FC = () => {
               </div>
             </div>
 
+            <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-neutral-950/40 p-4">
+              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">Envio</p>
+                  <p className="mt-2 text-sm text-white/80">Discreto e neutro</p>
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">Pagamento</p>
+                  <p className="mt-2 text-sm text-white/80">Seguro no checkout</p>
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">Privacidade</p>
+                  <p className="mt-2 text-sm text-white/80">Compra confidencial</p>
+                </div>
+              </div>
+            </div>
+
             <div className="mt-8 space-y-3">
               <Link
                 to="/checkout"
@@ -172,6 +200,10 @@ const Cart: React.FC = () => {
               >
                 Avançar para checkout
               </Link>
+
+              <p className="text-center text-xs leading-6 text-white/45">
+                Embalagem discreta, checkout protegido e experiência reservada.
+              </p>
 
               <Link
                 to="/loja"
@@ -188,19 +220,19 @@ const Cart: React.FC = () => {
 
               <div className="mt-4 flex flex-wrap items-center gap-4">
                 <img
-                  src="/stripe.svg"
-                  alt="Stripe"
-                  className="h-5 w-auto opacity-75 transition hover:opacity-100"
-                />
-                <img
                   src="/paypal.svg"
                   alt="PayPal"
+                  className="h-5 w-auto opacity-90 transition hover:opacity-100"
+                />
+                <img
+                  src="/stripe.svg"
+                  alt="Stripe"
                   className="h-5 w-auto opacity-75 transition hover:opacity-100"
                 />
                 <div className="inline-flex rounded-md bg-white p-1 shadow-sm">
                   <img
                     src="/mbway.svg"
-                    alt="MB Way"
+                    alt="MB WAY"
                     className="block h-5 w-auto opacity-100"
                   />
                 </div>
@@ -219,7 +251,7 @@ const Cart: React.FC = () => {
                 Compra segura com checkout protegido.
               </div>
               <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-4">
-                Privacidade e descrição cuidadosa em toda a experiência.
+                Privacidade e discrição cuidadosa em toda a experiência.
               </div>
             </div>
           </aside>

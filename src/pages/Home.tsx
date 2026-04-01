@@ -24,21 +24,20 @@ const Home: React.FC = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(143,53,93,0.06),transparent_36%),linear-gradient(180deg,rgba(252,248,250,0.88),rgba(252,248,250,0.98))]" />
         </div>
 
-        <div className="container-custom relative grid min-h-[88vh] items-center gap-12 py-16 lg:min-h-screen lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
+        <div className="container-custom relative grid min-h-[88vh] items-center gap-12 py-16 lg:min-h-screen lg:grid-cols-[1.02fr_0.98fr] lg:py-24">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 rounded-full border border-[#8f355d]/10 bg-white/80 px-4 py-2 text-[11px] uppercase tracking-[0.32em] text-[#9b5a79] shadow-[0_10px_30px_rgba(143,53,93,0.06)]">
               <Sparkles className="h-4 w-4" />
               Porto Exótico
             </span>
 
-            <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl md:leading-[1.03]">
-              Boutique íntima com envio discreto, compra segura e seleção premium.
+            <h1 className="mt-6 max-w-5xl font-serif text-5xl font-semibold leading-[0.98] text-[#6f2947] md:text-7xl">
+              Discrição, desejo e uma boutique íntima com elegância real.
             </h1>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-neutral-700 md:text-lg md:leading-8">
               Descubra lingerie, acessórios, cosmética e artigos de prazer pensados para quem
-              procura conforto, discrição e uma experiência de compra elegante do primeiro clique
-              ao checkout.
+              procura conforto, privacidade e uma experiência de compra mais segura e sofisticada.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
@@ -56,17 +55,17 @@ const Home: React.FC = () => {
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Link
                 to="/loja"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#8f355d] px-6 py-3.5 text-sm font-medium text-white shadow-[0_14px_34px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52] hover:shadow-[0_18px_38px_rgba(143,53,93,0.28)]"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#8f355d] px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52] hover:shadow-[0_18px_38px_rgba(143,53,93,0.28)]"
               >
                 Entrar na loja
                 <ArrowRight className="h-4 w-4" />
               </Link>
 
               <Link
-                to="/checkout"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-white px-6 py-3.5 text-sm font-medium text-[#7a2f4f] shadow-[0_10px_28px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/30 hover:bg-[#fff7fb]"
+                to="/loja"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-white px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] shadow-[0_10px_28px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/30 hover:bg-[#fff7fb]"
               >
-                Checkout seguro
+                Ver mais procurados
               </Link>
             </div>
 
@@ -81,7 +80,7 @@ const Home: React.FC = () => {
               <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/85 px-4 py-4 shadow-[0_12px_28px_rgba(143,53,93,0.06)] backdrop-blur-md">
                 <p className="text-sm font-medium text-[#6f2947]">Compra segura</p>
                 <p className="mt-1 text-sm text-neutral-600">
-                  Pagamento protegido e experiência simples no checkout.
+                  Pagamento protegido e checkout simples.
                 </p>
               </div>
 
@@ -99,15 +98,20 @@ const Home: React.FC = () => {
             <div className="absolute -bottom-10 right-0 hidden h-44 w-44 rounded-full bg-[#e7c9a5]/18 blur-3xl md:block" />
 
             <div className="relative overflow-hidden rounded-[2rem] border border-[#8f355d]/10 bg-white/70 p-3 shadow-[0_24px_80px_rgba(100,33,62,0.14)] backdrop-blur-xl">
-              <div className="grid gap-3 lg:grid-cols-[0.95fr_1.05fr]">
-                <div className="relative min-h-[440px] overflow-hidden rounded-[1.6rem] border border-[#8f355d]/10 bg-[linear-gradient(180deg,rgba(143,53,93,0.10),rgba(54,16,34,0.82)),radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_30%)]">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_18%,rgba(255,255,255,0.16),transparent_18%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(48,13,30,0.72))]" />
+              <div className="grid gap-3 lg:grid-cols-[0.92fr_1.08fr]">
+                <div className="relative min-h-[440px] overflow-hidden rounded-[1.6rem] border border-[#8f355d]/10">
+                  <img
+                    src={featuredProducts[0]?.image}
+                    alt={featuredProducts[0]?.name}
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,16,0.08),rgba(48,13,30,0.78))]" />
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-white/70">
-                      Compra com confiança
+                      Mais desejado
                     </span>
-                    <p className="mt-4 max-w-xs text-2xl font-semibold leading-tight text-white">
-                      Discrição, desejo e uma experiência feita para comprar sem hesitação.
+                    <p className="mt-4 max-w-xs font-serif text-3xl font-semibold leading-tight text-white">
+                      Produtos escolhidos para comprar com mais confiança e menos hesitação.
                     </p>
                   </div>
                 </div>
@@ -117,8 +121,8 @@ const Home: React.FC = () => {
                     <span className="text-[10px] uppercase tracking-[0.3em] text-[#a55b7d]">
                       Curadoria
                     </span>
-                    <h2 className="mt-3 text-2xl font-semibold leading-tight text-[#6f2947]">
-                      Produtos escolhidos para despertar desejo com mais conforto e confiança.
+                    <h2 className="mt-3 font-serif text-3xl font-semibold leading-tight text-[#6f2947]">
+                      Desejo, conforto e uma experiência feita para converter.
                     </h2>
                     <p className="mt-4 text-sm leading-7 text-neutral-700">
                       Uma seleção premium com linguagem visual elegante, navegação simples e foco
@@ -184,7 +188,7 @@ const Home: React.FC = () => {
             <span className="inline-block rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-white/60">
               Mais procurados
             </span>
-            <h2 className="mt-5 text-3xl font-semibold leading-tight md:text-5xl">
+            <h2 className="mt-5 font-serif text-4xl font-semibold leading-tight md:text-6xl">
               Descubra os produtos que estão a gerar mais desejo.
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/70">
@@ -194,24 +198,20 @@ const Home: React.FC = () => {
           </div>
 
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {featuredProducts.map((product, index) => (
+            {featuredProducts.map((product) => (
               <Link
                 key={product.id}
                 to={`/produto/${product.slug}`}
                 className="group overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/[0.04] transition duration-300 hover:-translate-y-1 hover:bg-white/[0.07]"
               >
-                <div
-                  className={`relative flex aspect-[4/5] items-end overflow-hidden p-6 ${
-                    index % 4 === 0
-                      ? 'bg-gradient-to-br from-[#a63f68]/30 via-[#1f0b16] to-[#12070d]'
-                      : index % 4 === 1
-                        ? 'bg-gradient-to-br from-[#d4b28a]/18 via-[#1f0b16] to-[#12070d]'
-                        : index % 4 === 2
-                          ? 'bg-gradient-to-br from-[#88456c]/22 via-[#1f0b16] to-[#12070d]'
-                          : 'bg-gradient-to-br from-[#c26b8d]/18 via-[#1f0b16] to-[#12070d]'
-                  }`}
-                >
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_30%)]" />
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,16,0.02),rgba(20,10,16,0.4))]" />
+
                   <div className="absolute left-4 top-4 flex flex-wrap gap-2">
                     {product.isNew ? (
                       <span className="rounded-full bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6f2947] shadow-[0_8px_20px_rgba(0,0,0,0.08)]">
@@ -224,20 +224,30 @@ const Home: React.FC = () => {
                       </span>
                     ) : null}
                   </div>
-
-                  <div className="relative">
-                    <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] uppercase tracking-[0.28em] text-white/60">
-                      {productCategories.find((category) => category.value === product.category)?.label ??
-                        product.category}
-                    </span>
-                    <h3 className="mt-4 text-2xl font-semibold leading-tight text-white">
-                      {product.name}
-                    </h3>
-                  </div>
                 </div>
 
                 <div className="p-6">
-                  <p className="text-sm leading-6 text-white/68">{product.shortDescription}</p>
+                  <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] uppercase tracking-[0.28em] text-white/60">
+                    {productCategories.find((category) => category.value === product.category)?.label ??
+                      product.category}
+                  </span>
+
+                  <h3 className="mt-4 font-serif text-2xl font-semibold leading-tight text-white">
+                    {product.name}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-6 text-white/68">{product.shortDescription}</p>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {product.tags.slice(0, 3).map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-white/55"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
 
                   <div className="mt-6 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
@@ -264,7 +274,7 @@ const Home: React.FC = () => {
           <div className="mt-10">
             <Link
               to="/loja"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3.5 text-sm font-medium text-white transition duration-300 hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-white transition duration-300 hover:bg-white/10"
             >
               Ver coleção completa
               <ArrowRight className="h-4 w-4" />
@@ -280,14 +290,14 @@ const Home: React.FC = () => {
               <span className="inline-block rounded-full border border-[#8f355d]/10 bg-white px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#9b5a79]">
                 Categorias em destaque
               </span>
-              <h2 className="mt-5 text-3xl font-semibold leading-tight text-[#6f2947] md:text-5xl">
+              <h2 className="mt-5 font-serif text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
                 Explore por categoria e encontre mais depressa o que procura.
               </h2>
             </div>
 
             <Link
               to="/loja"
-              className="inline-flex items-center gap-2 text-sm font-medium text-[#7a2f4f] transition hover:text-[#8f355d]"
+              className="inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] transition hover:text-[#8f355d]"
             >
               Ver tudo
               <ArrowRight className="h-4 w-4" />
@@ -299,7 +309,7 @@ const Home: React.FC = () => {
               <Link
                 key={category.value}
                 to="/loja"
-                className="group relative overflow-hidden rounded-[1.8rem] border border-[#8f355d]/10 p-6 transition duration-300 hover:-translate-y-1"
+                className="group relative overflow-hidden rounded-[1.8rem] border border-[#8f355d]/10 p-6 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_44px_rgba(143,53,93,0.08)]"
               >
                 <div
                   className={`absolute inset-0 ${
@@ -320,12 +330,14 @@ const Home: React.FC = () => {
                   </span>
 
                   <div>
-                    <h3 className="text-2xl font-semibold text-[#6f2947]">{category.label}</h3>
+                    <h3 className="font-serif text-3xl font-semibold text-[#6f2947]">
+                      {category.label}
+                    </h3>
                     <p className="mt-3 max-w-xs text-sm leading-6 text-neutral-700">
                       Descubra produtos pensados para diferentes estilos, desejos e ritmos.
                     </p>
 
-                    <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#7a2f4f]">
+                    <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.12em] text-[#7a2f4f]">
                       Explorar
                       <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </span>
@@ -350,7 +362,7 @@ const Home: React.FC = () => {
                 <span className="inline-block rounded-full border border-[#8f355d]/10 bg-white px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#9b5a79]">
                   Compra segura
                 </span>
-                <h2 className="mt-5 text-3xl font-semibold leading-tight text-[#6f2947] md:text-5xl">
+                <h2 className="mt-5 font-serif text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
                   Privacidade, confiança e uma experiência de compra sem fricção.
                 </h2>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-700">
@@ -362,7 +374,7 @@ const Home: React.FC = () => {
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Link
                   to="/loja"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#8f355d] px-6 py-3.5 text-sm font-medium text-white shadow-[0_14px_34px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#8f355d] px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52]"
                 >
                   Entrar na loja
                   <ArrowRight className="h-4 w-4" />
@@ -370,7 +382,7 @@ const Home: React.FC = () => {
 
                 <Link
                   to="/checkout"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-white px-6 py-3.5 text-sm font-medium text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-[#fff7fb]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-white px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-[#fff7fb]"
                 >
                   Ir para checkout
                 </Link>

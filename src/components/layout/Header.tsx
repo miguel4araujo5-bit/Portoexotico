@@ -22,7 +22,7 @@ const Header: React.FC = () => {
 
   const linkClassName = ({ isActive }: { isActive: boolean }) =>
     [
-      'relative text-sm font-medium tracking-[0.08em] transition-all duration-300',
+      'relative text-[13px] font-medium uppercase tracking-[0.22em] transition-all duration-300',
       isActive ? 'text-[#8f355d]' : 'text-neutral-800 hover:text-[#8f355d]',
     ].join(' ');
 
@@ -47,11 +47,11 @@ const Header: React.FC = () => {
             </div>
 
             <div className="min-w-0">
-              <span className="block truncate text-[1.6rem] font-light leading-none tracking-[0.01em] text-[#7a2f4f] sm:text-[1.9rem]">
+              <span className="block truncate font-serif text-[1.7rem] font-semibold leading-none tracking-[0.02em] text-[#7a2f4f] sm:text-[2rem]">
                 Porto Exótico
               </span>
-              <span className="mt-1 block truncate text-[10px] font-medium uppercase tracking-[0.42em] text-[#a55b7d] sm:text-[11px]">
-                Faça uma paragem no Porto Exótico
+              <span className="mt-1.5 block truncate text-[10px] font-medium uppercase tracking-[0.34em] text-[#a55b7d] sm:text-[11px]">
+                Discrição, desejo e elegância
               </span>
             </div>
           </Link>
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
           <div className="hidden items-center gap-3 lg:flex">
             <Link
               to="/carrinho"
-              className="inline-flex h-11 items-center justify-center rounded-full border border-[#8f355d]/15 bg-white px-5 text-sm font-medium text-[#7a2f4f] shadow-[0_8px_24px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/30 hover:bg-[#fff7fb] hover:shadow-[0_14px_30px_rgba(143,53,93,0.12)]"
+              className="inline-flex h-11 items-center justify-center rounded-full border border-[#8f355d]/15 bg-white px-5 text-[13px] font-medium uppercase tracking-[0.16em] text-[#7a2f4f] shadow-[0_8px_24px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/30 hover:bg-[#fff7fb] hover:shadow-[0_14px_30px_rgba(143,53,93,0.12)]"
             >
               <span className="inline-flex items-center gap-2">
                 <ShoppingBag className="h-4 w-4" />
@@ -87,7 +87,7 @@ const Header: React.FC = () => {
 
             <Link
               to="/loja"
-              className="inline-flex h-11 items-center justify-center rounded-full bg-[#8f355d] px-5 text-sm font-medium text-white shadow-[0_12px_28px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52] hover:shadow-[0_16px_34px_rgba(143,53,93,0.3)]"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-[#8f355d] px-5 text-[13px] font-medium uppercase tracking-[0.16em] text-white shadow-[0_12px_28px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52] hover:shadow-[0_16px_34px_rgba(143,53,93,0.3)]"
             >
               Explorar
             </Link>
@@ -123,7 +123,7 @@ const Header: React.FC = () => {
                   to={link.to}
                   className={({ isActive }) =>
                     [
-                      'rounded-2xl px-4 py-3 text-sm font-medium transition duration-300',
+                      'rounded-2xl px-4 py-3 text-sm font-medium uppercase tracking-[0.18em] transition duration-300',
                       isActive
                         ? 'bg-[#8f355d] text-white shadow-[0_12px_26px_rgba(143,53,93,0.22)]'
                         : 'bg-white text-neutral-800 hover:bg-[#fff7fb] hover:text-[#8f355d]',
@@ -136,7 +136,7 @@ const Header: React.FC = () => {
 
               <Link
                 to="/loja"
-                className="mt-2 inline-flex items-center justify-center rounded-2xl bg-[#8f355d] px-4 py-3 text-sm font-medium text-white shadow-[0_12px_26px_rgba(143,53,93,0.22)] transition duration-300 hover:bg-[#7d2f52]"
+                className="mt-2 inline-flex items-center justify-center rounded-2xl bg-[#8f355d] px-4 py-3 text-sm font-medium uppercase tracking-[0.18em] text-white shadow-[0_12px_26px_rgba(143,53,93,0.22)] transition duration-300 hover:bg-[#7d2f52]"
               >
                 Explorar coleção
               </Link>

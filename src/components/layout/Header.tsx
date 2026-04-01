@@ -39,24 +39,25 @@ const Header: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-[#8f355d]/10 bg-[#fcf8fa]/90 backdrop-blur-xl">
       <div className="container-custom">
-        <div className="flex h-24 items-center justify-between gap-4">
-          <Link to="/" className="group flex min-w-0 items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#8f355d]/15 bg-white shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 group-hover:scale-[1.03] group-hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]">
-              <picture>
-                <source srcSet={logoSvgSrc} type="image/svg+xml" />
-                <img
-                  src={logoFallbackSrc}
-                  alt="Porto Exótico"
-                  className="h-7 w-7 object-contain"
-                />
-              </picture>
-            </div>
+        <div className="flex min-h-24 items-center justify-between gap-4 py-4">
+          <Link
+            to="/"
+            className="group flex min-w-0 items-center gap-4 rounded-full border border-[#8f355d]/12 bg-white/95 px-4 py-3 shadow-[0_14px_34px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_42px_rgba(143,53,93,0.14)] sm:px-5"
+          >
+            <picture className="shrink-0">
+              <source srcSet={logoSvgSrc} type="image/svg+xml" />
+              <img
+                src={logoFallbackSrc}
+                alt="Porto Exótico"
+                className="h-10 w-10 object-contain sm:h-11 sm:w-11"
+              />
+            </picture>
 
             <div className="min-w-0">
-              <span className="block truncate font-serif text-[1.7rem] font-semibold leading-none tracking-[0.02em] text-[#7a2f4f] sm:text-[2rem]">
+              <span className="block truncate font-serif text-[1.55rem] font-semibold leading-none tracking-[0.01em] text-[#7a2f4f] sm:text-[2rem]">
                 Porto Exótico
               </span>
-              <span className="mt-1.5 block truncate text-[10px] font-medium uppercase tracking-[0.34em] text-[#a55b7d] sm:text-[11px]">
+              <span className="mt-1.5 block truncate text-[9px] font-medium uppercase tracking-[0.34em] text-[#a55b7d] sm:text-[11px]">
                 Compra discreta e segura
               </span>
             </div>

@@ -170,26 +170,28 @@ const Checkout: React.FC = () => {
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-3">
                             {option.id === 'mbway' ? (
-                              <div className="inline-flex rounded-md bg-white p-1 shadow-sm">
+                              <div className="flex h-8 w-14 items-center justify-center rounded-md bg-white p-1 shadow-sm">
                                 <img
                                   src={logoSrc}
                                   alt={option.label}
-                                  className="block h-5 w-auto opacity-100"
+                                  className="max-h-6 w-auto object-contain opacity-100"
                                 />
                               </div>
                             ) : (
-                              <img
-                                src={logoSrc}
-                                alt={option.label}
-                                className="h-6 w-auto shrink-0 opacity-90"
-                              />
+                              <div className="flex h-8 w-14 items-center justify-center">
+                                <img
+                                  src={logoSrc}
+                                  alt={option.label}
+                                  className="max-h-7 w-auto shrink-0 object-contain opacity-95"
+                                />
+                              </div>
                             )}
 
                             <span className="text-base font-medium text-white">{option.label}</span>
 
                             <span
                               className={[
-                                'rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.25em]',
+                                'w-[120px] rounded-full border py-1 text-center text-[10px] uppercase tracking-[0.25em]',
                                 isSoon
                                   ? 'border-white/10 bg-white/5 text-amber-200/85'
                                   : 'border-white/10 bg-white/5 text-emerald-200/85',

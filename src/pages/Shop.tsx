@@ -1,13 +1,27 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Search, ShieldCheck, Truck, Lock } from 'lucide-react';
+import {
+  ChevronRight,
+  Search,
+  ShieldCheck,
+  Truck,
+  Lock,
+  Sparkles,
+  SlidersHorizontal,
+} from 'lucide-react';
 import { productCategories, products, type ProductCategory } from '../data/products';
 
-const fallbackImage =
-  'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80';
-
+const fallbackImage = '/produtos/Satisfyer.webp';
 const logoSvgSrc = '/favicon.svg';
 const logoFallbackSrc = '/favicon-96x96.png';
+
+const categoryDescriptions: Record<ProductCategory, string> = {
+  prazer: 'Seleção pensada para prazer, intensidade e uma experiência mais premium.',
+  acessorios: 'Complementos íntimos para explorar novas dinâmicas com confiança e discrição.',
+  lubrificantes: 'Texturas e sensações que elevam conforto, fluidez e experiência sensorial.',
+  preservativos: 'Proteção com foco em conforto, segurança e uma experiência mais envolvente.',
+  excitacao: 'Soluções para intensificar, prolongar e tornar cada momento mais memorável.',
+};
 
 const Shop: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'all'>('all');
@@ -36,6 +50,11 @@ const Shop: React.FC = () => {
       : productCategories.find((category) => category.value === selectedCategory)?.label ??
         'Coleção';
 
+  const selectedCategoryDescription =
+    selectedCategory === 'all'
+      ? 'Descubra uma seleção premium pensada para diferentes preferências, ritmos e intenções de compra.'
+      : categoryDescriptions[selectedCategory];
+
   return (
     <main className="bg-[#fcf8fa] text-neutral-900">
       <section className="relative overflow-hidden border-b border-[#8f355d]/10">
@@ -45,12 +64,12 @@ const Shop: React.FC = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(143,53,93,0.06),transparent_42%),linear-gradient(180deg,rgba(252,248,250,0.94),rgba(252,248,250,0.98))]" />
         </div>
 
-        <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6 py-16 md:px-10 md:py-20">
-          <div className="relative max-w-4xl">
+        <div className="container-custom relative grid gap-10 py-16 md:py-20 lg:grid-cols-[1.02fr_0.98fr] lg:items-end">
+          <div className="max-w-4xl">
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 to="/"
-                className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white/90 px-4 py-3 shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]"
+                className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white/95 px-4 py-3 shadow-[0_14px_38px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_46px_rgba(143,53,93,0.14)]"
               >
                 <picture>
                   <source srcSet={logoSvgSrc} type="image/svg+xml" />
@@ -62,146 +81,205 @@ const Shop: React.FC = () => {
                 </picture>
 
                 <div className="min-w-0">
-                  <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
+                  <span className="block font-serif text-lg font-semibold leading-none tracking-[0.01em] text-[#7a2f4f]">
                     Porto Exótico
                   </span>
-                  <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
+                  <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.32em] text-[#a55b7d]">
                     Compra discreta e segura
                   </span>
                 </div>
               </Link>
 
               <div className="inline-flex items-center gap-2 rounded-full border border-[#8f355d]/10 bg-white/80 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-[#9b5a79] shadow-[0_10px_30px_rgba(143,53,93,0.06)]">
-                Loja Porto Exótico
+                <Sparkles className="h-4 w-4" />
+                Loja premium
               </div>
             </div>
 
-            <h1 className="mt-6 text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
-              Descubra uma coleção pensada para comprar com discrição, conforto e confiança.
+            <h1 className="mt-6 font-serif text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
+              Descubra a coleção com mais clareza, desejo e confiança na compra.
             </h1>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-neutral-700 md:text-lg">
-              Explore lingerie, acessórios, cosmética, artigos de prazer e kits selecionados para
-              quem valoriza privacidade, elegância e uma experiência de compra mais simples e
-              cuidada.
+              Explore produtos de prazer, acessórios, lubrificantes, preservativos e artigos de
+              excitação selecionados para quem valoriza discrição, elegância e uma experiência de
+              compra mais cuidada.
             </p>
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-emerald-700">
+                Checkout protegido
+              </span>
+              <span className="rounded-full border border-[#8f355d]/10 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-[#7a2f4f]">
+                Embalagem discreta
+              </span>
+              <span className="rounded-full border border-[#8f355d]/10 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-[#7a2f4f]">
+                Curadoria premium
+              </span>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-4 rounded-[2rem] border border-[#8f355d]/10 bg-white/80 p-4 shadow-[0_18px_50px_rgba(143,53,93,0.08)] backdrop-blur md:flex-row md:items-center md:justify-between">
-            <div className="relative w-full md:max-w-md">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a55b7d]" />
-              <input
-                type="text"
-                placeholder="Pesquisar por produto, categoria ou característica"
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] py-3 pl-11 pr-4 text-sm text-neutral-800 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
-              />
+          <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white/80 p-5 shadow-[0_18px_50px_rgba(143,53,93,0.08)] backdrop-blur-md">
+            <div className="flex items-start gap-3">
+              <div className="rounded-full border border-[#8f355d]/10 bg-[#fff7fb] p-3 text-[#8f355d]">
+                <SlidersHorizontal className="h-5 w-5" />
+              </div>
+
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.3em] text-[#a55b7d]">
+                  Compra orientada
+                </p>
+                <h2 className="mt-2 font-serif text-2xl font-semibold leading-tight text-[#6f2947]">
+                  Filtre, compare e encontre mais depressa o produto certo.
+                </h2>
+                <p className="mt-3 text-sm leading-7 text-neutral-700">
+                  A loja está organizada para facilitar descoberta, intenção e decisão de compra
+                  com mais discrição e menos ruído.
+                </p>
+              </div>
             </div>
 
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={() => setSelectedCategory('all')}
-                className={`rounded-full px-4 py-2 text-sm transition ${
-                  selectedCategory === 'all'
-                    ? 'bg-[#8f355d] text-white shadow-[0_12px_26px_rgba(143,53,93,0.22)]'
-                    : 'border border-[#8f355d]/10 bg-white text-[#7a2f4f] hover:bg-[#fff7fb]'
-                }`}
-              >
-                Todos
-              </button>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-[1.35rem] border border-[#8f355d]/10 bg-[#fffafb] p-4">
+                <p className="text-sm font-medium text-[#6f2947]">Discrição total</p>
+                <p className="mt-2 text-sm leading-6 text-neutral-600">
+                  Processo cuidado e comunicação reservada.
+                </p>
+              </div>
 
-              {productCategories.map((category) => (
+              <div className="rounded-[1.35rem] border border-[#8f355d]/10 bg-[#fffafb] p-4">
+                <p className="text-sm font-medium text-[#6f2947]">Visual premium</p>
+                <p className="mt-2 text-sm leading-6 text-neutral-600">
+                  Produtos apresentados com mais desejo e clareza.
+                </p>
+              </div>
+
+              <div className="rounded-[1.35rem] border border-[#8f355d]/10 bg-[#fffafb] p-4">
+                <p className="text-sm font-medium text-[#6f2947]">Escolha segura</p>
+                <p className="mt-2 text-sm leading-6 text-neutral-600">
+                  Navegação simples para comprar com confiança.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-2">
+            <div className="flex flex-col gap-4 rounded-[2rem] border border-[#8f355d]/10 bg-white/82 p-4 shadow-[0_18px_50px_rgba(143,53,93,0.08)] backdrop-blur md:flex-row md:items-center md:justify-between">
+              <div className="relative w-full md:max-w-md">
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a55b7d]" />
+                <input
+                  type="text"
+                  placeholder="Pesquisar por produto, característica ou categoria"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] py-3 pl-11 pr-4 text-sm text-neutral-800 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-3">
                 <button
-                  key={category.value}
                   type="button"
-                  onClick={() => setSelectedCategory(category.value)}
+                  onClick={() => setSelectedCategory('all')}
                   className={`rounded-full px-4 py-2 text-sm transition ${
-                    selectedCategory === category.value
+                    selectedCategory === 'all'
                       ? 'bg-[#8f355d] text-white shadow-[0_12px_26px_rgba(143,53,93,0.22)]'
                       : 'border border-[#8f355d]/10 bg-white text-[#7a2f4f] hover:bg-[#fff7fb]'
                   }`}
                 >
-                  {category.label}
+                  Todos
                 </button>
-              ))}
-            </div>
-          </div>
 
-          <div className="rounded-[1.7rem] border border-[#8f355d]/10 bg-white/80 p-4 shadow-[0_14px_34px_rgba(143,53,93,0.06)] backdrop-blur-md">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="text-[11px] uppercase tracking-[0.28em] text-[#a55b7d]">
-                  Pagamentos disponíveis
-                </p>
-                <p className="mt-2 text-sm leading-6 text-neutral-700">
-                  Soluções práticas, seguras e discretas para uma compra mais confortável do início
-                  ao fim.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                  <img
-                    src="/paypal.svg"
-                    alt="PayPal"
-                    className="h-[34px] w-auto object-contain"
-                  />
-                </div>
-
-                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                  <img
-                    src="/stripe.svg"
-                    alt="Stripe"
-                    className="h-[34px] w-auto object-contain"
-                  />
-                </div>
-
-                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                  <img
-                    src="/mbway.svg"
-                    alt="MB WAY"
-                    className="h-[30px] w-auto object-contain"
-                  />
-                </div>
+                {productCategories.map((category) => (
+                  <button
+                    key={category.value}
+                    type="button"
+                    onClick={() => setSelectedCategory(category.value)}
+                    className={`rounded-full px-4 py-2 text-sm transition ${
+                      selectedCategory === category.value
+                        ? 'bg-[#8f355d] text-white shadow-[0_12px_26px_rgba(143,53,93,0.22)]'
+                        : 'border border-[#8f355d]/10 bg-white text-[#7a2f4f] hover:bg-[#fff7fb]'
+                    }`}
+                  >
+                    {category.label}
+                  </button>
+                ))}
               </div>
             </div>
-          </div>
 
-          <div className="grid gap-3 md:grid-cols-3">
-            <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/80 p-4 shadow-[0_12px_28px_rgba(143,53,93,0.05)]">
-              <div className="flex items-start gap-3">
-                <Truck className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
+            <div className="mt-4 rounded-[1.7rem] border border-[#8f355d]/10 bg-white/82 p-4 shadow-[0_14px_34px_rgba(143,53,93,0.06)] backdrop-blur-md">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                  <p className="text-sm font-medium text-[#6f2947]">Envio discreto</p>
-                  <p className="mt-1 text-sm leading-6 text-neutral-600">
-                    Embalagem neutra e maior reserva em cada encomenda.
+                  <p className="text-[11px] uppercase tracking-[0.28em] text-[#a55b7d]">
+                    Pagamentos disponíveis
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-neutral-700">
+                    Soluções práticas, seguras e discretas para concluir a compra com mais
+                    conforto.
                   </p>
                 </div>
-              </div>
-            </div>
 
-            <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/80 p-4 shadow-[0_12px_28px_rgba(143,53,93,0.05)]">
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
-                <div>
-                  <p className="text-sm font-medium text-[#6f2947]">Compra segura</p>
-                  <p className="mt-1 text-sm leading-6 text-neutral-600">
-                    Um processo de compra simples, claro e pensado para gerar confiança.
-                  </p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                    <img
+                      src="/paypal.svg"
+                      alt="PayPal"
+                      className="h-[34px] w-auto object-contain"
+                    />
+                  </div>
+
+                  <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                    <img
+                      src="/stripe.svg"
+                      alt="Stripe"
+                      className="h-[34px] w-auto object-contain"
+                    />
+                  </div>
+
+                  <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                    <img
+                      src="/mbway.svg"
+                      alt="MB WAY"
+                      className="h-[30px] w-auto object-contain"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/80 p-4 shadow-[0_12px_28px_rgba(143,53,93,0.05)]">
-              <div className="flex items-start gap-3">
-                <Lock className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
-                <div>
-                  <p className="text-sm font-medium text-[#6f2947]">Privacidade garantida</p>
-                  <p className="mt-1 text-sm leading-6 text-neutral-600">
-                    Uma experiência reservada, confortável e cuidada do início ao fim.
-                  </p>
+            <div className="mt-4 grid gap-3 md:grid-cols-3">
+              <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/82 p-4 shadow-[0_12px_28px_rgba(143,53,93,0.05)]">
+                <div className="flex items-start gap-3">
+                  <Truck className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
+                  <div>
+                    <p className="text-sm font-medium text-[#6f2947]">Envio discreto</p>
+                    <p className="mt-1 text-sm leading-6 text-neutral-600">
+                      Embalagem neutra e maior reserva em cada encomenda.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/82 p-4 shadow-[0_12px_28px_rgba(143,53,93,0.05)]">
+                <div className="flex items-start gap-3">
+                  <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
+                  <div>
+                    <p className="text-sm font-medium text-[#6f2947]">Compra segura</p>
+                    <p className="mt-1 text-sm leading-6 text-neutral-600">
+                      Um processo simples, claro e pensado para gerar confiança.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/82 p-4 shadow-[0_12px_28px_rgba(143,53,93,0.05)]">
+                <div className="flex items-start gap-3">
+                  <Lock className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
+                  <div>
+                    <p className="text-sm font-medium text-[#6f2947]">Privacidade garantida</p>
+                    <p className="mt-1 text-sm leading-6 text-neutral-600">
+                      Uma experiência reservada, confortável e cuidada do início ao fim.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -209,16 +287,18 @@ const Shop: React.FC = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-12 md:px-10 md:py-16">
+      <section className="container-custom py-12 md:py-16">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.25em] text-[#a55b7d]">{selectedCategoryLabel}</p>
-            <h2 className="mt-2 text-2xl font-semibold text-[#6f2947] md:text-3xl">
+          <div className="max-w-3xl">
+            <p className="text-sm uppercase tracking-[0.25em] text-[#a55b7d]">
+              {selectedCategoryLabel}
+            </p>
+            <h2 className="mt-2 font-serif text-3xl font-semibold leading-tight text-[#6f2947] md:text-4xl">
               {filteredProducts.length} produto{filteredProducts.length === 1 ? '' : 's'} encontrado
               {filteredProducts.length === 1 ? '' : 's'}
             </h2>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-neutral-600">
-              Descubra uma seleção cuidada para diferentes preferências, momentos e estilos.
+            <p className="mt-3 text-sm leading-7 text-neutral-600">
+              {selectedCategoryDescription}
             </p>
           </div>
         </div>
@@ -240,16 +320,18 @@ const Shop: React.FC = () => {
                 </picture>
 
                 <div className="min-w-0 text-left">
-                  <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
+                  <span className="block font-serif text-lg font-semibold leading-none tracking-[0.01em] text-[#7a2f4f]">
                     Porto Exótico
                   </span>
-                  <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
+                  <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.32em] text-[#a55b7d]">
                     Compra discreta e segura
                   </span>
                 </div>
               </Link>
 
-              <h3 className="mt-8 text-xl font-medium text-[#6f2947]">Nenhum produto encontrado</h3>
+              <h3 className="mt-8 font-serif text-2xl font-semibold text-[#6f2947]">
+                Nenhum produto encontrado
+              </h3>
               <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-neutral-600">
                 Ajuste a pesquisa ou selecione outra categoria para descobrir opções mais adequadas.
               </p>
@@ -261,14 +343,14 @@ const Shop: React.FC = () => {
                     setSearch('');
                     setSelectedCategory('all');
                   }}
-                  className="inline-flex items-center justify-center rounded-full bg-[#8f355d] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#7d2f52]"
+                  className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#8f355d_0%,#a84f78_100%)] px-6 py-3 text-sm font-medium text-white transition duration-300 hover:-translate-y-0.5"
                 >
                   Limpar filtros
                 </button>
 
                 <Link
                   to="/"
-                  className="inline-flex items-center justify-center rounded-full border border-[#8f355d]/15 bg-white px-6 py-3 text-sm font-medium text-[#7a2f4f] transition hover:bg-[#fff7fb]"
+                  className="inline-flex items-center justify-center rounded-full border border-[#8f355d]/15 bg-white px-6 py-3 text-sm font-medium text-[#7a2f4f] transition duration-300 hover:bg-[#fff7fb]"
                 >
                   Voltar ao início
                 </Link>
@@ -285,7 +367,7 @@ const Shop: React.FC = () => {
               return (
                 <article
                   key={product.id}
-                  className="group overflow-hidden rounded-[28px] border border-[#8f355d]/10 bg-white transition duration-300 hover:-translate-y-1 hover:border-[#8f355d]/25 hover:shadow-[0_18px_44px_rgba(143,53,93,0.12)]"
+                  className="group overflow-hidden rounded-[30px] border border-[#8f355d]/10 bg-white transition duration-300 hover:-translate-y-1 hover:border-[#8f355d]/25 hover:shadow-[0_20px_50px_rgba(143,53,93,0.12)]"
                 >
                   <Link to={`/produto/${product.slug}`} className="block">
                     <div className="relative aspect-[4/5] overflow-hidden bg-[#f7eef2]">
@@ -295,7 +377,7 @@ const Shop: React.FC = () => {
                         className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       />
 
-                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,16,0.02),rgba(20,10,16,0.18))]" />
+                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,16,0.03),rgba(20,10,16,0.22))]" />
 
                       <div className="absolute left-4 top-4 flex flex-wrap gap-2">
                         {product.isNew ? (
@@ -318,12 +400,14 @@ const Shop: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="space-y-4 p-5">
+                    <div className="space-y-4 p-6">
                       <div>
                         <p className="text-xs uppercase tracking-[0.28em] text-[#a55b7d]">
                           {categoryLabel}
                         </p>
-                        <h3 className="mt-2 text-xl font-medium text-[#6f2947]">{product.name}</h3>
+                        <h3 className="mt-2 font-serif text-2xl font-semibold leading-tight text-[#6f2947]">
+                          {product.name}
+                        </h3>
                         <p className="mt-3 text-sm leading-6 text-neutral-600">
                           {product.shortDescription}
                         </p>

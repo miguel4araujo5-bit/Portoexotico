@@ -41,13 +41,13 @@ const Footer: React.FC = () => {
             </p>
 
             <div className="mt-4 flex flex-col gap-3">
-              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-14 items-center justify-center">
+              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-14 w-[112px] items-center justify-center rounded-[1rem] bg-white shadow-sm">
                     <img
                       src="/paypal.svg"
                       alt="PayPal"
-                      className="max-h-7 w-auto object-contain opacity-95"
+                      className="max-h-8 w-auto object-contain opacity-100"
                     />
                   </div>
                   <span className="text-sm text-white">PayPal</span>
@@ -58,13 +58,13 @@ const Footer: React.FC = () => {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-14 items-center justify-center">
+              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-14 w-[112px] items-center justify-center rounded-[1rem] bg-white shadow-sm">
                     <img
                       src="/stripe.svg"
                       alt="Stripe"
-                      className="max-h-7 w-auto object-contain opacity-95"
+                      className="max-h-8 w-auto object-contain opacity-100"
                     />
                   </div>
                   <span className="text-sm text-white">Stripe</span>
@@ -75,13 +75,13 @@ const Footer: React.FC = () => {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-14 items-center justify-center rounded-md bg-white p-1 shadow-sm">
+              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-14 w-[112px] items-center justify-center rounded-[1rem] bg-white shadow-sm">
                     <img
                       src="/mbway.svg"
                       alt="MB WAY"
-                      className="max-h-6 w-auto object-contain opacity-100"
+                      className="max-h-7 w-auto object-contain opacity-100"
                     />
                   </div>
                   <span className="text-sm text-white">MB WAY</span>

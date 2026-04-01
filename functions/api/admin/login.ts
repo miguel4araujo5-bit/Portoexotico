@@ -33,6 +33,18 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return badRequest('Credenciais inválidas');
   }
 
+  if (
+    !env.ADMIN_USERNAME ||
+    !env.ADMIN_PASSWORD_SALT ||
+    !env.ADMIN_PASSWORD_HASH ||
+    !env.ADMIN_SESSION_SECRET
+  ) {
+    return json(
+      { ok: false, error: 'Configuração de autenticação incompleta no servidor' },
+      { status: 500 }
+    );
+  }
+
   const ip = getClientIp(request);
 
   if (env.ADMIN_RATE_LIMIT_KV) {

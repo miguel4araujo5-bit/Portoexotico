@@ -37,9 +37,9 @@ export const products: Product[] = [
     slug: 'satisfyer',
     name: 'Satisfyer',
     category: 'prazer',
-    shortDescription: 'Estimulação elegante, intensa e discreta para uma experiência premium.',
+    shortDescription: 'Estimulação intensa, elegante e discreta para uma experiência premium.',
     description:
-      'Um dos modelos mais procurados para prazer feminino, pensado para proporcionar uma experiência sofisticada, confortável e intensa, com uma presença visual moderna e discreta.',
+      'Um dos modelos mais procurados para prazer feminino, pensado para proporcionar uma experiência sofisticada, confortável e envolvente. Combina um design moderno com uma utilização intuitiva, ideal para quem valoriza discrição, eficácia e uma apresentação cuidada.',
     price: 49.9,
     compareAtPrice: 59.9,
     tags: ['satisfyer', 'prazer feminino', 'premium', 'mais vendido'],
@@ -53,7 +53,7 @@ export const products: Product[] = [
     category: 'prazer',
     shortDescription: 'Um clássico poderoso para momentos mais intensos e envolventes.',
     description:
-      'Uma peça pensada para quem procura intensidade, presença e uma experiência sensorial marcante, combinando potência e conforto numa proposta muito procurada.',
+      'Uma escolha muito procurada por quem prefere intensidade e presença numa só peça. Foi pensada para proporcionar uma experiência marcante, confortável e simples de integrar na rotina íntima, com um perfil visual apelativo e fácil utilização.',
     price: 39.9,
     compareAtPrice: 49.9,
     tags: ['varinha', 'vibrador', 'intenso', 'clássico'],
@@ -66,7 +66,7 @@ export const products: Product[] = [
     category: 'prazer',
     shortDescription: 'Versão mais intensa e premium para uma experiência superior.',
     description:
-      'Uma evolução pensada para quem pretende mais potência, mais presença e uma sensação ainda mais envolvente, mantendo um posicionamento premium.',
+      'Uma evolução da versão clássica para quem procura mais potência, maior presença e uma sensação ainda mais envolvente. Mantém uma proposta premium, confortável e eficaz, orientada para quem não quer comprometer intensidade nem qualidade.',
     price: 59.9,
     compareAtPrice: 69.9,
     tags: ['varinha', 'pro', 'premium', 'prazer feminino'],
@@ -80,7 +80,7 @@ export const products: Product[] = [
     category: 'prazer',
     shortDescription: 'Design elegante e estimulação confortável para uso íntimo discreto.',
     description:
-      'Um vibrador pensado para unir conforto, discrição e prazer, ideal para quem procura uma peça versátil com uma apresentação cuidada.',
+      'Um vibrador pensado para unir conforto, discrição e prazer numa proposta versátil. Ideal para quem procura uma peça prática, com uma apresentação cuidada e uma utilização simples, tanto para descoberta como para uso regular.',
     price: 27.9,
     compareAtPrice: 34.9,
     tags: ['vibrador', 'feminino', 'discreto', 'elegante'],
@@ -94,7 +94,7 @@ export const products: Product[] = [
     category: 'prazer',
     shortDescription: 'Estimulação ousada com um visual moderno e provocador.',
     description:
-      'Uma proposta pensada para quem procura uma experiência mais intensa e irreverente, com um perfil visual forte e uma utilização envolvente.',
+      'Uma proposta pensada para quem procura uma experiência mais intensa e irreverente, com um perfil visual forte e uma utilização envolvente. Destaca-se pelo caráter moderno e pela forma como combina estética com prazer.',
     price: 34.9,
     compareAtPrice: 42.9,
     tags: ['ohmama', 'vibrador', 'intenso', 'moderno'],
@@ -107,7 +107,7 @@ export const products: Product[] = [
     category: 'prazer',
     shortDescription: 'Textura envolvente para uma experiência masculina mais intensa.',
     description:
-      'Uma peça íntima pensada para proporcionar uma experiência envolvente, prática e discreta, com foco em conforto e estimulação.',
+      'Uma peça íntima pensada para proporcionar uma experiência envolvente, prática e discreta, com foco em conforto e estimulação. A proposta é simples: oferecer uma sensação mais intensa com um formato compacto e uma utilização reservada.',
     price: 29.9,
     compareAtPrice: 36.9,
     tags: ['masculino', 'estimulação', 'prazer', 'discreto'],
@@ -118,9 +118,9 @@ export const products: Product[] = [
     slug: 'peineili',
     name: 'Peineili',
     category: 'prazer',
-    shortDescription: 'Peça íntima orientada para prazer direto e confortável.',
+    shortDescription: 'Peça íntima orientada para prazer direto, simples e confortável.',
     description:
-      'Um produto pensado para utilização íntima com foco em conforto, simplicidade e prazer, adequado para quem valoriza discrição e funcionalidade.',
+      'Um produto pensado para utilização íntima com foco em conforto, simplicidade e prazer. Adequado para quem valoriza discrição, funcionalidade e uma abordagem mais prática, sem abdicar de uma experiência envolvente.',
     price: 24.9,
     compareAtPrice: 31.9,
     tags: ['prazer', 'íntimo', 'discreto', 'estimulação'],
@@ -134,7 +134,7 @@ export const products: Product[] = [
     category: 'excitacao',
     shortDescription: 'Mais intensidade, controlo e estimulação em momentos a dois.',
     description:
-      'Um acessório pensado para reforçar a experiência íntima, promovendo maior intensidade e uma sensação mais envolvente de forma simples e discreta.',
+      'Um acessório pensado para reforçar a experiência íntima, promovendo maior intensidade e uma sensação mais envolvente de forma simples e discreta. Uma boa escolha para quem pretende explorar novas dinâmicas com confiança.',
     price: 14.9,
     compareAtPrice: 18.9,
     tags: ['anel', 'peniano', 'estimulação', 'casal'],
@@ -147,7 +147,7 @@ export const products: Product[] = [
     category: 'excitacao',
     shortDescription: 'Ajuda a prolongar o momento com maior controlo e confiança.',
     description:
-      'Uma solução prática para quem procura gerir melhor o ritmo da experiência íntima, reforçando a confiança e a duração do momento.',
+      'Uma solução prática para quem procura gerir melhor o ritmo da experiência íntima, reforçando a confiança e a duração do momento. Fácil de integrar e pensada para um uso mais simples, reservado e confortável.',
     price: 13.9,
     compareAtPrice: 17.9,
     tags: ['retardante', 'controlo', 'masculino', 'prazer'],
@@ -160,7 +160,7 @@ export const products: Product[] = [
     category: 'acessorios',
     shortDescription: 'Exploração ousada com conforto, estética e discrição.',
     description:
-      'Um acessório pensado para introduzir novas dinâmicas de forma cuidada, elegante e envolvente, ideal para quem procura variedade com confiança.',
+      'Um acessório pensado para introduzir novas dinâmicas de forma cuidada, elegante e envolvente. Ideal para quem procura variedade, fantasia e exploração com uma apresentação apelativa e maior sensação de confiança.',
     price: 19.9,
     compareAtPrice: 24.9,
     tags: ['bondage', 'algemas', 'fantasia', 'casal'],
@@ -173,7 +173,7 @@ export const products: Product[] = [
     category: 'acessorios',
     shortDescription: 'Um toque divertido e inesperado para apimentar o ambiente.',
     description:
-      'Um complemento irreverente para criar momentos mais leves, descontraídos e sensoriais, ideal para acrescentar surpresa à experiência.',
+      'Um complemento irreverente para criar momentos mais leves, descontraídos e sensoriais. Ideal para acrescentar surpresa, humor e provocação à experiência, seja a solo ou em casal.',
     price: 4.9,
     compareAtPrice: 6.9,
     tags: ['diversão', 'casal', 'acessório', 'surpresa'],
@@ -187,7 +187,7 @@ export const products: Product[] = [
     category: 'lubrificantes',
     shortDescription: 'Mais fluidez, conforto e um lado sensorial mais provocador.',
     description:
-      'Uma opção pensada para elevar a experiência íntima com maior conforto, melhor deslizamento e um toque divertido e sedutor.',
+      'Uma opção pensada para elevar a experiência íntima com maior conforto, melhor deslizamento e um toque divertido e sedutor. Muito procurado por quem quer juntar praticidade, sensação e um perfil mais sensorial.',
     price: 12.9,
     compareAtPrice: 15.9,
     tags: ['lubrificante', 'sabores', 'sensorial', 'casal'],
@@ -201,7 +201,7 @@ export const products: Product[] = [
     category: 'preservativos',
     shortDescription: 'Proteção com conforto e uma experiência mais estimulante.',
     description:
-      'Pensados para unir segurança, conforto e sensorialidade, tornando a experiência mais protegida sem abdicar do prazer.',
+      'Pensados para unir segurança, conforto e sensorialidade, tornando a experiência mais protegida sem abdicar do prazer. Uma escolha equilibrada para quem procura confiança, conforto e uma utilização mais agradável.',
     price: 8.9,
     compareAtPrice: 11.9,
     tags: ['preservativos', 'proteção', 'sensorial', 'casal'],

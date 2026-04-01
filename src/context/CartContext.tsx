@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import type { Product } from '../data/products';
 
 type CartItem = {
@@ -22,30 +29,114 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const CART_STORAGE_KEY = 'porto-exotico-cart';
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === 'undefined') {
+const isValidCartItem = (value: unknown): value is CartItem => {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const item = value as CartItem;
+
+  return (
+    typeof item.quantity === 'number' &&
+    Number.isFinite(item.quantity) &&
+    item.quantity > 0 &&
+    !!item.product &&
+    typeof item.product === 'object' &&
+    typeof item.product.id === 'string' &&
+    typeof item.product.name === 'string' &&
+    typeof item.product.slug === 'string' &&
+    typeof item.product.category === 'string' &&
+    typeof item.product.shortDescription === 'string' &&
+    typeof item.product.description === 'string' &&
+    typeof item.product.price === 'number' &&
+    Array.isArray(item.product.tags)
+  );
+};
+
+const normalizeCartItems = (value: unknown): CartItem[] => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const map = new Map<string, CartItem>();
+
+  for (const rawItem of value) {
+    if (!isValidCartItem(rawItem)) {
+      continue;
+    }
+
+    const safeQuantity = Math.max(1, Math.floor(rawItem.quantity));
+    const existing = map.get(rawItem.product.id);
+
+    if (existing) {
+      map.set(rawItem.product.id, {
+        ...existing,
+        quantity: existing.quantity + safeQuantity,
+      });
+    } else {
+      map.set(rawItem.product.id, {
+        product: rawItem.product,
+        quantity: safeQuantity,
+      });
+    }
+  }
+
+  return Array.from(map.values());
+};
+
+const readStoredCart = (): CartItem[] => {
+  if (typeof window === 'undefined') {
+    return [];
+  }
+
+  try {
+    const stored = window.localStorage.getItem(CART_STORAGE_KEY);
+
+    if (!stored) {
       return [];
     }
 
-    try {
-      const stored = window.localStorage.getItem(CART_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  });
+    return normalizeCartItems(JSON.parse(stored));
+  } catch {
+    return [];
+  }
+};
+
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [items, setItems] = useState<CartItem[]>(() => readStoredCart());
 
   useEffect(() => {
     if (typeof window === 'undefined') {
       return;
     }
 
-    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+    try {
+      window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+    } catch {}
   }, [items]);
 
-  const addToCart = (product: Product, quantity = 1) => {
-    const safeQuantity = Math.max(1, quantity);
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== CART_STORAGE_KEY) {
+        return;
+      }
+
+      setItems(readStoredCart());
+    };
+
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+    };
+  }, []);
+
+  const addToCart = useCallback((product: Product, quantity = 1) => {
+    const safeQuantity = Math.max(1, Math.floor(quantity));
 
     setItems((currentItems) => {
       const existingItem = currentItems.find((item) => item.product.id === product.id);
@@ -60,36 +151,43 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return [...currentItems, { product, quantity: safeQuantity }];
     });
-  };
+  }, []);
 
-  const removeFromCart = (productId: Product['id']) => {
+  const removeFromCart = useCallback((productId: Product['id']) => {
     setItems((currentItems) => currentItems.filter((item) => item.product.id !== productId));
-  };
+  }, []);
 
-  const updateQuantity = (productId: Product['id'], quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
-      return;
-    }
+  const updateQuantity = useCallback((productId: Product['id'], quantity: number) => {
+    const safeQuantity = Math.floor(quantity);
 
-    setItems((currentItems) =>
-      currentItems.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
+    setItems((currentItems) => {
+      if (safeQuantity <= 0) {
+        return currentItems.filter((item) => item.product.id !== productId);
+      }
 
-  const clearCart = () => {
+      return currentItems.map((item) =>
+        item.product.id === productId ? { ...item, quantity: safeQuantity } : item
+      );
+    });
+  }, []);
+
+  const clearCart = useCallback(() => {
     setItems([]);
-  };
+  }, []);
 
-  const isInCart = (productId: Product['id']) => {
-    return items.some((item) => item.product.id === productId);
-  };
+  const isInCart = useCallback(
+    (productId: Product['id']) => {
+      return items.some((item) => item.product.id === productId);
+    },
+    [items]
+  );
 
-  const getItemQuantity = (productId: Product['id']) => {
-    return items.find((item) => item.product.id === productId)?.quantity ?? 0;
-  };
+  const getItemQuantity = useCallback(
+    (productId: Product['id']) => {
+      return items.find((item) => item.product.id === productId)?.quantity ?? 0;
+    },
+    [items]
+  );
 
   const itemCount = useMemo(() => {
     return items.reduce((total, item) => total + item.quantity, 0);
@@ -111,7 +209,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       itemCount,
       subtotal,
     }),
-    [items, itemCount, subtotal]
+    [
+      items,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      isInCart,
+      getItemQuantity,
+      itemCount,
+      subtotal,
+    ]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

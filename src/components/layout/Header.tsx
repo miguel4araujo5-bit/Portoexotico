@@ -1,17 +1,24 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, ShoppingBag, X } from 'lucide-react';
+import { useCart } from '../../context/CartContext';
 
 const logoSvgSrc = '/favicon.svg';
 const logoFallbackSrc = '/favicon-96x96.png';
 
 const Header: React.FC = () => {
   const location = useLocation();
+  const { items } = useCart();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
+
+  const cartCount = useMemo(
+    () => items.reduce((total, item) => total + item.quantity, 0),
+    [items]
+  );
 
   const links = useMemo(
     () => [
@@ -50,7 +57,7 @@ const Header: React.FC = () => {
                 Porto Exótico
               </span>
               <span className="mt-1.5 block truncate text-[10px] font-medium uppercase tracking-[0.34em] text-[#a55b7d] sm:text-[11px]">
-                Discrição, desejo e elegância
+                Compra discreta e segura
               </span>
             </div>
           </Link>
@@ -76,29 +83,41 @@ const Header: React.FC = () => {
           <div className="hidden items-center gap-3 lg:flex">
             <Link
               to="/carrinho"
-              className="inline-flex h-11 items-center justify-center rounded-full border border-[#8f355d]/15 bg-white px-5 text-[13px] font-medium uppercase tracking-[0.16em] text-[#7a2f4f] shadow-[0_8px_24px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/30 hover:bg-[#fff7fb] hover:shadow-[0_14px_30px_rgba(143,53,93,0.12)]"
+              className="relative inline-flex h-11 items-center justify-center rounded-full border border-[#8f355d]/15 bg-white px-5 text-[13px] font-medium uppercase tracking-[0.16em] text-[#7a2f4f] shadow-[0_8px_24px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/30 hover:bg-[#fff7fb] hover:shadow-[0_14px_30px_rgba(143,53,93,0.12)]"
             >
               <span className="inline-flex items-center gap-2">
                 <ShoppingBag className="h-4 w-4" />
                 Carrinho
               </span>
+
+              {cartCount > 0 ? (
+                <span className="ml-3 inline-flex min-w-[1.6rem] items-center justify-center rounded-full bg-[#8f355d] px-2 py-1 text-[10px] font-semibold tracking-normal text-white">
+                  {cartCount}
+                </span>
+              ) : null}
             </Link>
 
             <Link
               to="/loja"
               className="inline-flex h-11 items-center justify-center rounded-full bg-[#8f355d] px-5 text-[13px] font-medium uppercase tracking-[0.16em] text-white shadow-[0_12px_28px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52] hover:shadow-[0_16px_34px_rgba(143,53,93,0.3)]"
             >
-              Explorar
+              Comprar agora
             </Link>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
             <Link
               to="/carrinho"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#8f355d]/15 bg-white text-[#7a2f4f] shadow-[0_8px_24px_rgba(143,53,93,0.08)] transition duration-300 hover:bg-[#fff7fb]"
+              className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#8f355d]/15 bg-white text-[#7a2f4f] shadow-[0_8px_24px_rgba(143,53,93,0.08)] transition duration-300 hover:bg-[#fff7fb]"
               aria-label="Abrir carrinho"
             >
               <ShoppingBag className="h-5 w-5" />
+
+              {cartCount > 0 ? (
+                <span className="absolute -right-1 -top-1 inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-[#8f355d] px-1.5 py-1 text-[10px] font-semibold leading-none text-white">
+                  {cartCount}
+                </span>
+              ) : null}
             </Link>
 
             <button
@@ -137,7 +156,7 @@ const Header: React.FC = () => {
                 to="/loja"
                 className="mt-2 inline-flex items-center justify-center rounded-2xl bg-[#8f355d] px-4 py-3 text-sm font-medium uppercase tracking-[0.18em] text-white shadow-[0_12px_26px_rgba(143,53,93,0.22)] transition duration-300 hover:bg-[#7d2f52]"
               >
-                Explorar coleção
+                Comprar agora
               </Link>
             </nav>
           </div>

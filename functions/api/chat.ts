@@ -1,3 +1,5 @@
+import { buildChatKnowledge, chatContext, type ChatContext } from '../../src/data/chatContext';
+
 type ChatRole = 'user' | 'assistant';
 
 type ChatMessage = {
@@ -73,45 +75,48 @@ function sanitizeHistory(history: unknown): Array<{ role: ChatRole; content: str
     .slice(-8);
 }
 
-function buildSystemPrompt(env: ChatEnv) {
-  const storeName = sanitizeText(env.CHATBOT_STORE_NAME, 120) || 'Porto Exótico';
+function buildResolvedContext(env: ChatEnv): ChatContext {
+  const storeName = sanitizeText(env.CHATBOT_STORE_NAME, 120);
   const supportEmail = sanitizeText(env.CHATBOT_SUPPORT_EMAIL, 200);
   const supportWhatsApp = sanitizeText(env.CHATBOT_SUPPORT_WHATSAPP, 80);
-  const shippingSummary =
-    sanitizeText(env.CHATBOT_SHIPPING_SUMMARY, 1000) ||
-    'Os envios são feitos após confirmação do pagamento. Os prazos e custos podem variar consoante a transportadora, destino e disponibilidade do produto.';
-  const paymentSummary =
-    sanitizeText(env.CHATBOT_PAYMENT_SUMMARY, 1000) ||
-    'Os métodos de pagamento disponíveis dependem do checkout ativo na loja. Nunca peças nem aceites dados completos de cartão no chat.';
-  const returnsSummary =
-    sanitizeText(env.CHATBOT_RETURNS_SUMMARY, 1000) ||
-    'Trocas, devoluções e exceções devem respeitar a política da loja e a legislação aplicável aos artigos vendidos.';
-  const packagingSummary =
-    sanitizeText(env.CHATBOT_PACKAGING_SUMMARY, 1000) ||
-    'A comunicação deve ser discreta, profissional e respeitosa. Quando existir embalagem discreta, explica isso de forma objetiva.';
+  const shippingSummary = sanitizeText(env.CHATBOT_SHIPPING_SUMMARY, 1000);
+  const paymentSummary = sanitizeText(env.CHATBOT_PAYMENT_SUMMARY, 1000);
+  const returnsSummary = sanitizeText(env.CHATBOT_RETURNS_SUMMARY, 1000);
+  const packagingSummary = sanitizeText(env.CHATBOT_PACKAGING_SUMMARY, 1000);
   const extraContext = sanitizeText(env.CHATBOT_EXTRA_CONTEXT, 2000);
 
+  return {
+    ...chatContext,
+    storeName: storeName || chatContext.storeName,
+    supportEmail: supportEmail || chatContext.supportEmail,
+    supportWhatsApp: supportWhatsApp || chatContext.supportWhatsApp,
+    shippingSummary: shippingSummary || chatContext.shippingSummary,
+    paymentSummary: paymentSummary || chatContext.paymentSummary,
+    returnsSummary: returnsSummary || chatContext.returnsSummary,
+    packagingSummary: packagingSummary || chatContext.packagingSummary,
+    extraContext: extraContext || chatContext.extraContext,
+    faq: chatContext.faq
+  };
+}
+
+function buildSystemPrompt(env: ChatEnv) {
+  const context = buildResolvedContext(env);
+  const knowledge = buildChatKnowledge(context);
+
   return [
-    `És o assistente virtual da loja ${storeName}.`,
+    `És o assistente virtual da loja ${context.storeName}.`,
     'Responde sempre em português de Portugal.',
-    'O teu tom deve ser discreto, elegante, prestável e comercial sem ser agressivo.',
+    `O teu tom deve ser ${context.tone}.`,
+    `O teu público principal é: ${context.audience}.`,
     'Ajuda os clientes com produtos, categorias, envios, pagamentos, embalagem discreta, disponibilidade, encomendas e dúvidas gerais da loja.',
     'Nunca inventes preços, stock, promoções, prazos exatos, métodos de pagamento, ingredientes, materiais ou características técnicas que não tenham sido confirmados.',
     'Quando não souberes uma resposta específica, diz claramente que precisas de confirmação humana e orienta para contacto direto.',
     'Nunca peças dados completos de cartão, IBAN, passwords, códigos de autenticação ou documentos pessoais no chat.',
     'Quando o cliente pedir aconselhamento de produto, dá sugestões gerais e seguras com base no contexto dado, sem linguagem explícita desnecessária.',
-    `Envios: ${shippingSummary}`,
-    `Pagamentos: ${paymentSummary}`,
-    `Trocas e devoluções: ${returnsSummary}`,
-    `Discrição e embalagem: ${packagingSummary}`,
-    supportEmail ? `Email de apoio: ${supportEmail}` : '',
-    supportWhatsApp ? `WhatsApp de apoio: ${supportWhatsApp}` : '',
-    extraContext ? `Contexto adicional da loja: ${extraContext}` : '',
     'Mantém as respostas curtas a médias, claras e úteis.',
-    'Sempre que fizer sentido, termina com um próximo passo simples.'
-  ]
-    .filter(Boolean)
-    .join('\n');
+    'Sempre que fizer sentido, termina com um próximo passo simples.',
+    `Base de conhecimento da loja:\n\n${knowledge}`
+  ].join('\n\n');
 }
 
 function extractReply(result: unknown) {

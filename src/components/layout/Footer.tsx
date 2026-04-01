@@ -3,49 +3,69 @@ import { Link } from 'react-router-dom';
 
 const logoSvgSrc = '/favicon.svg';
 const logoFallbackSrc = '/favicon-96x96.png';
+const supportEmail = 'portoexotico@gmail.com';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="border-t border-white/10 bg-neutral-950">
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-10 md:px-10 lg:flex-row lg:items-start lg:justify-between">
-        <div className="max-w-xl">
+    <footer className="relative overflow-hidden border-t border-[#8f355d]/10 bg-[#1f0c16] text-white">
+      <div className="absolute inset-0">
+        <div className="absolute left-[-10%] top-[-12%] h-64 w-64 rounded-full bg-[#b24d79]/12 blur-3xl" />
+        <div className="absolute bottom-[-18%] right-[-8%] h-56 w-56 rounded-full bg-[#e7c9a5]/10 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_28%),linear-gradient(180deg,rgba(31,12,22,0.94),rgba(23,8,16,0.98))]" />
+      </div>
+
+      <div className="relative mx-auto flex max-w-7xl flex-col gap-10 px-6 py-12 md:px-10 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
+        <div className="max-w-2xl">
           <Link
             to="/"
-            className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/15 bg-white px-4 py-3 shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]"
+            className="inline-flex items-center gap-4 rounded-full border border-white/10 bg-white/95 px-4 py-3 shadow-[0_16px_40px_rgba(143,53,93,0.14)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_46px_rgba(143,53,93,0.2)]"
           >
             <picture>
               <source srcSet={logoSvgSrc} type="image/svg+xml" />
               <img
                 src={logoFallbackSrc}
                 alt="Porto Exótico"
-                className="h-8 w-8 object-contain"
+                className="h-9 w-9 object-contain"
               />
             </picture>
 
             <div className="min-w-0">
-              <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
+              <span className="block font-serif text-[1.15rem] font-semibold leading-none tracking-[0.01em] text-[#7a2f4f] sm:text-[1.35rem]">
                 Porto Exótico
               </span>
-              <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
+              <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.32em] text-[#a55b7d]">
                 Compra discreta e segura
               </span>
             </div>
           </Link>
 
-          <p className="mt-6 text-xs uppercase tracking-[0.3em] text-white/35">Porto Exótico</p>
-          <h2 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
-            Compra discreta, segura e pensada para o seu conforto.
+          <p className="mt-7 text-[11px] uppercase tracking-[0.32em] text-white/35">Porto Exótico</p>
+          <h2 className="mt-3 max-w-xl font-serif text-3xl font-semibold leading-tight text-white md:text-4xl">
+            Uma experiência mais premium, reservada e criada para comprar com confiança.
           </h2>
-          <p className="mt-4 text-sm leading-7 text-white/60">
-            Boutique íntima online com uma seleção cuidada, navegação simples e uma experiência de
-            compra mais elegante, reservada e confiante do início ao fim.
+          <p className="mt-5 max-w-xl text-sm leading-7 text-white/62 md:text-[15px]">
+            Boutique íntima online com uma seleção cuidada, apresentação elegante e uma navegação
+            pensada para privacidade, conforto e discrição do primeiro clique ao checkout.
           </p>
+
+          <div className="mt-6 flex flex-wrap gap-2">
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-white/65">
+              Envio discreto
+            </span>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-white/65">
+              Compra segura
+            </span>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-white/65">
+              Curadoria premium
+            </span>
+          </div>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:min-w-[520px]">
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-white/35">Navegação</p>
-            <div className="mt-4 flex flex-col gap-3 text-sm text-white/65">
+        <div className="grid gap-8 sm:grid-cols-2 lg:min-w-[560px] lg:gap-10">
+          <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_16px_40px_rgba(0,0,0,0.12)] backdrop-blur-md">
+            <p className="text-[11px] uppercase tracking-[0.32em] text-white/35">Navegação</p>
+
+            <div className="mt-5 flex flex-col gap-3 text-sm text-white/68">
               <Link to="/" className="transition hover:text-white">
                 Início
               </Link>
@@ -65,20 +85,30 @@ const Footer: React.FC = () => {
                 Checkout
               </Link>
             </div>
+
+            <div className="mt-6 rounded-[1.3rem] border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-[10px] uppercase tracking-[0.28em] text-white/35">Email</p>
+              <a
+                href={`mailto:${supportEmail}`}
+                className="mt-2 block text-sm text-white/72 transition hover:text-white"
+              >
+                {supportEmail}
+              </a>
+            </div>
           </div>
 
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-white/35">
+          <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_16px_40px_rgba(0,0,0,0.12)] backdrop-blur-md">
+            <p className="text-[11px] uppercase tracking-[0.32em] text-white/35">
               Pagamentos disponíveis
             </p>
 
-            <div className="mt-4 space-y-2.5">
+            <div className="mt-5 space-y-3">
               <div className="grid grid-cols-[60px_minmax(0,1fr)_118px] items-center gap-3 rounded-[1.35rem] border border-white/10 bg-white/[0.03] px-3 py-2.5 transition hover:border-white/15 hover:bg-white/[0.05]">
                 <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
                   <img
                     src="/paypal.svg"
                     alt="PayPal"
-                    className="h-[33px] w-auto object-contain opacity-100"
+                    className="h-[33px] w-auto object-contain"
                   />
                 </div>
 
@@ -96,7 +126,7 @@ const Footer: React.FC = () => {
                   <img
                     src="/stripe.svg"
                     alt="Stripe"
-                    className="h-[33px] w-auto object-contain opacity-100"
+                    className="h-[33px] w-auto object-contain"
                   />
                 </div>
 
@@ -114,7 +144,7 @@ const Footer: React.FC = () => {
                   <img
                     src="/mbway.svg"
                     alt="MB WAY"
-                    className="h-[30px] w-auto object-contain opacity-100"
+                    className="h-[30px] w-auto object-contain"
                   />
                 </div>
 
@@ -128,17 +158,17 @@ const Footer: React.FC = () => {
               </div>
             </div>
 
-            <p className="mt-4 text-sm leading-7 text-white/55">
-              Opções de pagamento práticas, seguras e ajustadas a uma compra mais discreta.
+            <p className="mt-5 text-sm leading-7 text-white/55">
+              Opções de pagamento pensadas para uma experiência mais simples, elegante e discreta.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-white/10">
+      <div className="relative border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-5 text-xs text-white/40 md:flex-row md:items-center md:justify-between md:px-10">
           <p>© 2026 Porto Exótico. Todos os direitos reservados.</p>
-          <p>Envio discreto. Checkout protegido. Privacidade em primeiro lugar.</p>
+          <p>Privacidade em primeiro lugar. Envio discreto. Checkout protegido.</p>
         </div>
       </div>
     </footer>

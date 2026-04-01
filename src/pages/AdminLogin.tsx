@@ -26,16 +26,31 @@ const AdminLogin: React.FC = () => {
         })
       });
 
-      const data = await response.json();
+      const contentType = response.headers.get('content-type') || '';
+      let data: any = null;
 
-      if (!response.ok || !data.ok) {
-        setError(data.error || 'Não foi possível iniciar sessão');
+      if (contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+
+        if (!response.ok) {
+          setError(`Servidor respondeu com erro ${response.status}`);
+          return;
+        }
+
+        setError('Resposta inválida do servidor');
+        return;
+      }
+
+      if (!response.ok || !data?.ok) {
+        setError(data?.error || `Falha no login (${response.status})`);
         return;
       }
 
       navigate('/admin/orders');
     } catch {
-      setError('Erro ao ligar ao servidor');
+      setError('Não foi possível contactar a API de administração');
     } finally {
       setIsSubmitting(false);
     }

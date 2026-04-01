@@ -8,15 +8,15 @@ const Footer: React.FC = () => {
         <div className="max-w-xl">
           <p className="text-xs uppercase tracking-[0.3em] text-white/35">Porto Exótico</p>
           <h2 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
-            Discrição, elegância e uma experiência pensada ao detalhe.
+            Compra discreta, segura e pensada para o seu conforto.
           </h2>
           <p className="mt-4 text-sm leading-7 text-white/60">
-            Boutique íntima online com navegação simples, checkout protegido e uma experiência
-            premium do início ao fim.
+            Boutique íntima online com uma seleção cuidada, navegação simples e uma experiência de
+            compra mais elegante, reservada e confiante do início ao fim.
           </p>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:min-w-[460px]">
+        <div className="grid gap-8 sm:grid-cols-2 lg:min-w-[520px]">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-white/35">Navegação</p>
             <div className="mt-4 flex flex-col gap-3 text-sm text-white/65">
@@ -25,6 +25,12 @@ const Footer: React.FC = () => {
               </Link>
               <Link to="/loja" className="transition hover:text-white">
                 Loja
+              </Link>
+              <Link to="/sobre" className="transition hover:text-white">
+                Sobre
+              </Link>
+              <Link to="/contactos" className="transition hover:text-white">
+                Contactos
               </Link>
               <Link to="/carrinho" className="transition hover:text-white">
                 Carrinho
@@ -97,7 +103,7 @@ const Footer: React.FC = () => {
             </div>
 
             <p className="mt-4 text-sm leading-7 text-white/55">
-              Pagamentos práticos, seguros e discretos para uma compra sem fricção.
+              Opções de pagamento práticas, seguras e ajustadas a uma compra mais discreta.
             </p>
           </div>
         </div>

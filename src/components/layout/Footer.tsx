@@ -41,28 +41,53 @@ const Footer: React.FC = () => {
             </p>
 
             <div className="mt-4 flex flex-col gap-3">
-              <div className="flex items-center gap-3">
-                <img src="/paypal.svg" alt="PayPal" className="h-5 w-auto opacity-90" />
-                <span className="text-sm text-white">PayPal</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-widest text-emerald-200/80">
+              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-14 items-center justify-center">
+                    <img
+                      src="/paypal.svg"
+                      alt="PayPal"
+                      className="max-h-7 w-auto object-contain opacity-95"
+                    />
+                  </div>
+                  <span className="text-sm text-white">PayPal</span>
+                </div>
+
+                <span className="w-[120px] rounded-full border border-white/10 bg-white/5 py-1 text-center text-[10px] uppercase tracking-[0.22em] text-emerald-200/80">
                   Disponível
                 </span>
               </div>
 
-              <div className="flex items-center gap-3">
-                <img src="/stripe.svg" alt="Stripe" className="h-5 w-auto opacity-90" />
-                <span className="text-sm text-white">Stripe</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-widest text-amber-200/80">
+              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-14 items-center justify-center">
+                    <img
+                      src="/stripe.svg"
+                      alt="Stripe"
+                      className="max-h-7 w-auto object-contain opacity-95"
+                    />
+                  </div>
+                  <span className="text-sm text-white">Stripe</span>
+                </div>
+
+                <span className="w-[120px] rounded-full border border-white/10 bg-white/5 py-1 text-center text-[10px] uppercase tracking-[0.22em] text-amber-200/80">
                   Brevemente
                 </span>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="inline-flex rounded-md bg-white p-1 shadow-sm">
-                  <img src="/mbway.svg" alt="MB WAY" className="block h-5 w-auto opacity-100" />
+              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-14 items-center justify-center rounded-md bg-white p-1 shadow-sm">
+                    <img
+                      src="/mbway.svg"
+                      alt="MB WAY"
+                      className="max-h-6 w-auto object-contain opacity-100"
+                    />
+                  </div>
+                  <span className="text-sm text-white">MB WAY</span>
                 </div>
-                <span className="text-sm text-white">MB WAY</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-widest text-amber-200/80">
+
+                <span className="w-[120px] rounded-full border border-white/10 bg-white/5 py-1 text-center text-[10px] uppercase tracking-[0.22em] text-amber-200/80">
                   Brevemente
                 </span>
               </div>

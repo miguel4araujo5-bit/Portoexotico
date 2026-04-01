@@ -1,12 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+const logoSvgSrc = '/favicon.svg';
+const logoFallbackSrc = '/favicon-96x96.png';
+
 const Footer: React.FC = () => {
   return (
     <footer className="border-t border-white/10 bg-neutral-950">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-10 md:px-10 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-xl">
-          <p className="text-xs uppercase tracking-[0.3em] text-white/35">Porto Exótico</p>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/15 bg-white px-4 py-3 shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]"
+          >
+            <picture>
+              <source srcSet={logoSvgSrc} type="image/svg+xml" />
+              <img
+                src={logoFallbackSrc}
+                alt="Porto Exótico"
+                className="h-8 w-8 object-contain"
+              />
+            </picture>
+
+            <div className="min-w-0">
+              <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
+                Porto Exótico
+              </span>
+              <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
+                Compra discreta e segura
+              </span>
+            </div>
+          </Link>
+
+          <p className="mt-6 text-xs uppercase tracking-[0.3em] text-white/35">Porto Exótico</p>
           <h2 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
             Compra discreta, segura e pensada para o seu conforto.
           </h2>

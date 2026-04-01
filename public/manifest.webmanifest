@@ -1,0 +1,22 @@
+{
+  "name": "Porto Exótico",
+  "short_name": "Porto Exótico",
+  "description": "Boutique íntima online com discrição, elegância e confiança.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#8f355d",
+  "theme_color": "#8f355d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

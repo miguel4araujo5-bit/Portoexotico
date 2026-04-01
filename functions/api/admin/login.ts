@@ -5,7 +5,7 @@ import {
   createSessionToken,
   getClientIp,
   json,
-  verifyPassword,
+  verifyAdminPassword,
   type Env
 } from '../../_utils/auth';
 
@@ -33,12 +33,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return badRequest('Credenciais inválidas');
   }
 
-  if (
-    !env.ADMIN_USERNAME ||
-    !env.ADMIN_PASSWORD_SALT ||
-    !env.ADMIN_PASSWORD_HASH ||
-    !env.ADMIN_SESSION_SECRET
-  ) {
+  if (!env.ADMIN_USERNAME || !env.ADMIN_SESSION_SECRET) {
     return json(
       { ok: false, error: 'Configuração de autenticação incompleta no servidor' },
       { status: 500 }
@@ -61,11 +56,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   }
 
   const usernameMatches = username === env.ADMIN_USERNAME;
-  const passwordMatches = await verifyPassword(
-    password,
-    env.ADMIN_PASSWORD_SALT,
-    env.ADMIN_PASSWORD_HASH
-  );
+  const passwordMatches = await verifyAdminPassword(password, env);
 
   if (!usernameMatches || !passwordMatches) {
     if (env.ADMIN_RATE_LIMIT_KV) {

@@ -41,12 +41,12 @@ const Footer: React.FC = () => {
             </p>
 
             <div className="mt-4 space-y-2.5">
-              <div className="grid grid-cols-[72px_minmax(0,1fr)_124px] items-center gap-4 rounded-[1.4rem] border border-white/10 bg-white/[0.03] px-3.5 py-3 transition hover:border-white/15 hover:bg-white/[0.05]">
-                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+              <div className="grid grid-cols-[60px_minmax(0,1fr)_118px] items-center gap-3 rounded-[1.35rem] border border-white/10 bg-white/[0.03] px-3 py-2.5 transition hover:border-white/15 hover:bg-white/[0.05]">
+                <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
                   <img
                     src="/paypal.svg"
                     alt="PayPal"
-                    className="max-h-6 w-auto object-contain opacity-100"
+                    className="h-[22px] w-auto object-contain opacity-100"
                   />
                 </div>
 
@@ -54,17 +54,17 @@ const Footer: React.FC = () => {
                   PayPal
                 </span>
 
-                <span className="inline-flex w-[124px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-emerald-200/80">
+                <span className="inline-flex w-[118px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-emerald-200/80">
                   Disponível
                 </span>
               </div>
 
-              <div className="grid grid-cols-[72px_minmax(0,1fr)_124px] items-center gap-4 rounded-[1.4rem] border border-white/10 bg-white/[0.03] px-3.5 py-3 transition hover:border-white/15 hover:bg-white/[0.05]">
-                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+              <div className="grid grid-cols-[60px_minmax(0,1fr)_118px] items-center gap-3 rounded-[1.35rem] border border-white/10 bg-white/[0.03] px-3 py-2.5 transition hover:border-white/15 hover:bg-white/[0.05]">
+                <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
                   <img
                     src="/stripe.svg"
                     alt="Stripe"
-                    className="max-h-6 w-auto object-contain opacity-100"
+                    className="h-[22px] w-auto object-contain opacity-100"
                   />
                 </div>
 
@@ -72,17 +72,17 @@ const Footer: React.FC = () => {
                   Stripe
                 </span>
 
-                <span className="inline-flex w-[124px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-amber-200/80">
+                <span className="inline-flex w-[118px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-amber-200/80">
                   Brevemente
                 </span>
               </div>
 
-              <div className="grid grid-cols-[72px_minmax(0,1fr)_124px] items-center gap-4 rounded-[1.4rem] border border-white/10 bg-white/[0.03] px-3.5 py-3 transition hover:border-white/15 hover:bg-white/[0.05]">
-                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+              <div className="grid grid-cols-[60px_minmax(0,1fr)_118px] items-center gap-3 rounded-[1.35rem] border border-white/10 bg-white/[0.03] px-3 py-2.5 transition hover:border-white/15 hover:bg-white/[0.05]">
+                <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
                   <img
                     src="/mbway.svg"
                     alt="MB WAY"
-                    className="max-h-5 w-auto object-contain opacity-100"
+                    className="h-[18px] w-auto object-contain opacity-100"
                   />
                 </div>
 
@@ -90,7 +90,7 @@ const Footer: React.FC = () => {
                   MB WAY
                 </span>
 
-                <span className="inline-flex w-[124px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-amber-200/80">
+                <span className="inline-flex w-[118px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-amber-200/80">
                   Brevemente
                 </span>
               </div>

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { MessageCircle, Send, X } from 'lucide-react';
 
 type ChatRole = 'user' | 'assistant';
@@ -22,6 +22,16 @@ const ChatWidget: React.FC = () => {
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    const openChat = () => setIsOpen(true);
+
+    window.addEventListener('portoexotico:open-chat', openChat);
+
+    return () => {
+      window.removeEventListener('portoexotico:open-chat', openChat);
+    };
+  }, []);
 
   const canSend = useMemo(() => input.trim().length > 0 && !isSending, [input, isSending]);
 
@@ -65,9 +75,7 @@ const ChatWidget: React.FC = () => {
         error?: string;
       };
 
-      const reply = data.reply;
-
-      if (!response.ok || !data.ok || typeof reply !== 'string' || !reply.trim()) {
+      if (!response.ok || !data.ok || !data.reply) {
         throw new Error(data.error || 'Não foi possível obter resposta');
       }
 
@@ -75,7 +83,7 @@ const ChatWidget: React.FC = () => {
         ...current,
         {
           role: 'assistant',
-          content: reply
+          content: data.reply
         }
       ]);
     } catch (error) {

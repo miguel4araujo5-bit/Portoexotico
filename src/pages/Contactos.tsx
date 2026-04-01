@@ -6,15 +6,19 @@ import {
   Instagram,
   Lock,
   Mail,
+  MapPin,
   MessageCircle,
   ShieldCheck,
   ShoppingBag,
 } from 'lucide-react';
 
-const supportEmail: string = '';
+const supportEmail: string = 'portoexotico@gmail.com';
 const supportWhatsApp: string = '';
 const instagramUrl: string = '';
 const instagramHandle: string = '';
+const locationLabel = 'São Mamede de Infesta';
+const mapEmbedSrc = 'https://www.google.com/maps?q=S%C3%A3o%20Mamede%20de%20Infesta&z=13&output=embed';
+const mapExternalUrl = 'https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Mamede%20de%20Infesta';
 
 const channels = [
   supportEmail
@@ -111,50 +115,90 @@ const Contactos: React.FC = () => {
       <section className="section-padding border-b border-[#8f355d]/10 bg-[#fffafb]">
         <div className="container-custom">
           <div className="grid gap-8 lg:grid-cols-[1fr_0.95fr]">
-            <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_20px_60px_rgba(143,53,93,0.06)] md:p-8">
-              <span className="inline-block rounded-full border border-[#8f355d]/10 bg-[#fffafb] px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#9b5a79]">
-                Canais oficiais
-              </span>
+            <div className="space-y-5">
+              <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_20px_60px_rgba(143,53,93,0.06)] md:p-8">
+                <span className="inline-block rounded-full border border-[#8f355d]/10 bg-[#fffafb] px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#9b5a79]">
+                  Canais oficiais
+                </span>
 
-              {channels.length > 0 ? (
-                <div className="mt-6 space-y-4">
-                  {channels.map((channel) => {
-                    const Icon = channel.icon;
+                {channels.length > 0 ? (
+                  <div className="mt-6 space-y-4">
+                    {channels.map((channel) => {
+                      const Icon = channel.icon;
 
-                    return (
-                      <a
-                        key={channel.label}
-                        href={channel.href}
-                        target={channel.label === 'Instagram' ? '_blank' : undefined}
-                        rel={channel.label === 'Instagram' ? 'noreferrer' : undefined}
-                        className="flex items-center justify-between gap-4 rounded-[1.5rem] border border-[#8f355d]/10 bg-[#fffafb] px-5 py-4 transition duration-300 hover:border-[#8f355d]/25 hover:bg-white"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#8f355d]/10 bg-white text-[#8f355d]">
-                            <Icon className="h-5 w-5" />
+                      return (
+                        <a
+                          key={channel.label}
+                          href={channel.href}
+                          target={channel.label === 'Instagram' ? '_blank' : undefined}
+                          rel={channel.label === 'Instagram' ? 'noreferrer' : undefined}
+                          className="flex items-center justify-between gap-4 rounded-[1.5rem] border border-[#8f355d]/10 bg-[#fffafb] px-5 py-4 transition duration-300 hover:border-[#8f355d]/25 hover:bg-white"
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#8f355d]/10 bg-white text-[#8f355d]">
+                              <Icon className="h-5 w-5" />
+                            </div>
+
+                            <div>
+                              <p className="text-sm font-medium text-[#6f2947]">{channel.label}</p>
+                              <p className="mt-1 text-sm text-neutral-600">{channel.value}</p>
+                            </div>
                           </div>
 
-                          <div>
-                            <p className="text-sm font-medium text-[#6f2947]">{channel.label}</p>
-                            <p className="mt-1 text-sm text-neutral-600">{channel.value}</p>
-                          </div>
-                        </div>
+                          <ArrowRight className="h-4 w-4 text-[#8f355d]" />
+                        </a>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="mt-6 rounded-[1.5rem] border border-dashed border-[#8f355d]/15 bg-[#fffafb] p-6">
+                    <p className="text-sm font-medium text-[#6f2947]">Canais de contacto a configurar</p>
+                    <p className="mt-3 max-w-2xl text-sm leading-7 text-neutral-600">
+                      Esta página já está preparada. Assim que adicionar o email, o WhatsApp ou o
+                      Instagram oficial no topo deste ficheiro, os canais passam a aparecer aqui
+                      automaticamente.
+                    </p>
+                  </div>
+                )}
+              </div>
 
-                        <ArrowRight className="h-4 w-4 text-[#8f355d]" />
-                      </a>
-                    );
-                  })}
+              <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_20px_60px_rgba(143,53,93,0.06)] md:p-8">
+                <div className="flex items-center gap-3">
+                  <MapPin className="h-5 w-5 text-[#8f355d]" />
+                  <h2 className="text-xl font-semibold text-[#6f2947]">Localização</h2>
                 </div>
-              ) : (
-                <div className="mt-6 rounded-[1.5rem] border border-dashed border-[#8f355d]/15 bg-[#fffafb] p-6">
-                  <p className="text-sm font-medium text-[#6f2947]">Canais de contacto a configurar</p>
-                  <p className="mt-3 max-w-2xl text-sm leading-7 text-neutral-600">
-                    Esta página já está preparada. Assim que adicionar o email, o WhatsApp ou o
-                    Instagram oficial no topo deste ficheiro, os canais passam a aparecer aqui
-                    automaticamente.
+
+                <p className="mt-4 text-sm leading-7 text-neutral-700">
+                  A Porto Exótico apresenta, para já, uma referência geográfica geral em{' '}
+                  {locationLabel}, sem divulgação de morada exata ou ponto físico de atendimento.
+                </p>
+
+                <div className="mt-6 overflow-hidden rounded-[1.6rem] border border-[#8f355d]/10 bg-[#fffafb]">
+                  <iframe
+                    src={mapEmbedSrc}
+                    title={`Mapa de ${locationLabel}`}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="h-[320px] w-full border-0"
+                  />
+                </div>
+
+                <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-sm leading-7 text-neutral-600">
+                    Mapa meramente indicativo da zona de São Mamede de Infesta.
                   </p>
+
+                  <a
+                    href={mapExternalUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-[#fffafb] px-5 py-3 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-white"
+                  >
+                    Abrir mapa
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
                 </div>
-              )}
+              </div>
             </div>
 
             <div className="space-y-5">

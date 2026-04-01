@@ -65,7 +65,9 @@ const ChatWidget: React.FC = () => {
         error?: string;
       };
 
-      if (!response.ok || !data.ok || !data.reply) {
+      const reply = data.reply;
+
+      if (!response.ok || !data.ok || typeof reply !== 'string' || !reply.trim()) {
         throw new Error(data.error || 'Não foi possível obter resposta');
       }
 
@@ -73,7 +75,7 @@ const ChatWidget: React.FC = () => {
         ...current,
         {
           role: 'assistant',
-          content: data.reply
+          content: reply
         }
       ]);
     } catch (error) {

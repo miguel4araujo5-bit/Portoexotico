@@ -12,13 +12,16 @@ import {
   ShoppingBag,
 } from 'lucide-react';
 
-const supportEmail: string = 'portoexotico@gmail.com';
-const supportWhatsApp: string = '';
-const instagramUrl: string = '';
-const instagramHandle: string = '';
+const supportEmail = 'portoexotico@gmail.com';
+const supportWhatsApp = '';
+const instagramUrl = '';
+const instagramHandle = '';
 const locationLabel = 'São Mamede de Infesta';
-const mapEmbedSrc = 'https://www.google.com/maps?q=S%C3%A3o%20Mamede%20de%20Infesta&z=13&output=embed';
-const mapExternalUrl = 'https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Mamede%20de%20Infesta';
+const mapEmbedSrc =
+  'https://www.google.com/maps?q=S%C3%A3o%20Mamede%20de%20Infesta&z=13&output=embed';
+const mapExternalUrl =
+  'https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Mamede%20de%20Infesta';
+const supportWhatsAppDigits = supportWhatsApp.replace(/\D/g, '');
 
 const channels = [
   supportEmail
@@ -33,7 +36,7 @@ const channels = [
     ? {
         label: 'WhatsApp',
         value: supportWhatsApp,
-        href: `https://wa.me/${supportWhatsApp.replace(/\D/g, '')}`,
+        href: `https://wa.me/${supportWhatsAppDigits}`,
         icon: MessageCircle,
       }
     : null,

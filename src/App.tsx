@@ -5,8 +5,8 @@ import Header from './components/layout/Header';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Product from './pages/Product';
-import ProductPage from './pages/ProductPage';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 import AdminLogin from './pages/AdminLogin';
 import AdminOrders from './pages/AdminOrders';
 import AdminRoute from './components/admin/AdminRoute';
@@ -44,8 +44,8 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/loja" element={<Shop />} />
         <Route path="/produto/:slug" element={<Product />} />
-        <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/carrinho" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route
           path="/admin/orders"
@@ -53,15 +53,6 @@ const App: React.FC = () => {
             <AdminRoute>
               <AdminOrders />
             </AdminRoute>
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
-            <PlaceholderPage
-              title="Checkout"
-              description="Entrega, faturação e pagamento com uma experiência simples e segura."
-            />
           }
         />
         <Route

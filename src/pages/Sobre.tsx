@@ -33,8 +33,9 @@ const About: React.FC = () => {
 
             <p className="mt-6 max-w-3xl text-base leading-8 text-neutral-700 md:text-lg">
               A Porto Exótico nasce com um objetivo claro: oferecer uma experiência de compra
-              íntima mais elegante, reservada e segura. Cada detalhe da loja foi pensado para
-              transmitir confiança, facilitar a escolha e valorizar a privacidade de quem compra.
+              íntima mais elegante, reservada e segura. Com base em São Mamede de Infesta, na área
+              do Porto, cada detalhe da loja foi pensado para transmitir confiança, facilitar a
+              escolha e valorizar a privacidade de quem compra.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-2">
@@ -96,7 +97,9 @@ const About: React.FC = () => {
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-700">
               Mais do que apresentar produtos, a Porto Exótico procura criar uma experiência mais
-              cuidada, mais confortável e mais respeitadora da privacidade de cada cliente.
+              cuidada, mais confortável e mais respeitadora da privacidade de cada cliente. A marca
+              está baseada em São Mamede de Infesta, na zona do Porto, com contacto disponível por
+              email e com contacto telefónico disponível em breve.
             </p>
           </div>
 

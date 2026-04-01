@@ -7,11 +7,13 @@ import {
   verifyPassword,
   type Env as AuthEnv
 } from '../functions/_utils/auth';
+import { handleChatRequest, type ChatEnv } from '../functions/api/chat';
 
-type WorkerEnv = AuthEnv & {
-  ASSETS: Fetcher;
-  ADMIN_PASSWORD?: string;
-};
+type WorkerEnv = AuthEnv &
+  ChatEnv & {
+    ASSETS: Fetcher;
+    ADMIN_PASSWORD?: string;
+  };
 
 type LoginBody = {
   username?: string;
@@ -22,6 +24,10 @@ const MAX_ATTEMPTS = 7;
 const WINDOW_SECONDS = 15 * 60;
 
 async function handleAdminLogin(request: Request, env: WorkerEnv) {
+  if (request.method !== 'POST') {
+    return json({ ok: false, error: 'Método não permitido' }, { status: 405 });
+  }
+
   let body: LoginBody;
 
   try {
@@ -119,11 +125,11 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === '/api/admin/login') {
-      return json({
-        ok: true,
-        test: 'worker is working',
-        method: request.method
-      });
+      return handleAdminLogin(request, env);
+    }
+
+    if (url.pathname === '/api/chat') {
+      return handleChatRequest(request, env);
     }
 
     return env.ASSETS.fetch(request);

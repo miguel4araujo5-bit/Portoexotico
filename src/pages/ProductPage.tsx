@@ -1,14 +1,18 @@
 import React, { useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ChevronRight, Heart, ShieldCheck, ShoppingBag, Truck } from 'lucide-react';
 import { products } from '../data/products';
+import { useCart } from '../context/CartContext';
 
 const fallbackImage =
   'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80';
 
 const ProductPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const product = products.find((item) => item.id === id);
+  const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const { addToCart, getItemQuantity } = useCart();
+
+  const product = products.find((item) => item.slug === slug);
 
   const relatedProducts = useMemo(() => {
     if (!product) return [];
@@ -51,9 +55,13 @@ const ProductPage: React.FC = () => {
   }
 
   const description =
-    'description' in product && typeof product.description === 'string' && product.description.trim().length > 0
+    'description' in product &&
+    typeof product.description === 'string' &&
+    product.description.trim().length > 0
       ? product.description
       : product.shortDescription;
+
+  const quantityInCart = getItemQuantity(product.id);
 
   const decreaseQuantity = () => {
     setQuantity((prev) => Math.max(1, prev - 1));
@@ -61,6 +69,15 @@ const ProductPage: React.FC = () => {
 
   const increaseQuantity = () => {
     setQuantity((prev) => prev + 1);
+  };
+
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+  };
+
+  const handleBuyNow = () => {
+    addToCart(product, quantity);
+    navigate('/checkout');
   };
 
   return (
@@ -73,7 +90,7 @@ const ProductPage: React.FC = () => {
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
             <Link to="/loja" className="transition hover:text-white">
-              Shop
+              Loja
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-white/75">{product.name}</span>
@@ -96,20 +113,26 @@ const ProductPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
                 <ShieldCheck className="h-5 w-5 text-white/80" />
-                <p className="mt-3 text-sm font-medium">Discrição garantida</p>
-                <p className="mt-1 text-sm text-white/55">Embalagem e envio discretos.</p>
+                <p className="mt-3 text-sm font-medium">Envio discreto</p>
+                <p className="mt-1 text-sm text-white/55">
+                  Embalagem neutra e sem referências exteriores.
+                </p>
               </div>
 
               <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
                 <Truck className="h-5 w-5 text-white/80" />
                 <p className="mt-3 text-sm font-medium">Entrega rápida</p>
-                <p className="mt-1 text-sm text-white/55">Processamento simples e seguro.</p>
+                <p className="mt-1 text-sm text-white/55">
+                  Processamento simples, cómodo e confidencial.
+                </p>
               </div>
 
               <div className="col-span-2 rounded-[1.5rem] border border-white/10 bg-white/5 p-4 sm:col-span-1">
                 <Heart className="h-5 w-5 text-white/80" />
-                <p className="mt-3 text-sm font-medium">Seleção cuidada</p>
-                <p className="mt-1 text-sm text-white/55">Produtos pensados para bem-estar e prazer.</p>
+                <p className="mt-3 text-sm font-medium">Escolha segura</p>
+                <p className="mt-1 text-sm text-white/55">
+                  Uma seleção premium pensada para comprar com confiança.
+                </p>
               </div>
             </div>
           </div>
@@ -126,19 +149,57 @@ const ProductPage: React.FC = () => {
                 {description}
               </p>
 
-              <div className="mt-8 flex items-end gap-3">
-                <span className="text-3xl font-semibold md:text-4xl">{product.price}€</span>
+              <div className="mt-8 flex flex-wrap items-end gap-x-3 gap-y-2">
+                <span className="text-3xl font-semibold md:text-4xl">
+                  {product.price.toFixed(2).replace('.', ',')} €
+                </span>
                 <span className="pb-1 text-sm text-white/45">IVA incluído</span>
               </div>
 
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-emerald-200">
+                  Compra segura
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-white/65">
+                  Envio discreto
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-white/65">
+                  Entrega rápida
+                </span>
+              </div>
+
               <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
-                <p className="text-sm font-medium text-white/88">Porque vais gostar deste produto</p>
+                <p className="text-sm font-medium text-white/88">Porque este produto vende bem</p>
                 <ul className="mt-3 space-y-2 text-sm leading-6 text-white/60">
-                  <li>Toque premium e apresentação elegante</li>
-                  <li>Ideal para explorar novas sensações com discrição</li>
-                  <li>Selecionado para uma experiência mais sofisticada</li>
+                  <li>Design elegante e apresentação mais discreta</li>
+                  <li>Ideal para oferecer ou explorar com mais confiança</li>
+                  <li>Boa escolha para quem procura conforto, estética e prazer</li>
                 </ul>
               </div>
+
+              <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/40">Envio</p>
+                    <p className="mt-2 text-sm text-white/80">Discreto e neutro</p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/40">Pagamento</p>
+                    <p className="mt-2 text-sm text-white/80">Seguro no checkout</p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/40">Experiência</p>
+                    <p className="mt-2 text-sm text-white/80">Simples e confidencial</p>
+                  </div>
+                </div>
+              </div>
+
+              {quantityInCart > 0 ? (
+                <div className="mt-6 rounded-[1.25rem] border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
+                  Já tens {quantityInCart} unidade{quantityInCart === 1 ? '' : 's'} deste produto no
+                  carrinho.
+                </div>
+              ) : null}
 
               <div className="mt-8 flex items-center gap-3">
                 <span className="text-sm text-white/60">Quantidade</span>
@@ -171,6 +232,7 @@ const ProductPage: React.FC = () => {
               <div className="mt-8 grid gap-3 sm:grid-cols-2">
                 <button
                   type="button"
+                  onClick={handleAddToCart}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition hover:scale-[1.02]"
                 >
                   <ShoppingBag className="h-4 w-4" />
@@ -179,11 +241,16 @@ const ProductPage: React.FC = () => {
 
                 <button
                   type="button"
+                  onClick={handleBuyNow}
                   className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-medium text-white transition hover:border-white/30 hover:bg-white/10"
                 >
                   Comprar agora
                 </button>
               </div>
+
+              <p className="mt-4 text-xs leading-6 text-white/45">
+                Compra discreta, checkout protegido e experiência pensada para total conforto.
+              </p>
 
               <div className="mt-8 border-t border-white/10 pt-6">
                 <div className="flex flex-wrap gap-2">
@@ -215,7 +282,7 @@ const ProductPage: React.FC = () => {
               <div>
                 <p className="text-xs uppercase tracking-[0.3em] text-white/45">Sugestões</p>
                 <h2 className="mt-3 text-2xl font-semibold md:text-3xl">
-                  Também te pode interessar
+                  Combina também com estes produtos
                 </h2>
               </div>
 
@@ -251,7 +318,9 @@ const ProductPage: React.FC = () => {
                     </p>
 
                     <div className="mt-5 flex items-center justify-between">
-                      <span className="text-lg font-semibold">{item.price}€</span>
+                      <span className="text-lg font-semibold">
+                        {item.price.toFixed(2).replace('.', ',')} €
+                      </span>
                       <span className="text-sm text-white/60 transition group-hover:text-white">
                         Ver produto
                       </span>

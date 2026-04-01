@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Footer: React.FC = () => {
   return (
     <footer className="border-t border-white/10 bg-neutral-950">
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-10 md:px-10 lg:flex-row lg:items-end lg:justify-between">
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-10 md:px-10 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-xl">
           <p className="text-xs uppercase tracking-[0.3em] text-white/35">Porto Exótico</p>
           <h2 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:min-w-[420px]">
+        <div className="grid gap-8 sm:grid-cols-2 lg:min-w-[460px]">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-white/35">Navegação</p>
             <div className="mt-4 flex flex-col gap-3 text-sm text-white/65">
@@ -40,54 +40,57 @@ const Footer: React.FC = () => {
               Pagamentos disponíveis
             </p>
 
-            <div className="mt-4 flex flex-col gap-3">
-              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-[112px] items-center justify-center rounded-[1rem] bg-white shadow-sm">
-                    <img
-                      src="/paypal.svg"
-                      alt="PayPal"
-                      className="max-h-8 w-auto object-contain opacity-100"
-                    />
-                  </div>
-                  <span className="text-sm text-white">PayPal</span>
+            <div className="mt-4 space-y-2.5">
+              <div className="grid grid-cols-[72px_minmax(0,1fr)_124px] items-center gap-4 rounded-[1.4rem] border border-white/10 bg-white/[0.03] px-3.5 py-3 transition hover:border-white/15 hover:bg-white/[0.05]">
+                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                  <img
+                    src="/paypal.svg"
+                    alt="PayPal"
+                    className="max-h-6 w-auto object-contain opacity-100"
+                  />
                 </div>
 
-                <span className="w-[120px] rounded-full border border-white/10 bg-white/5 py-1 text-center text-[10px] uppercase tracking-[0.22em] text-emerald-200/80">
+                <span className="whitespace-nowrap text-[15px] font-medium tracking-[0.01em] text-white">
+                  PayPal
+                </span>
+
+                <span className="inline-flex w-[124px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-emerald-200/80">
                   Disponível
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-[112px] items-center justify-center rounded-[1rem] bg-white shadow-sm">
-                    <img
-                      src="/stripe.svg"
-                      alt="Stripe"
-                      className="max-h-8 w-auto object-contain opacity-100"
-                    />
-                  </div>
-                  <span className="text-sm text-white">Stripe</span>
+              <div className="grid grid-cols-[72px_minmax(0,1fr)_124px] items-center gap-4 rounded-[1.4rem] border border-white/10 bg-white/[0.03] px-3.5 py-3 transition hover:border-white/15 hover:bg-white/[0.05]">
+                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                  <img
+                    src="/stripe.svg"
+                    alt="Stripe"
+                    className="max-h-6 w-auto object-contain opacity-100"
+                  />
                 </div>
 
-                <span className="w-[120px] rounded-full border border-white/10 bg-white/5 py-1 text-center text-[10px] uppercase tracking-[0.22em] text-amber-200/80">
+                <span className="whitespace-nowrap text-[15px] font-medium tracking-[0.01em] text-white">
+                  Stripe
+                </span>
+
+                <span className="inline-flex w-[124px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-amber-200/80">
                   Brevemente
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-[112px] items-center justify-center rounded-[1rem] bg-white shadow-sm">
-                    <img
-                      src="/mbway.svg"
-                      alt="MB WAY"
-                      className="max-h-7 w-auto object-contain opacity-100"
-                    />
-                  </div>
-                  <span className="text-sm text-white">MB WAY</span>
+              <div className="grid grid-cols-[72px_minmax(0,1fr)_124px] items-center gap-4 rounded-[1.4rem] border border-white/10 bg-white/[0.03] px-3.5 py-3 transition hover:border-white/15 hover:bg-white/[0.05]">
+                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                  <img
+                    src="/mbway.svg"
+                    alt="MB WAY"
+                    className="max-h-5 w-auto object-contain opacity-100"
+                  />
                 </div>
 
-                <span className="w-[120px] rounded-full border border-white/10 bg-white/5 py-1 text-center text-[10px] uppercase tracking-[0.22em] text-amber-200/80">
+                <span className="whitespace-nowrap text-[15px] font-medium tracking-[0.01em] text-white">
+                  MB WAY
+                </span>
+
+                <span className="inline-flex w-[124px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-amber-200/80">
                   Brevemente
                 </span>
               </div>

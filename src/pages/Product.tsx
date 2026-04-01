@@ -4,6 +4,9 @@ import { ArrowRight, Check, CreditCard, Lock, PackageCheck } from 'lucide-react'
 import { getProductBySlug, productCategories } from '../data/products';
 import { useCart } from '../context/CartContext';
 
+const logoSvgSrc = '/favicon.svg';
+const logoFallbackSrc = '/favicon-96x96.png';
+
 const Product: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const product = slug ? getProductBySlug(slug) : undefined;
@@ -13,7 +16,30 @@ const Product: React.FC = () => {
     return (
       <main className="min-h-screen bg-[#fcf8fa] px-6 py-16 text-neutral-900 md:px-10">
         <div className="mx-auto max-w-5xl">
-          <span className="inline-block rounded-full border border-[#8f355d]/10 bg-white px-4 py-1 text-xs uppercase tracking-[0.3em] text-[#9b5a79]">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/15 bg-white px-4 py-3 shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]"
+          >
+            <picture>
+              <source srcSet={logoSvgSrc} type="image/svg+xml" />
+              <img
+                src={logoFallbackSrc}
+                alt="Porto Exótico"
+                className="h-8 w-8 object-contain"
+              />
+            </picture>
+
+            <div className="min-w-0">
+              <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
+                Porto Exótico
+              </span>
+              <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
+                Compra discreta e segura
+              </span>
+            </div>
+          </Link>
+
+          <span className="mt-8 inline-block rounded-full border border-[#8f355d]/10 bg-white px-4 py-1 text-xs uppercase tracking-[0.3em] text-[#9b5a79]">
             Produto
           </span>
 
@@ -42,6 +68,7 @@ const Product: React.FC = () => {
 
   const quantityInCart = getItemQuantity(product.id);
   const alreadyInCart = isInCart(product.id);
+  const savings = product.compareAtPrice ? product.compareAtPrice - product.price : 0;
 
   return (
     <main className="min-h-screen bg-[#fcf8fa] px-6 py-16 text-neutral-900 md:px-10">
@@ -94,7 +121,30 @@ const Product: React.FC = () => {
         </section>
 
         <section className="flex flex-col justify-center">
-          <span className="inline-block w-fit rounded-full border border-[#8f355d]/10 bg-white px-4 py-1 text-xs uppercase tracking-[0.3em] text-[#9b5a79]">
+          <Link
+            to="/"
+            className="inline-flex w-fit items-center gap-3 rounded-full border border-[#8f355d]/15 bg-white px-4 py-3 shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]"
+          >
+            <picture>
+              <source srcSet={logoSvgSrc} type="image/svg+xml" />
+              <img
+                src={logoFallbackSrc}
+                alt="Porto Exótico"
+                className="h-8 w-8 object-contain"
+              />
+            </picture>
+
+            <div className="min-w-0">
+              <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
+                Porto Exótico
+              </span>
+              <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
+                Compra discreta e segura
+              </span>
+            </div>
+          </Link>
+
+          <span className="mt-6 inline-block w-fit rounded-full border border-[#8f355d]/10 bg-white px-4 py-1 text-xs uppercase tracking-[0.3em] text-[#9b5a79]">
             {categoryLabel}
           </span>
 
@@ -102,7 +152,7 @@ const Product: React.FC = () => {
             {product.name}
           </h1>
 
-          <div className="mt-6 flex items-center gap-3">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
             <span className="text-2xl font-semibold text-[#6f2947] md:text-3xl">
               {product.price.toFixed(2).replace('.', ',')} €
             </span>
@@ -110,6 +160,12 @@ const Product: React.FC = () => {
             {product.compareAtPrice ? (
               <span className="text-base text-neutral-400 line-through">
                 {product.compareAtPrice.toFixed(2).replace('.', ',')} €
+              </span>
+            ) : null}
+
+            {savings > 0 ? (
+              <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-emerald-700">
+                Poupa {savings.toFixed(2).replace('.', ',')} €
               </span>
             ) : null}
           </div>
@@ -157,6 +213,43 @@ const Product: React.FC = () => {
                 {tag}
               </span>
             ))}
+          </div>
+
+          <div className="mt-8 rounded-[1.6rem] border border-[#8f355d]/10 bg-white px-5 py-5 shadow-[0_12px_34px_rgba(143,53,93,0.06)]">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-[#a55b7d]">
+              Pagamentos disponíveis
+            </p>
+
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                <img
+                  src="/paypal.svg"
+                  alt="PayPal"
+                  className="h-[34px] w-auto object-contain"
+                />
+              </div>
+
+              <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                <img
+                  src="/stripe.svg"
+                  alt="Stripe"
+                  className="h-[34px] w-auto object-contain"
+                />
+              </div>
+
+              <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                <img
+                  src="/mbway.svg"
+                  alt="MB WAY"
+                  className="h-[30px] w-auto object-contain"
+                />
+              </div>
+            </div>
+
+            <p className="mt-4 text-sm leading-6 text-neutral-700">
+              Checkout protegido com opções de pagamento práticas, seguras e discretas para uma
+              compra mais confortável.
+            </p>
           </div>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">

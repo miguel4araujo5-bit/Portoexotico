@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import AgeGate from './components/common/AgeGate';
 import Header from './components/layout/Header';
@@ -32,6 +32,9 @@ const PlaceholderPage: React.FC<{ title: string; description?: string }> = ({
 };
 
 const App: React.FC = () => {
+  const location = useLocation();
+  const isAdminRoute = location.pathname === '/admin' || location.pathname.startsWith('/admin/');
+
   return (
     <>
       <Helmet>
@@ -42,7 +45,7 @@ const App: React.FC = () => {
         />
       </Helmet>
 
-      <Header />
+      {!isAdminRoute ? <Header /> : null}
       <AgeGate />
 
       <Routes>
@@ -73,7 +76,7 @@ const App: React.FC = () => {
         />
       </Routes>
 
-      <Footer />
+      {!isAdminRoute ? <Footer /> : null}
     </>
   );
 };

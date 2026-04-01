@@ -6,6 +6,9 @@ import { productCategories, products, type ProductCategory } from '../data/produ
 const fallbackImage =
   'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80';
 
+const logoSvgSrc = '/favicon.svg';
+const logoFallbackSrc = '/favicon-96x96.png';
+
 const Shop: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'all'>('all');
   const [search, setSearch] = useState('');
@@ -43,12 +46,37 @@ const Shop: React.FC = () => {
         </div>
 
         <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6 py-16 md:px-10 md:py-20">
-          <div className="relative max-w-3xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#8f355d]/10 bg-white/80 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-[#9b5a79] shadow-[0_10px_30px_rgba(143,53,93,0.06)]">
-              Loja Porto Exótico
+          <div className="relative max-w-4xl">
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white/90 px-4 py-3 shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]"
+              >
+                <picture>
+                  <source srcSet={logoSvgSrc} type="image/svg+xml" />
+                  <img
+                    src={logoFallbackSrc}
+                    alt="Porto Exótico"
+                    className="h-8 w-8 object-contain"
+                  />
+                </picture>
+
+                <div className="min-w-0">
+                  <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
+                    Porto Exótico
+                  </span>
+                  <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
+                    Compra discreta e segura
+                  </span>
+                </div>
+              </Link>
+
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#8f355d]/10 bg-white/80 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-[#9b5a79] shadow-[0_10px_30px_rgba(143,53,93,0.06)]">
+                Loja Porto Exótico
+              </div>
             </div>
 
-            <h1 className="text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
+            <h1 className="mt-6 text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
               Descubra uma coleção pensada para comprar com discrição, conforto e confiança.
             </h1>
 
@@ -98,6 +126,46 @@ const Shop: React.FC = () => {
                   {category.label}
                 </button>
               ))}
+            </div>
+          </div>
+
+          <div className="rounded-[1.7rem] border border-[#8f355d]/10 bg-white/80 p-4 shadow-[0_14px_34px_rgba(143,53,93,0.06)] backdrop-blur-md">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.28em] text-[#a55b7d]">
+                  Pagamentos disponíveis
+                </p>
+                <p className="mt-2 text-sm leading-6 text-neutral-700">
+                  Soluções práticas, seguras e discretas para uma compra mais confortável do início
+                  ao fim.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                  <img
+                    src="/paypal.svg"
+                    alt="PayPal"
+                    className="h-[34px] w-auto object-contain"
+                  />
+                </div>
+
+                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                  <img
+                    src="/stripe.svg"
+                    alt="Stripe"
+                    className="h-[34px] w-auto object-contain"
+                  />
+                </div>
+
+                <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                  <img
+                    src="/mbway.svg"
+                    alt="MB WAY"
+                    className="h-[30px] w-auto object-contain"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -157,10 +225,55 @@ const Shop: React.FC = () => {
 
         {filteredProducts.length === 0 ? (
           <div className="rounded-[2rem] border border-dashed border-[#8f355d]/15 bg-white px-6 py-14 text-center shadow-[0_18px_50px_rgba(143,53,93,0.05)]">
-            <h3 className="text-xl font-medium text-[#6f2947]">Nenhum produto encontrado</h3>
-            <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-neutral-600">
-              Ajuste a pesquisa ou selecione outra categoria para descobrir opções mais adequadas.
-            </p>
+            <div className="mx-auto flex max-w-xl flex-col items-center">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white px-4 py-3 shadow-[0_10px_30px_rgba(143,53,93,0.08)]"
+              >
+                <picture>
+                  <source srcSet={logoSvgSrc} type="image/svg+xml" />
+                  <img
+                    src={logoFallbackSrc}
+                    alt="Porto Exótico"
+                    className="h-8 w-8 object-contain"
+                  />
+                </picture>
+
+                <div className="min-w-0 text-left">
+                  <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
+                    Porto Exótico
+                  </span>
+                  <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
+                    Compra discreta e segura
+                  </span>
+                </div>
+              </Link>
+
+              <h3 className="mt-8 text-xl font-medium text-[#6f2947]">Nenhum produto encontrado</h3>
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-neutral-600">
+                Ajuste a pesquisa ou selecione outra categoria para descobrir opções mais adequadas.
+              </p>
+
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch('');
+                    setSelectedCategory('all');
+                  }}
+                  className="inline-flex items-center justify-center rounded-full bg-[#8f355d] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#7d2f52]"
+                >
+                  Limpar filtros
+                </button>
+
+                <Link
+                  to="/"
+                  className="inline-flex items-center justify-center rounded-full border border-[#8f355d]/15 bg-white px-6 py-3 text-sm font-medium text-[#7a2f4f] transition hover:bg-[#fff7fb]"
+                >
+                  Voltar ao início
+                </Link>
+              </div>
+            </div>
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
@@ -196,6 +309,12 @@ const Shop: React.FC = () => {
                             Best Seller
                           </span>
                         ) : null}
+                      </div>
+
+                      <div className="absolute bottom-4 left-4">
+                        <span className="rounded-full border border-white/15 bg-white/15 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-white backdrop-blur">
+                          Compra discreta
+                        </span>
                       </div>
                     </div>
 

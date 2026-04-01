@@ -43,6 +43,7 @@ const App: React.FC = () => {
       </Helmet>
 
       <Header />
+      <AgeGate />
 
       <Routes>
         <Route path="/" element={<Home />} />

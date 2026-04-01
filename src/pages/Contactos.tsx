@@ -22,6 +22,8 @@ const mapEmbedSrc =
 const mapExternalUrl =
   'https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Mamede%20de%20Infesta';
 const supportWhatsAppDigits = supportWhatsApp.replace(/\D/g, '');
+const logoSvgSrc = '/favicon.svg';
+const logoFallbackSrc = '/favicon-96x96.png';
 
 const channels = [
   supportEmail
@@ -67,10 +69,35 @@ const Contactos: React.FC = () => {
 
         <div className="container-custom relative py-16 md:py-20">
           <div className="max-w-4xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#8f355d]/10 bg-white/80 px-4 py-2 text-[11px] uppercase tracking-[0.32em] text-[#9b5a79] shadow-[0_10px_30px_rgba(143,53,93,0.06)]">
-              <MessageCircle className="h-4 w-4" />
-              Contactos
-            </span>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white/90 px-4 py-3 shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]"
+              >
+                <picture>
+                  <source srcSet={logoSvgSrc} type="image/svg+xml" />
+                  <img
+                    src={logoFallbackSrc}
+                    alt="Porto Exótico"
+                    className="h-8 w-8 object-contain"
+                  />
+                </picture>
+
+                <div className="min-w-0">
+                  <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
+                    Porto Exótico
+                  </span>
+                  <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
+                    Compra discreta e segura
+                  </span>
+                </div>
+              </Link>
+
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#8f355d]/10 bg-white/80 px-4 py-2 text-[11px] uppercase tracking-[0.32em] text-[#9b5a79] shadow-[0_10px_30px_rgba(143,53,93,0.06)]">
+                <MessageCircle className="h-4 w-4" />
+                Contactos
+              </span>
+            </div>
 
             <h1 className="mt-6 font-serif text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
               Apoio ao cliente com discrição, clareza e atenção.
@@ -241,9 +268,34 @@ const Contactos: React.FC = () => {
               </div>
 
               <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_20px_60px_rgba(143,53,93,0.06)] md:p-8">
-                <span className="inline-block rounded-full border border-[#8f355d]/10 bg-[#fffafb] px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#9b5a79]">
-                  Continue a explorar
-                </span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link
+                    to="/"
+                    className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white px-4 py-3 shadow-[0_10px_28px_rgba(143,53,93,0.08)]"
+                  >
+                    <picture>
+                      <source srcSet={logoSvgSrc} type="image/svg+xml" />
+                      <img
+                        src={logoFallbackSrc}
+                        alt="Porto Exótico"
+                        className="h-8 w-8 object-contain"
+                      />
+                    </picture>
+
+                    <div className="min-w-0">
+                      <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
+                        Porto Exótico
+                      </span>
+                      <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
+                        Compra discreta e segura
+                      </span>
+                    </div>
+                  </Link>
+
+                  <span className="inline-block rounded-full border border-[#8f355d]/10 bg-[#fffafb] px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#9b5a79]">
+                    Continue a explorar
+                  </span>
+                </div>
 
                 <h2 className="mt-5 font-serif text-3xl font-semibold leading-tight text-[#6f2947]">
                   Descubra a coleção com total discrição e confiança.

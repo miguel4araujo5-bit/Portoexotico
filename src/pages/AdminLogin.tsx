@@ -32,7 +32,7 @@ const AdminLogin: React.FC = () => {
       if (contentType.includes('application/json')) {
         data = await response.json();
       } else {
-        const text = await response.text();
+        await response.text();
 
         if (!response.ok) {
           setError(`Servidor respondeu com erro ${response.status}`);

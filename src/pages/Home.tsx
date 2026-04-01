@@ -1,6 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Lock, Sparkles, ShieldCheck, HeartHandshake } from 'lucide-react';
+import {
+  ArrowRight,
+  Lock,
+  Sparkles,
+  ShieldCheck,
+  HeartHandshake,
+  PackageCheck,
+  CreditCard,
+} from 'lucide-react';
 import { productCategories, products } from '../data/products';
 
 const Home: React.FC = () => {
@@ -24,46 +32,64 @@ const Home: React.FC = () => {
             </span>
 
             <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl md:leading-[1.03]">
-              Sensualidade, discrição e elegância numa experiência mais íntima.
+              Boutique íntima com envio discreto, compra segura e seleção premium.
             </h1>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-neutral-700 md:text-lg md:leading-8">
-              Descubra uma boutique íntima online pensada para quem procura conforto, confiança e
-              sofisticação, com uma seleção cuidada, ambiente discreto e uma experiência de compra
-              segura.
+              Descubra lingerie, acessórios, cosmética e artigos de prazer pensados para quem
+              procura conforto, discrição e uma experiência de compra elegante do primeiro clique
+              ao checkout.
             </p>
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-emerald-700">
+                Checkout seguro
+              </span>
+              <span className="rounded-full border border-[#8f355d]/10 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-[#7a2f4f]">
+                Envio discreto
+              </span>
+              <span className="rounded-full border border-[#8f355d]/10 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-[#7a2f4f]">
+                Seleção premium
+              </span>
+            </div>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Link
                 to="/loja"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-[#8f355d] px-6 py-3.5 text-sm font-medium text-white shadow-[0_14px_34px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52] hover:shadow-[0_18px_38px_rgba(143,53,93,0.28)]"
               >
-                Explorar produtos
+                Entrar na loja
                 <ArrowRight className="h-4 w-4" />
               </Link>
 
               <Link
-                to="/sobre"
+                to="/checkout"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-white px-6 py-3.5 text-sm font-medium text-[#7a2f4f] shadow-[0_10px_28px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/30 hover:bg-[#fff7fb]"
               >
-                Descobrir a marca
+                Checkout seguro
               </Link>
             </div>
 
-            <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-3">
+            <div className="mt-10 grid max-w-3xl gap-3 sm:grid-cols-3">
               <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/85 px-4 py-4 shadow-[0_12px_28px_rgba(143,53,93,0.06)] backdrop-blur-md">
-                <p className="text-sm font-medium text-[#6f2947]">Compra discreta</p>
-                <p className="mt-1 text-sm text-neutral-600">Privacidade em cada detalhe.</p>
+                <p className="text-sm font-medium text-[#6f2947]">Envio discreto</p>
+                <p className="mt-1 text-sm text-neutral-600">
+                  Embalagem neutra e privacidade em cada detalhe.
+                </p>
               </div>
 
               <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/85 px-4 py-4 shadow-[0_12px_28px_rgba(143,53,93,0.06)] backdrop-blur-md">
-                <p className="text-sm font-medium text-[#6f2947]">Curadoria sensual</p>
-                <p className="mt-1 text-sm text-neutral-600">Seleção pensada com intenção e estilo.</p>
+                <p className="text-sm font-medium text-[#6f2947]">Compra segura</p>
+                <p className="mt-1 text-sm text-neutral-600">
+                  Pagamento protegido e experiência simples no checkout.
+                </p>
               </div>
 
               <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/85 px-4 py-4 shadow-[0_12px_28px_rgba(143,53,93,0.06)] backdrop-blur-md">
-                <p className="text-sm font-medium text-[#6f2947]">Pagamentos seguros</p>
-                <p className="mt-1 text-sm text-neutral-600">Uma experiência premium e protegida.</p>
+                <p className="text-sm font-medium text-[#6f2947]">Seleção premium</p>
+                <p className="mt-1 text-sm text-neutral-600">
+                  Produtos escolhidos para conforto, desejo e confiança.
+                </p>
               </div>
             </div>
           </div>
@@ -78,10 +104,10 @@ const Home: React.FC = () => {
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_18%,rgba(255,255,255,0.16),transparent_18%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(48,13,30,0.72))]" />
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-white/70">
-                      Atmosfera
+                      Compra com confiança
                     </span>
                     <p className="mt-4 max-w-xs text-2xl font-semibold leading-tight text-white">
-                      Sedução subtil, confiança e um ambiente feito para explorar sem pressa.
+                      Discrição, desejo e uma experiência feita para comprar sem hesitação.
                     </p>
                   </div>
                 </div>
@@ -92,12 +118,11 @@ const Home: React.FC = () => {
                       Curadoria
                     </span>
                     <h2 className="mt-3 text-2xl font-semibold leading-tight text-[#6f2947]">
-                      Uma experiência íntima desenhada para ser elegante, segura e envolvente.
+                      Produtos escolhidos para despertar desejo com mais conforto e confiança.
                     </h2>
                     <p className="mt-4 text-sm leading-7 text-neutral-700">
-                      Produtos escolhidos para despertar desejo com naturalidade, num espaço visual
-                      mais sofisticado do que explícito e pensado para transmitir conforto desde o
-                      primeiro clique.
+                      Uma seleção premium com linguagem visual elegante, navegação simples e foco
+                      real em discrição, segurança e intenção de compra.
                     </p>
                   </div>
 
@@ -106,7 +131,7 @@ const Home: React.FC = () => {
                       <Lock className="h-5 w-5 text-[#8f355d]" />
                       <p className="mt-4 text-sm font-medium text-[#6f2947]">Privacidade garantida</p>
                       <p className="mt-2 text-sm leading-6 text-neutral-600">
-                        Navegação e compra com foco real na discrição e no conforto do cliente.
+                        Compra discreta e foco total no conforto do cliente.
                       </p>
                     </div>
 
@@ -114,23 +139,36 @@ const Home: React.FC = () => {
                       <HeartHandshake className="h-5 w-5 text-[#8f355d]" />
                       <p className="mt-4 text-sm font-medium text-[#6f2947]">Escolha confiante</p>
                       <p className="mt-2 text-sm leading-6 text-neutral-600">
-                        Uma seleção pensada para diferentes estilos, ritmos e formas de explorar.
+                        Produtos pensados para diferentes ritmos, estilos e desejos.
                       </p>
                     </div>
                   </div>
 
                   <div className="rounded-[1.6rem] border border-[#8f355d]/10 bg-white p-5 shadow-[0_12px_34px_rgba(143,53,93,0.06)]">
-                    <div className="flex items-center justify-between gap-4">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-[#a55b7d]">
-                          Experiência
-                        </p>
-                        <p className="mt-2 text-sm leading-6 text-neutral-700">
-                          Uma loja online pensada para seduzir com discrição e vender com confiança.
-                        </p>
+                    <div className="grid gap-4 sm:grid-cols-3">
+                      <div className="flex items-start gap-3">
+                        <PackageCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
+                        <div>
+                          <p className="text-[10px] uppercase tracking-[0.24em] text-[#a55b7d]">Envio</p>
+                          <p className="mt-2 text-sm leading-6 text-neutral-700">Discreto e neutro</p>
+                        </div>
                       </div>
 
-                      <ShieldCheck className="h-9 w-9 shrink-0 text-[#8f355d]" />
+                      <div className="flex items-start gap-3">
+                        <CreditCard className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
+                        <div>
+                          <p className="text-[10px] uppercase tracking-[0.24em] text-[#a55b7d]">Pagamento</p>
+                          <p className="mt-2 text-sm leading-6 text-neutral-700">Seguro no checkout</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
+                        <div>
+                          <p className="text-[10px] uppercase tracking-[0.24em] text-[#a55b7d]">Experiência</p>
+                          <p className="mt-2 text-sm leading-6 text-neutral-700">Simples e confidencial</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -144,14 +182,14 @@ const Home: React.FC = () => {
         <div className="container-custom">
           <div className="max-w-3xl">
             <span className="inline-block rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-white/60">
-              Favoritos
+              Mais procurados
             </span>
             <h2 className="mt-5 text-3xl font-semibold leading-tight md:text-5xl">
-              Lingerie, acessórios e sugestões para momentos mais intensos.
+              Descubra os produtos que estão a gerar mais desejo.
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/70">
-              Explora peças e artigos pensados para oferecer, provocar e transformar cada momento
-              numa experiência mais envolvente.
+              Uma seleção de favoritos para oferecer, explorar e transformar cada momento numa
+              experiência mais intensa e memorável.
             </p>
           </div>
 
@@ -174,9 +212,23 @@ const Home: React.FC = () => {
                   }`}
                 >
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_30%)]" />
+                  <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+                    {product.isNew ? (
+                      <span className="rounded-full bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6f2947] shadow-[0_8px_20px_rgba(0,0,0,0.08)]">
+                        Novo
+                      </span>
+                    ) : null}
+                    {product.isBestSeller ? (
+                      <span className="rounded-full bg-[#8f355d] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-[0_10px_24px_rgba(143,53,93,0.24)]">
+                        Best Seller
+                      </span>
+                    ) : null}
+                  </div>
+
                   <div className="relative">
                     <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] uppercase tracking-[0.28em] text-white/60">
-                      {product.category}
+                      {productCategories.find((category) => category.value === product.category)?.label ??
+                        product.category}
                     </span>
                     <h3 className="mt-4 text-2xl font-semibold leading-tight text-white">
                       {product.name}
@@ -200,7 +252,7 @@ const Home: React.FC = () => {
                     </div>
 
                     <span className="inline-flex items-center gap-2 text-sm font-medium text-white/85">
-                      Ver
+                      Ver produto
                       <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </span>
                   </div>
@@ -229,7 +281,7 @@ const Home: React.FC = () => {
                 Categorias em destaque
               </span>
               <h2 className="mt-5 text-3xl font-semibold leading-tight text-[#6f2947] md:text-5xl">
-                Escolha o ambiente, a intenção e o nível de ousadia.
+                Explore por categoria e encontre mais depressa o que procura.
               </h2>
             </div>
 
@@ -270,7 +322,7 @@ const Home: React.FC = () => {
                   <div>
                     <h3 className="text-2xl font-semibold text-[#6f2947]">{category.label}</h3>
                     <p className="mt-3 max-w-xs text-sm leading-6 text-neutral-700">
-                      Uma seleção criada para combinar sensualidade, estética e discrição.
+                      Descubra produtos pensados para diferentes estilos, desejos e ritmos.
                     </p>
 
                     <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#7a2f4f]">
@@ -299,11 +351,11 @@ const Home: React.FC = () => {
                   Compra segura
                 </span>
                 <h2 className="mt-5 text-3xl font-semibold leading-tight text-[#6f2947] md:text-5xl">
-                  Privacidade, confiança e uma experiência de compra sem ruído.
+                  Privacidade, confiança e uma experiência de compra sem fricção.
                 </h2>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-700">
-                  Uma loja pensada para quem quer explorar com conforto, descrição e uma linguagem
-                  visual mais elegante do que explícita.
+                  Uma loja pensada para quem quer explorar com conforto, discrição e uma jornada de
+                  compra mais simples, segura e elegante.
                 </p>
               </div>
 
@@ -317,10 +369,10 @@ const Home: React.FC = () => {
                 </Link>
 
                 <Link
-                  to="/contactos"
+                  to="/checkout"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-white px-6 py-3.5 text-sm font-medium text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-[#fff7fb]"
                 >
-                  Falar connosco
+                  Ir para checkout
                 </Link>
               </div>
             </div>

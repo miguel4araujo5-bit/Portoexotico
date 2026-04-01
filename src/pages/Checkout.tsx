@@ -94,41 +94,13 @@ const Checkout: React.FC = () => {
               </div>
 
               <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <input
-                  type="text"
-                  placeholder="Nome completo"
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
-                />
-                <input
-                  type="tel"
-                  placeholder="Telefone"
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
-                />
-                <input
-                  type="text"
-                  placeholder="NIF"
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
-                />
-                <input
-                  type="text"
-                  placeholder="Morada"
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30 md:col-span-2"
-                />
-                <input
-                  type="text"
-                  placeholder="Código-postal"
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
-                />
-                <input
-                  type="text"
-                  placeholder="Localidade"
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30"
-                />
+                <input type="text" placeholder="Nome completo" className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30" />
+                <input type="email" placeholder="Email" className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30" />
+                <input type="tel" placeholder="Telefone" className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30" />
+                <input type="text" placeholder="NIF" className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30" />
+                <input type="text" placeholder="Morada" className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30 md:col-span-2" />
+                <input type="text" placeholder="Código-postal" className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30" />
+                <input type="text" placeholder="Localidade" className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/30" />
               </div>
             </div>
 
@@ -154,9 +126,7 @@ const Checkout: React.FC = () => {
                       key={option.id}
                       type="button"
                       onClick={() => {
-                        if (!isSoon) {
-                          setSelectedPayment(option.id);
-                        }
+                        if (!isSoon) setSelectedPayment(option.id);
                       }}
                       className={[
                         'w-full rounded-[1.5rem] border p-5 text-left transition',
@@ -169,12 +139,16 @@ const Checkout: React.FC = () => {
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-3">
-                            <img
-                              src={logoSrc}
-                              alt={option.label}
-                              className="h-6 w-auto shrink-0 opacity-90"
-                            />
+                            {option.id === 'mbway' ? (
+                              <div className="flex h-8 items-center justify-center rounded-md bg-white px-2">
+                                <img src={logoSrc} alt={option.label} className="h-5 w-auto object-contain" />
+                              </div>
+                            ) : (
+                              <img src={logoSrc} alt={option.label} className="h-6 w-auto shrink-0 opacity-90" />
+                            )}
+
                             <span className="text-base font-medium text-white">{option.label}</span>
+
                             <span
                               className={[
                                 'rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.25em]',
@@ -224,23 +198,17 @@ const Checkout: React.FC = () => {
               <div className="mt-6 grid gap-4 md:grid-cols-3">
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
                   <p className="text-sm font-medium text-white">Embalagem neutra</p>
-                  <p className="mt-2 text-sm leading-6 text-white/60">
-                    Sem referências visíveis ao conteúdo exterior.
-                  </p>
+                  <p className="mt-2 text-sm leading-6 text-white/60">Sem referências visíveis ao conteúdo exterior.</p>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
                   <p className="text-sm font-medium text-white">Processo seguro</p>
-                  <p className="mt-2 text-sm leading-6 text-white/60">
-                    Estrutura preparada para checkout protegido e estável.
-                  </p>
+                  <p className="mt-2 text-sm leading-6 text-white/60">Estrutura preparada para checkout protegido e estável.</p>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
                   <p className="text-sm font-medium text-white">Confidencialidade</p>
-                  <p className="mt-2 text-sm leading-6 text-white/60">
-                    Experiência pensada para ser elegante, simples e reservada.
-                  </p>
+                  <p className="mt-2 text-sm leading-6 text-white/60">Experiência pensada para ser elegante, simples e reservada.</p>
                 </div>
               </div>
             </div>
@@ -251,10 +219,7 @@ const Checkout: React.FC = () => {
 
             <div className="mt-6 space-y-4">
               {items.map((item) => (
-                <div
-                  key={item.product.id}
-                  className="flex items-start justify-between gap-4 border-b border-white/10 pb-4"
-                >
+                <div key={item.product.id} className="flex items-start justify-between gap-4 border-b border-white/10 pb-4">
                   <div>
                     <p className="text-sm font-medium text-white">{item.product.name}</p>
                     <p className="mt-1 text-sm text-white/55">
@@ -294,14 +259,10 @@ const Checkout: React.FC = () => {
             </button>
 
             <p className="mt-4 text-xs leading-6 text-white/50">
-              O fluxo visual do checkout está preparado. A ligação final ao gateway será ativada
-              por método.
+              O fluxo visual do checkout está preparado. A ligação final ao gateway será ativada por método.
             </p>
 
-            <Link
-              to="/carrinho"
-              className="mt-4 inline-flex text-sm text-white/70 transition hover:text-white"
-            >
+            <Link to="/carrinho" className="mt-4 inline-flex text-sm text-white/70 transition hover:text-white">
               Voltar ao carrinho
             </Link>
           </aside>

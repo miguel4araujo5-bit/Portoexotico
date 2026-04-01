@@ -46,7 +46,7 @@ const Footer: React.FC = () => {
                   <img
                     src="/paypal.svg"
                     alt="PayPal"
-                    className="h-[31px] w-auto object-contain opacity-100"
+                    className="h-[33px] w-auto object-contain opacity-100"
                   />
                 </div>
 
@@ -64,7 +64,7 @@ const Footer: React.FC = () => {
                   <img
                     src="/stripe.svg"
                     alt="Stripe"
-                    className="h-[31px] w-auto object-contain opacity-100"
+                    className="h-[33px] w-auto object-contain opacity-100"
                   />
                 </div>
 
@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
                   <img
                     src="/mbway.svg"
                     alt="MB WAY"
-                    className="h-[28px] w-auto object-contain opacity-100"
+                    className="h-[30px] w-auto object-contain opacity-100"
                   />
                 </div>
 

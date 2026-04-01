@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, ShoppingBag, X } from 'lucide-react';
 
-const logoSvgSrc = '/logo.svg';
-const logoPngSrc = '/logo.png';
+const logoSvgSrc = '/favicon.svg';
+const logoFallbackSrc = '/favicon-96x96.png';
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -38,7 +38,7 @@ const Header: React.FC = () => {
               <picture>
                 <source srcSet={logoSvgSrc} type="image/svg+xml" />
                 <img
-                  src={logoPngSrc}
+                  src={logoFallbackSrc}
                   alt="Porto Exótico"
                   className="h-7 w-7 object-contain"
                 />

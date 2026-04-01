@@ -163,18 +163,30 @@ const Checkout: React.FC = () => {
                         isSelected
                           ? 'border-white/30 bg-white/10'
                           : 'border-white/10 bg-black/20 hover:border-white/20 hover:bg-white/5',
-                        isSoon ? 'cursor-not-allowed opacity-70' : '',
+                        isSoon ? 'cursor-not-allowed' : '',
                       ].join(' ')}
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-3">
-                            <img
-                              src={logoSrc}
-                              alt={option.label}
-                              className="h-6 w-auto shrink-0 opacity-90"
-                            />
+                            {option.id === 'mbway' ? (
+                              <div className="inline-flex rounded-md bg-white p-1 shadow-sm">
+                                <img
+                                  src={logoSrc}
+                                  alt={option.label}
+                                  className="block h-5 w-auto opacity-100"
+                                />
+                              </div>
+                            ) : (
+                              <img
+                                src={logoSrc}
+                                alt={option.label}
+                                className="h-6 w-auto shrink-0 opacity-90"
+                              />
+                            )}
+
                             <span className="text-base font-medium text-white">{option.label}</span>
+
                             <span
                               className={[
                                 'rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.25em]',

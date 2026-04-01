@@ -35,7 +35,7 @@ const Checkout: React.FC = () => {
   const { items, subtotal } = useCart();
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>('paypal');
 
-  const availablePayment = useMemo(
+  const selectedOption = useMemo(
     () => paymentOptions.find((option) => option.id === selectedPayment),
     [selectedPayment]
   );
@@ -196,7 +196,7 @@ const Checkout: React.FC = () => {
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-white/70">
-                  {availablePayment?.id === 'paypal'
+                  {selectedOption?.id === 'paypal'
                     ? 'O PayPal é o método prioritário para a próxima integração funcional do checkout.'
                     : 'Este método ficará visível no checkout, mas será ativado quando a validação da conta estiver concluída.'}
                 </p>

@@ -2,6 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, ShoppingBag, X } from 'lucide-react';
 
+const logoSvgSrc = '/logo.svg';
+const logoPngSrc = '/logo.png';
+
 const Header: React.FC = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -32,18 +35,14 @@ const Header: React.FC = () => {
         <div className="flex h-24 items-center justify-between gap-4">
           <Link to="/" className="group flex min-w-0 items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#8f355d]/15 bg-white shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 group-hover:scale-[1.03] group-hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]">
-              <svg
-                viewBox="0 0 24 24"
-                className="h-6 w-6 text-[#9b3565]"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.9"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M12 20.5s-7.5-5.03-9.25-9.2C1.42 8.14 3.2 4.5 7.2 4.5c2.03 0 3.69 1.02 4.8 2.74 1.11-1.72 2.77-2.74 4.8-2.74 4 0 5.78 3.64 4.45 6.8C19.5 15.47 12 20.5 12 20.5Z" />
-              </svg>
+              <picture>
+                <source srcSet={logoSvgSrc} type="image/svg+xml" />
+                <img
+                  src={logoPngSrc}
+                  alt="Porto Exótico"
+                  className="h-7 w-7 object-contain"
+                />
+              </picture>
             </div>
 
             <div className="min-w-0">

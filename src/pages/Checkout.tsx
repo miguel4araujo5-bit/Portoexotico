@@ -15,19 +15,19 @@ const paymentOptions: Array<{
     id: 'paypal',
     label: 'PayPal',
     status: 'available',
-    description: 'Disponível para ser integrado como primeiro método de pagamento.',
+    description: 'Método prioritário para conclusão segura da encomenda.',
   },
   {
     id: 'stripe',
     label: 'Stripe',
     status: 'soon',
-    description: 'Brevemente disponível após validação da conta.',
+    description: 'Disponível brevemente após conclusão da configuração.',
   },
   {
     id: 'mbway',
     label: 'MB WAY',
     status: 'soon',
-    description: 'Brevemente disponível após ativação e validação.',
+    description: 'Disponível brevemente após ativação e validação.',
   },
 ];
 
@@ -49,11 +49,11 @@ const Checkout: React.FC = () => {
           </span>
 
           <h1 className="mt-6 text-3xl font-semibold md:text-5xl">
-            O teu carrinho está vazio
+            O seu carrinho está vazio
           </h1>
 
           <p className="mt-4 max-w-2xl text-white/70">
-            Antes de avançares para pagamento, adiciona pelo menos um produto ao carrinho.
+            Antes de avançar para o pagamento, adicione pelo menos um artigo ao carrinho.
           </p>
 
           <Link
@@ -76,12 +76,12 @@ const Checkout: React.FC = () => {
           </span>
 
           <h1 className="mt-6 text-3xl font-semibold md:text-5xl">
-            Finaliza a tua encomenda com discrição
+            Finalize a sua encomenda com discrição e confiança
           </h1>
 
           <p className="mt-4 max-w-2xl text-white/70">
-            Confirma os teus dados, escolhe o método de pagamento e prepara-te para uma
-            experiência simples, segura e confidencial.
+            Confirme os seus dados, escolha o método de pagamento disponível e conclua a sua compra
+            de forma simples, reservada e segura.
           </p>
         </div>
 
@@ -163,7 +163,7 @@ const Checkout: React.FC = () => {
                         isSelected
                           ? 'border-white/30 bg-white/10'
                           : 'border-white/10 bg-black/20 hover:border-white/20 hover:bg-white/5',
-                        isSoon ? 'cursor-not-allowed' : '',
+                        isSoon ? 'cursor-not-allowed opacity-80' : '',
                       ].join(' ')}
                     >
                       <div className="flex items-start justify-between gap-4">
@@ -223,8 +223,8 @@ const Checkout: React.FC = () => {
 
                 <p className="mt-3 text-sm leading-6 text-white/70">
                   {selectedOption?.id === 'paypal'
-                    ? 'O PayPal é o método prioritário para a próxima integração funcional do checkout.'
-                    : 'Este método ficará visível no checkout, mas será ativado quando a validação da conta estiver concluída.'}
+                    ? 'O PayPal é atualmente o método selecionado para a conclusão da encomenda.'
+                    : 'Este método ficará disponível assim que a respetiva configuração estiver concluída.'}
                 </p>
               </div>
             </div>
@@ -239,21 +239,21 @@ const Checkout: React.FC = () => {
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
                   <p className="text-sm font-medium text-white">Embalagem neutra</p>
                   <p className="mt-2 text-sm leading-6 text-white/60">
-                    Sem referências visíveis ao conteúdo exterior.
+                    Sem referências visíveis ao conteúdo no exterior da encomenda.
                   </p>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
                   <p className="text-sm font-medium text-white">Processo seguro</p>
                   <p className="mt-2 text-sm leading-6 text-white/60">
-                    Estrutura preparada para checkout protegido e estável.
+                    Estrutura pensada para uma compra simples, protegida e estável.
                   </p>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
                   <p className="text-sm font-medium text-white">Confidencialidade</p>
                   <p className="mt-2 text-sm leading-6 text-white/60">
-                    Experiência pensada para ser elegante, simples e reservada.
+                    Uma experiência reservada, elegante e orientada para o seu conforto.
                   </p>
                 </div>
               </div>
@@ -304,12 +304,11 @@ const Checkout: React.FC = () => {
               type="button"
               className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:scale-[1.01]"
             >
-              Continuar com {selectedPayment === 'paypal' ? 'PayPal' : 'disponível brevemente'}
+              Continuar com {selectedPayment === 'paypal' ? 'PayPal' : 'método disponível brevemente'}
             </button>
 
             <p className="mt-4 text-xs leading-6 text-white/50">
-              O fluxo visual do checkout está preparado. A ligação final ao gateway será ativada
-              por método.
+              O resumo da encomenda está preparado para uma finalização simples, discreta e clara.
             </p>
 
             <Link

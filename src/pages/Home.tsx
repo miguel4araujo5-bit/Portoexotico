@@ -32,17 +32,18 @@ const Home: React.FC = () => {
             </span>
 
             <h1 className="mt-6 max-w-5xl font-serif text-5xl font-semibold leading-[0.98] text-[#6f2947] md:text-7xl">
-              Discrição, desejo e uma boutique íntima com elegância real.
+              Prazer com discrição, elegância e uma compra feita com confiança.
             </h1>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-neutral-700 md:text-lg md:leading-8">
-              Descubra lingerie, acessórios, cosmética e artigos de prazer pensados para quem
-              procura conforto, privacidade e uma experiência de compra mais segura e sofisticada.
+              Descubra lingerie, acessórios, cosmética e artigos de prazer selecionados para quem
+              valoriza privacidade, conforto e uma experiência de compra segura, discreta e
+              sofisticada.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
               <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-emerald-700">
-                Checkout seguro
+                Pagamento seguro
               </span>
               <span className="rounded-full border border-[#8f355d]/10 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-[#7a2f4f]">
                 Envio discreto
@@ -57,7 +58,7 @@ const Home: React.FC = () => {
                 to="/loja"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-[#8f355d] px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52] hover:shadow-[0_18px_38px_rgba(143,53,93,0.28)]"
               >
-                Entrar na loja
+                Descobrir a loja
                 <ArrowRight className="h-4 w-4" />
               </Link>
 
@@ -65,7 +66,7 @@ const Home: React.FC = () => {
                 to="/loja"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-white px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] shadow-[0_10px_28px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/30 hover:bg-[#fff7fb]"
               >
-                Ver mais procurados
+                Ver mais vendidos
               </Link>
             </div>
 
@@ -73,21 +74,21 @@ const Home: React.FC = () => {
               <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/85 px-4 py-4 shadow-[0_12px_28px_rgba(143,53,93,0.06)] backdrop-blur-md">
                 <p className="text-sm font-medium text-[#6f2947]">Envio discreto</p>
                 <p className="mt-1 text-sm text-neutral-600">
-                  Embalagem neutra e privacidade em cada detalhe.
+                  Embalagem neutra e privacidade protegida em cada encomenda.
                 </p>
               </div>
 
               <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/85 px-4 py-4 shadow-[0_12px_28px_rgba(143,53,93,0.06)] backdrop-blur-md">
                 <p className="text-sm font-medium text-[#6f2947]">Compra segura</p>
                 <p className="mt-1 text-sm text-neutral-600">
-                  Pagamento protegido e checkout simples.
+                  Pagamento protegido e um processo de compra simples.
                 </p>
               </div>
 
               <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/85 px-4 py-4 shadow-[0_12px_28px_rgba(143,53,93,0.06)] backdrop-blur-md">
                 <p className="text-sm font-medium text-[#6f2947]">Seleção premium</p>
                 <p className="mt-1 text-sm text-neutral-600">
-                  Produtos escolhidos para conforto, desejo e confiança.
+                  Produtos escolhidos para conforto, prazer e confiança.
                 </p>
               </div>
             </div>
@@ -108,10 +109,10 @@ const Home: React.FC = () => {
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,16,0.08),rgba(48,13,30,0.78))]" />
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-white/70">
-                      Mais desejado
+                      Mais procurado
                     </span>
                     <p className="mt-4 max-w-xs font-serif text-3xl font-semibold leading-tight text-white">
-                      Produtos escolhidos para comprar com mais confiança e menos hesitação.
+                      Produtos escolhidos para uma compra mais segura, discreta e confiante.
                     </p>
                   </div>
                 </div>
@@ -122,11 +123,11 @@ const Home: React.FC = () => {
                       Curadoria
                     </span>
                     <h2 className="mt-3 font-serif text-3xl font-semibold leading-tight text-[#6f2947]">
-                      Desejo, conforto e uma experiência feita para converter.
+                      Seleção cuidada, compra discreta e uma experiência feita para converter.
                     </h2>
                     <p className="mt-4 text-sm leading-7 text-neutral-700">
-                      Uma seleção premium com linguagem visual elegante, navegação simples e foco
-                      real em discrição, segurança e intenção de compra.
+                      Uma seleção premium com navegação simples, apresentação elegante e foco real
+                      em discrição, segurança e intenção de compra.
                     </p>
                   </div>
 
@@ -135,7 +136,7 @@ const Home: React.FC = () => {
                       <Lock className="h-5 w-5 text-[#8f355d]" />
                       <p className="mt-4 text-sm font-medium text-[#6f2947]">Privacidade garantida</p>
                       <p className="mt-2 text-sm leading-6 text-neutral-600">
-                        Compra discreta e foco total no conforto do cliente.
+                        Uma compra discreta, confidencial e pensada para o seu conforto.
                       </p>
                     </div>
 
@@ -143,7 +144,7 @@ const Home: React.FC = () => {
                       <HeartHandshake className="h-5 w-5 text-[#8f355d]" />
                       <p className="mt-4 text-sm font-medium text-[#6f2947]">Escolha confiante</p>
                       <p className="mt-2 text-sm leading-6 text-neutral-600">
-                        Produtos pensados para diferentes ritmos, estilos e desejos.
+                        Produtos pensados para diferentes preferências, ritmos e momentos.
                       </p>
                     </div>
                   </div>
@@ -162,7 +163,7 @@ const Home: React.FC = () => {
                         <CreditCard className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.24em] text-[#a55b7d]">Pagamento</p>
-                          <p className="mt-2 text-sm leading-6 text-neutral-700">Seguro no checkout</p>
+                          <p className="mt-2 text-sm leading-6 text-neutral-700">Seguro e simples</p>
                         </div>
                       </div>
 
@@ -170,7 +171,7 @@ const Home: React.FC = () => {
                         <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.24em] text-[#a55b7d]">Experiência</p>
-                          <p className="mt-2 text-sm leading-6 text-neutral-700">Simples e confidencial</p>
+                          <p className="mt-2 text-sm leading-6 text-neutral-700">Elegante e confidencial</p>
                         </div>
                       </div>
                     </div>
@@ -186,14 +187,14 @@ const Home: React.FC = () => {
         <div className="container-custom">
           <div className="max-w-3xl">
             <span className="inline-block rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-white/60">
-              Mais procurados
+              Mais vendidos
             </span>
             <h2 className="mt-5 font-serif text-4xl font-semibold leading-tight md:text-6xl">
-              Descubra os produtos que estão a gerar mais desejo.
+              Descubra os produtos mais procurados da coleção.
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/70">
               Uma seleção de favoritos para oferecer, explorar e transformar cada momento numa
-              experiência mais intensa e memorável.
+              experiência mais intensa, confortável e memorável.
             </p>
           </div>
 
@@ -291,7 +292,7 @@ const Home: React.FC = () => {
                 Categorias em destaque
               </span>
               <h2 className="mt-5 font-serif text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
-                Explore por categoria e encontre mais depressa o que procura.
+                Explore por categoria e encontre com mais rapidez o que procura.
               </h2>
             </div>
 
@@ -334,7 +335,7 @@ const Home: React.FC = () => {
                       {category.label}
                     </h3>
                     <p className="mt-3 max-w-xs text-sm leading-6 text-neutral-700">
-                      Descubra produtos pensados para diferentes estilos, desejos e ritmos.
+                      Descubra produtos pensados para diferentes preferências, momentos e estilos.
                     </p>
 
                     <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.12em] text-[#7a2f4f]">
@@ -363,11 +364,11 @@ const Home: React.FC = () => {
                   Compra segura
                 </span>
                 <h2 className="mt-5 font-serif text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
-                  Privacidade, confiança e uma experiência de compra sem fricção.
+                  Privacidade, confiança e uma experiência de compra sem complicações.
                 </h2>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-700">
-                  Uma loja pensada para quem quer explorar com conforto, discrição e uma jornada de
-                  compra mais simples, segura e elegante.
+                  Uma loja pensada para quem procura discrição, conforto e uma jornada de compra
+                  simples, segura e elegante, do primeiro clique ao checkout.
                 </p>
               </div>
 
@@ -376,7 +377,7 @@ const Home: React.FC = () => {
                   to="/loja"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-[#8f355d] px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52]"
                 >
-                  Entrar na loja
+                  Descobrir a loja
                   <ArrowRight className="h-4 w-4" />
                 </Link>
 
@@ -384,7 +385,7 @@ const Home: React.FC = () => {
                   to="/checkout"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-white px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-[#fff7fb]"
                 >
-                  Ir para checkout
+                  Finalizar compra
                 </Link>
               </div>
             </div>

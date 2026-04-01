@@ -218,23 +218,44 @@ const Cart: React.FC = () => {
                 Pagamentos disponíveis
               </p>
 
-              <div className="mt-4 flex flex-wrap items-center gap-4">
-                <img
-                  src="/paypal.svg"
-                  alt="PayPal"
-                  className="h-5 w-auto opacity-90 transition hover:opacity-100"
-                />
-                <img
-                  src="/stripe.svg"
-                  alt="Stripe"
-                  className="h-5 w-auto opacity-75 transition hover:opacity-100"
-                />
-                <div className="inline-flex rounded-md bg-white p-1 shadow-sm">
-                  <img
-                    src="/mbway.svg"
-                    alt="MB WAY"
-                    className="block h-5 w-auto opacity-100"
-                  />
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
+                  <div className="flex items-center gap-3">
+                    <img src="/paypal.svg" alt="PayPal" className="h-5 w-auto opacity-90" />
+                    <span className="text-sm text-white">PayPal</span>
+                  </div>
+
+                  <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] uppercase tracking-[0.22em] text-emerald-200/80">
+                    Disponível
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
+                  <div className="flex items-center gap-3">
+                    <img src="/stripe.svg" alt="Stripe" className="h-5 w-auto opacity-90" />
+                    <span className="text-sm text-white">Stripe</span>
+                  </div>
+
+                  <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] uppercase tracking-[0.22em] text-amber-200/80">
+                    Brevemente
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
+                  <div className="flex items-center gap-3">
+                    <div className="inline-flex rounded-md bg-white p-1 shadow-sm">
+                      <img
+                        src="/mbway.svg"
+                        alt="MB WAY"
+                        className="block h-5 w-auto opacity-100"
+                      />
+                    </div>
+                    <span className="text-sm text-white">MB WAY</span>
+                  </div>
+
+                  <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] uppercase tracking-[0.22em] text-amber-200/80">
+                    Brevemente
+                  </span>
                 </div>
               </div>
 

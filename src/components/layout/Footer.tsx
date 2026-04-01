@@ -44,15 +44,15 @@ const Footer: React.FC = () => {
               <div className="flex items-center gap-3">
                 <img src="/paypal.svg" alt="PayPal" className="h-5 w-auto opacity-90" />
                 <span className="text-sm text-white">PayPal</span>
-                <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-emerald-300">
+                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-widest text-emerald-200/80">
                   Disponível
                 </span>
               </div>
 
               <div className="flex items-center gap-3">
-                <img src="/stripe.svg" alt="Stripe" className="h-5 w-auto opacity-70" />
+                <img src="/stripe.svg" alt="Stripe" className="h-5 w-auto opacity-90" />
                 <span className="text-sm text-white">Stripe</span>
-                <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-amber-300">
+                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-widest text-amber-200/80">
                   Brevemente
                 </span>
               </div>
@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
                   <img src="/mbway.svg" alt="MB WAY" className="block h-5 w-auto opacity-100" />
                 </div>
                 <span className="text-sm text-white">MB WAY</span>
-                <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-amber-300">
+                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-widest text-amber-200/80">
                   Brevemente
                 </span>
               </div>

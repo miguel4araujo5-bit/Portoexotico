@@ -169,23 +169,17 @@ const Checkout: React.FC = () => {
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-3">
-                            {option.id === 'mbway' ? (
-                              <div className="flex h-8 w-14 items-center justify-center rounded-md bg-white p-1 shadow-sm">
-                                <img
-                                  src={logoSrc}
-                                  alt={option.label}
-                                  className="max-h-6 w-auto object-contain opacity-100"
-                                />
-                              </div>
-                            ) : (
-                              <div className="flex h-8 w-14 items-center justify-center">
-                                <img
-                                  src={logoSrc}
-                                  alt={option.label}
-                                  className="max-h-7 w-auto shrink-0 object-contain opacity-95"
-                                />
-                              </div>
-                            )}
+                            <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                              <img
+                                src={logoSrc}
+                                alt={option.label}
+                                className={
+                                  option.id === 'mbway'
+                                    ? 'h-[30px] w-auto object-contain opacity-100'
+                                    : 'h-[33px] w-auto object-contain opacity-100'
+                                }
+                              />
+                            </div>
 
                             <span className="text-base font-medium text-white">{option.label}</span>
 

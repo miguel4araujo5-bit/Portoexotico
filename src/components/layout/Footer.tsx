@@ -40,22 +40,33 @@ const Footer: React.FC = () => {
               Pagamentos disponíveis
             </p>
 
-            <div className="mt-4 flex flex-wrap items-center gap-4">
-              <img
-                src="/stripe.svg"
-                alt="Stripe"
-                className="h-5 w-auto opacity-70 transition hover:opacity-100"
-              />
-              <img
-                src="/paypal.svg"
-                alt="PayPal"
-                className="h-5 w-auto opacity-70 transition hover:opacity-100"
-              />
-              <img
-                src="/mbway.svg"
-                alt="MB Way"
-                className="h-5 w-auto opacity-70 transition hover:opacity-100"
-              />
+            <div className="mt-4 flex flex-wrap items-center gap-5">
+              <div className="flex items-center gap-2">
+                <img
+                  src="/paypal.svg"
+                  alt="PayPal"
+                  className="h-5 w-auto opacity-80"
+                />
+                <span className="text-xs text-emerald-400">Disponível</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <img
+                  src="/stripe.svg"
+                  alt="Stripe"
+                  className="h-5 w-auto opacity-70"
+                />
+                <span className="text-xs text-amber-400">Brevemente</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <img
+                  src="/mbway.svg"
+                  alt="MB Way"
+                  className="h-5 w-auto opacity-70"
+                />
+                <span className="text-xs text-amber-400">Brevemente</span>
+              </div>
             </div>
 
             <p className="mt-4 text-sm leading-7 text-white/55">

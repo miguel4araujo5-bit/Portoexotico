@@ -80,7 +80,8 @@ const Checkout: React.FC = () => {
           </h1>
 
           <p className="mt-4 max-w-2xl text-white/70">
-            Confirma os teus dados, escolhe o método de pagamento e prepara-te para uma experiência simples, segura e confidencial.
+            Confirma os teus dados, escolhe o método de pagamento e prepara-te para uma
+            experiência simples, segura e confidencial.
           </p>
         </div>
 
@@ -141,6 +142,12 @@ const Checkout: React.FC = () => {
                 {paymentOptions.map((option) => {
                   const isSoon = option.status === 'soon';
                   const isSelected = selectedPayment === option.id;
+                  const logoSrc =
+                    option.id === 'paypal'
+                      ? '/paypal.svg'
+                      : option.id === 'stripe'
+                        ? '/stripe.svg'
+                        : '/mbway.svg';
 
                   return (
                     <button
@@ -160,22 +167,27 @@ const Checkout: React.FC = () => {
                       ].join(' ')}
                     >
                       <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <div className="flex items-center gap-3">
-                            <span className="text-base font-medium">{option.label}</span>
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-3">
+                            <img
+                              src={logoSrc}
+                              alt={option.label}
+                              className="h-6 w-auto shrink-0 opacity-90"
+                            />
+                            <span className="text-base font-medium text-white">{option.label}</span>
                             <span
                               className={[
-                                'rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.25em]',
+                                'rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.25em]',
                                 isSoon
-                                  ? 'border border-amber-400/20 bg-amber-400/10 text-amber-200'
-                                  : 'border border-emerald-400/20 bg-emerald-400/10 text-emerald-200',
+                                  ? 'border-amber-400/20 bg-amber-400/10 text-amber-200'
+                                  : 'border-emerald-400/20 bg-emerald-400/10 text-emerald-200',
                               ].join(' ')}
                             >
                               {isSoon ? 'Brevemente' : 'Disponível'}
                             </span>
                           </div>
 
-                          <p className="mt-2 text-sm leading-6 text-white/65">
+                          <p className="mt-3 text-sm leading-6 text-white/65">
                             {option.description}
                           </p>
                         </div>
@@ -282,7 +294,8 @@ const Checkout: React.FC = () => {
             </button>
 
             <p className="mt-4 text-xs leading-6 text-white/50">
-              O fluxo visual do checkout está preparado. A ligação final ao gateway será ativada por método.
+              O fluxo visual do checkout está preparado. A ligação final ao gateway será ativada
+              por método.
             </p>
 
             <Link

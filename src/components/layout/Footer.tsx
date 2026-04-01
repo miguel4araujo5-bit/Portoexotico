@@ -41,7 +41,6 @@ const Footer: React.FC = () => {
             </p>
 
             <div className="mt-4 flex flex-col gap-3">
-              
               <div className="flex items-center gap-3">
                 <img src="/paypal.svg" alt="PayPal" className="h-5 w-auto opacity-90" />
                 <span className="text-sm text-white">PayPal</span>
@@ -59,13 +58,14 @@ const Footer: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <img src="/mbway.svg" alt="MB Way" className="h-5 w-auto opacity-70" />
+                <div className="inline-flex rounded-md bg-white p-1 shadow-sm">
+                  <img src="/mbway.svg" alt="MB WAY" className="block h-5 w-auto opacity-100" />
+                </div>
                 <span className="text-sm text-white">MB WAY</span>
                 <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-amber-300">
                   Brevemente
                 </span>
               </div>
-
             </div>
 
             <p className="mt-4 text-sm leading-7 text-white/55">

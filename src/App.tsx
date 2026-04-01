@@ -8,6 +8,8 @@ import Shop from './pages/Shop';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import About from './pages/Sobre';
+import Contactos from './pages/Contactos';
 import AdminLogin from './pages/AdminLogin';
 import AdminOrders from './pages/AdminOrders';
 import AdminRoute from './components/admin/AdminRoute';
@@ -47,6 +49,8 @@ const App: React.FC = () => {
         <Route path="/produto/:slug" element={<Product />} />
         <Route path="/carrinho" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/sobre" element={<About />} />
+        <Route path="/contactos" element={<Contactos />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route
           path="/admin/orders"
@@ -57,29 +61,11 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="/sobre"
-          element={
-            <PlaceholderPage
-              title="Sobre"
-              description="História da marca, posicionamento, confiança e promessa de discrição."
-            />
-          }
-        />
-        <Route
-          path="/contactos"
-          element={
-            <PlaceholderPage
-              title="Contactos"
-              description="Página com email, telefone, formulário e informação de apoio ao cliente."
-            />
-          }
-        />
-        <Route
           path="*"
           element={
             <PlaceholderPage
               title="Página não encontrada"
-              description="A página que procuras não existe ou foi movida."
+              description="A página que procura não existe ou foi movida."
             />
           }
         />

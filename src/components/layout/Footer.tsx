@@ -45,9 +45,11 @@ const Footer: React.FC = () => {
                 <img
                   src="/paypal.svg"
                   alt="PayPal"
-                  className="h-5 w-auto opacity-80"
+                  className="h-5 w-auto opacity-90"
                 />
-                <span className="text-xs text-emerald-400">Disponível</span>
+                <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-emerald-300">
+                  Disponível
+                </span>
               </div>
 
               <div className="flex items-center gap-2">
@@ -56,7 +58,9 @@ const Footer: React.FC = () => {
                   alt="Stripe"
                   className="h-5 w-auto opacity-70"
                 />
-                <span className="text-xs text-amber-400">Brevemente</span>
+                <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-amber-300">
+                  Brevemente
+                </span>
               </div>
 
               <div className="flex items-center gap-2">
@@ -65,7 +69,9 @@ const Footer: React.FC = () => {
                   alt="MB Way"
                   className="h-5 w-auto opacity-70"
                 />
-                <span className="text-xs text-amber-400">Brevemente</span>
+                <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-amber-300">
+                  Brevemente
+                </span>
               </div>
             </div>
 

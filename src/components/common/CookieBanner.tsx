@@ -3,6 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { Cookie, ShieldCheck } from 'lucide-react';
 import { initGA } from '../../lib/analytics';
 
+declare global {
+  interface Window {
+    [key: `ga-disable-${string}`]: boolean | undefined;
+  }
+}
+
 type CookieConsentRecord = {
   cookiesAccepted: boolean;
   acceptedAt: string;
@@ -10,12 +16,50 @@ type CookieConsentRecord = {
 
 const STORAGE_KEY = 'portoexotico-cookie-consent-v1';
 const GA_MEASUREMENT_ID = 'G-6QB707Y0JZ';
+const COOKIE_SETTINGS_EVENT = 'portoexotico:open-cookie-settings';
 
 const CookieBanner: React.FC = () => {
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
+  const [hasSavedChoice, setHasSavedChoice] = useState(false);
+  const [hasAccepted, setHasAccepted] = useState(false);
 
   const isAdminRoute = location.pathname.startsWith('/admin');
+
+  const clearGACookies = () => {
+    const hostnameParts = window.location.hostname.split('.').filter(Boolean);
+    const cookieNames = document.cookie
+      .split(';')
+      .map((cookie) => cookie.trim().split('=')[0])
+      .filter((name) => name === '_ga' || name.startsWith('_ga_'));
+
+    const domainCandidates = hostnameParts.map((_, index) => {
+      const domain = hostnameParts.slice(index).join('.');
+      return [domain, `.${domain}`];
+    }).flat();
+
+    const uniqueDomains = Array.from(new Set(['', ...domainCandidates]));
+    const paths = ['/', window.location.pathname || '/'];
+
+    for (const name of cookieNames) {
+      for (const domain of uniqueDomains) {
+        for (const path of paths) {
+          const domainPart = domain ? ` domain=${domain};` : '';
+          document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path};${domainPart}`;
+        }
+      }
+    }
+  };
+
+  const disableGA = () => {
+    window[`ga-disable-${GA_MEASUREMENT_ID}`] = true;
+    clearGACookies();
+  };
+
+  const enableGA = () => {
+    window[`ga-disable-${GA_MEASUREMENT_ID}`] = false;
+    initGA(GA_MEASUREMENT_ID);
+  };
 
   useEffect(() => {
     if (isAdminRoute) {
@@ -27,6 +71,8 @@ const CookieBanner: React.FC = () => {
       const raw = window.localStorage.getItem(STORAGE_KEY);
 
       if (!raw) {
+        setHasSavedChoice(false);
+        setHasAccepted(false);
         setIsVisible(true);
         return;
       }
@@ -34,18 +80,45 @@ const CookieBanner: React.FC = () => {
       const parsed = JSON.parse(raw) as Partial<CookieConsentRecord>;
 
       if (typeof parsed.cookiesAccepted === 'boolean') {
-        if (parsed.cookiesAccepted === true) {
-          initGA(GA_MEASUREMENT_ID);
+        const accepted = parsed.cookiesAccepted === true;
+
+        setHasSavedChoice(true);
+        setHasAccepted(accepted);
+
+        if (accepted) {
+          enableGA();
+        } else {
+          disableGA();
         }
 
         setIsVisible(false);
         return;
       }
 
+      setHasSavedChoice(false);
+      setHasAccepted(false);
       setIsVisible(true);
     } catch {
+      setHasSavedChoice(false);
+      setHasAccepted(false);
       setIsVisible(true);
     }
+  }, [isAdminRoute]);
+
+  useEffect(() => {
+    if (isAdminRoute) {
+      return;
+    }
+
+    const handleOpenSettings = () => {
+      setIsVisible(true);
+    };
+
+    window.addEventListener(COOKIE_SETTINGS_EVENT, handleOpenSettings);
+
+    return () => {
+      window.removeEventListener(COOKIE_SETTINGS_EVENT, handleOpenSettings);
+    };
   }, [isAdminRoute]);
 
   const handleAccept = () => {
@@ -55,7 +128,9 @@ const CookieBanner: React.FC = () => {
     };
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-    initGA(GA_MEASUREMENT_ID);
+    setHasSavedChoice(true);
+    setHasAccepted(true);
+    enableGA();
     setIsVisible(false);
   };
 
@@ -66,6 +141,9 @@ const CookieBanner: React.FC = () => {
     };
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    setHasSavedChoice(true);
+    setHasAccepted(false);
+    disableGA();
     setIsVisible(false);
   };
 
@@ -103,15 +181,24 @@ const CookieBanner: React.FC = () => {
 
               <div className="mt-4 inline-flex items-center gap-2 text-xs text-neutral-500">
                 <ShieldCheck className="h-4 w-4 text-[#8f355d]" />
-                Pode atualizar a sua escolha a qualquer momento nas definições futuras do website.
+                Pode atualizar a sua escolha a qualquer momento nas definições de cookies do website.
               </div>
+
+              {hasSavedChoice ? (
+                <p className="mt-3 text-xs text-neutral-500">
+                  Estado atual:{' '}
+                  <span className="font-medium text-[#7a2f4f]">
+                    {hasAccepted ? 'cookies opcionais aceites' : 'cookies opcionais recusados'}
+                  </span>
+                </p>
+              ) : null}
             </div>
 
             <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col">
               <button
                 type="button"
                 onClick={handleAccept}
-                className="inline-flex items-center justify-center rounded-full bg-[#8f355d] px-5 py-3 text-sm font-medium uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52]"
+                className="inline-flex items-center justify-center rounded-full border border-[#8f355d]/20 bg-white px-5 py-3 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] shadow-[0_14px_34px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/30 hover:bg-[#fffafb]"
               >
                 Aceitar
               </button>
@@ -119,7 +206,7 @@ const CookieBanner: React.FC = () => {
               <button
                 type="button"
                 onClick={handleReject}
-                className="inline-flex items-center justify-center rounded-full border border-[#8f355d]/15 bg-white px-5 py-3 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-[#fffafb]"
+                className="inline-flex items-center justify-center rounded-full border border-[#8f355d]/20 bg-white px-5 py-3 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] shadow-[0_14px_34px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/30 hover:bg-[#fffafb]"
               >
                 Recusar
               </button>

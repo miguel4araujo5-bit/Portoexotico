@@ -3,8 +3,13 @@ import { Link } from 'react-router-dom';
 
 const logoSrc = '/logo.png';
 const supportEmail = 'portoexotico@gmail.com';
+const COOKIE_SETTINGS_EVENT = 'portoexotico:open-cookie-settings';
 
 const Footer: React.FC = () => {
+  const openCookieSettings = () => {
+    window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT));
+  };
+
   return (
     <footer className="relative overflow-hidden border-t border-[#8f355d]/10 bg-[#1f0c16] text-white">
       <div className="absolute inset-0">
@@ -86,6 +91,13 @@ const Footer: React.FC = () => {
               <Link to="/politica-cookies" className="transition hover:text-white">
                 Política de Cookies
               </Link>
+              <button
+                type="button"
+                onClick={openCookieSettings}
+                className="w-fit text-left text-sm text-white/68 transition hover:text-white"
+              >
+                Definições de cookies
+              </button>
               <Link to="/termos-condicoes" className="transition hover:text-white">
                 Termos e Condições
               </Link>
@@ -184,6 +196,13 @@ const Footer: React.FC = () => {
             <Link to="/politica-cookies" className="transition hover:text-white">
               Política de Cookies
             </Link>
+            <button
+              type="button"
+              onClick={openCookieSettings}
+              className="transition hover:text-white"
+            >
+              Definições de cookies
+            </button>
             <Link to="/termos-condicoes" className="transition hover:text-white">
               Termos e Condições
             </Link>

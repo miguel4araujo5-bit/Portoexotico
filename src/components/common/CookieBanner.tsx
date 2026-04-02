@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Cookie, ShieldCheck } from 'lucide-react';
-import { initGA } from '../../lib/analytics';
-
-declare global {
-  interface Window {
-    [key: `ga-disable-${string}`]: boolean | undefined;
-  }
-}
+import { disableGA, enableGA } from '../../lib/analytics';
 
 type CookieConsentRecord = {
   cookiesAccepted: boolean;
@@ -15,7 +9,6 @@ type CookieConsentRecord = {
 };
 
 const STORAGE_KEY = 'portoexotico-cookie-consent-v1';
-const GA_MEASUREMENT_ID = 'G-6QB707Y0JZ';
 const COOKIE_SETTINGS_EVENT = 'portoexotico:open-cookie-settings';
 
 const CookieBanner: React.FC = () => {
@@ -26,44 +19,10 @@ const CookieBanner: React.FC = () => {
 
   const isAdminRoute = location.pathname.startsWith('/admin');
 
-  const clearGACookies = () => {
-    const hostnameParts = window.location.hostname.split('.').filter(Boolean);
-    const cookieNames = document.cookie
-      .split(';')
-      .map((cookie) => cookie.trim().split('=')[0])
-      .filter((name) => name === '_ga' || name.startsWith('_ga_'));
-
-    const domainCandidates = hostnameParts.map((_, index) => {
-      const domain = hostnameParts.slice(index).join('.');
-      return [domain, `.${domain}`];
-    }).flat();
-
-    const uniqueDomains = Array.from(new Set(['', ...domainCandidates]));
-    const paths = ['/', window.location.pathname || '/'];
-
-    for (const name of cookieNames) {
-      for (const domain of uniqueDomains) {
-        for (const path of paths) {
-          const domainPart = domain ? ` domain=${domain};` : '';
-          document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path};${domainPart}`;
-        }
-      }
-    }
-  };
-
-  const disableGA = () => {
-    window[`ga-disable-${GA_MEASUREMENT_ID}`] = true;
-    clearGACookies();
-  };
-
-  const enableGA = () => {
-    window[`ga-disable-${GA_MEASUREMENT_ID}`] = false;
-    initGA(GA_MEASUREMENT_ID);
-  };
-
   useEffect(() => {
     if (isAdminRoute) {
       setIsVisible(false);
+      disableGA();
       return;
     }
 
@@ -71,6 +30,7 @@ const CookieBanner: React.FC = () => {
       const raw = window.localStorage.getItem(STORAGE_KEY);
 
       if (!raw) {
+        disableGA();
         setHasSavedChoice(false);
         setHasAccepted(false);
         setIsVisible(true);
@@ -95,10 +55,12 @@ const CookieBanner: React.FC = () => {
         return;
       }
 
+      disableGA();
       setHasSavedChoice(false);
       setHasAccepted(false);
       setIsVisible(true);
     } catch {
+      disableGA();
       setHasSavedChoice(false);
       setHasAccepted(false);
       setIsVisible(true);

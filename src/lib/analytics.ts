@@ -137,3 +137,42 @@ export const trackPageView = (
     page_title: resolvedPageTitle,
   });
 };
+
+type TrackCartItem = {
+  item_id?: string;
+  item_name: string;
+  item_category?: string;
+  price?: number;
+  quantity?: number;
+};
+
+export const trackAddToCart = (
+  item: TrackCartItem,
+  measurementId: string = GA_MEASUREMENT_ID
+) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  if (typeof window.gtag !== 'function') {
+    return;
+  }
+
+  if (window[`ga-disable-${measurementId}`]) {
+    return;
+  }
+
+  window.gtag('event', 'add_to_cart', {
+    currency: 'EUR',
+    value: typeof item.price === 'number' ? item.price * (item.quantity ?? 1) : undefined,
+    items: [
+      {
+        item_id: item.item_id,
+        item_name: item.item_name,
+        item_category: item.item_category,
+        price: item.price,
+        quantity: item.quantity ?? 1,
+      },
+    ],
+  });
+};;

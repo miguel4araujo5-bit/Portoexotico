@@ -3,8 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, ShoppingBag, X } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
-const logoSvgSrc = '/favicon.svg';
-const logoFallbackSrc = '/favicon-96x96.png';
+const logoSrc = '/apple-touch-icon.png';
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -44,14 +43,11 @@ const Header: React.FC = () => {
             to="/"
             className="group flex min-w-0 items-center gap-4 rounded-full border border-[#8f355d]/10 bg-white/95 px-4 py-3 shadow-[0_16px_40px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/20 hover:shadow-[0_22px_52px_rgba(143,53,93,0.14)] sm:px-5"
           >
-            <picture className="shrink-0">
-              <source srcSet={logoSvgSrc} type="image/svg+xml" />
-              <img
-                src={logoFallbackSrc}
-                alt="Porto Exótico"
-                className="h-10 w-10 object-contain sm:h-11 sm:w-11"
-              />
-            </picture>
+            <img
+              src={logoSrc}
+              alt="Porto Exótico"
+              className="h-10 w-10 shrink-0 object-contain sm:h-11 sm:w-11"
+            />
 
             <div className="min-w-0">
               <span className="block truncate font-serif text-[1.6rem] font-semibold leading-none tracking-[0.01em] text-[#7a2f4f] sm:text-[2.1rem]">

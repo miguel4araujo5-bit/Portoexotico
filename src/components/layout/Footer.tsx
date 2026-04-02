@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const logoSvgSrc = '/favicon.svg';
-const logoFallbackSrc = '/favicon-96x96.png';
+const logoSrc = '/logo.png';
 const supportEmail = 'portoexotico@gmail.com';
 
 const Footer: React.FC = () => {
@@ -20,14 +19,11 @@ const Footer: React.FC = () => {
             to="/"
             className="inline-flex items-center gap-4 rounded-full border border-white/10 bg-white/95 px-4 py-3 shadow-[0_16px_40px_rgba(143,53,93,0.14)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_46px_rgba(143,53,93,0.2)]"
           >
-            <picture>
-              <source srcSet={logoSvgSrc} type="image/svg+xml" />
-              <img
-                src={logoFallbackSrc}
-                alt="Porto Exótico"
-                className="h-9 w-9 object-contain"
-              />
-            </picture>
+            <img
+              src={logoSrc}
+              alt="Porto Exótico"
+              className="h-9 w-9 object-contain"
+            />
 
             <div className="min-w-0">
               <span className="block font-serif text-[1.15rem] font-semibold leading-none tracking-[0.01em] text-[#7a2f4f] sm:text-[1.35rem]">
@@ -66,33 +62,15 @@ const Footer: React.FC = () => {
             <p className="text-[11px] uppercase tracking-[0.32em] text-white/35">Navegação</p>
 
             <div className="mt-5 flex flex-col gap-3 text-sm text-white/68">
-              <Link to="/" className="transition hover:text-white">
-                Início
-              </Link>
-              <Link to="/loja" className="transition hover:text-white">
-                Loja
-              </Link>
-              <Link to="/sobre" className="transition hover:text-white">
-                Sobre
-              </Link>
-              <Link to="/contactos" className="transition hover:text-white">
-                Contactos
-              </Link>
-              <Link to="/carrinho" className="transition hover:text-white">
-                Carrinho
-              </Link>
-              <Link to="/checkout" className="transition hover:text-white">
-                Checkout
-              </Link>
-              <Link to="/politica-privacidade" className="transition hover:text-white">
-                Política de Privacidade
-              </Link>
-              <Link to="/politica-cookies" className="transition hover:text-white">
-                Política de Cookies
-              </Link>
-              <Link to="/termos-condicoes" className="transition hover:text-white">
-                Termos e Condições
-              </Link>
+              <Link to="/" className="transition hover:text-white">Início</Link>
+              <Link to="/loja" className="transition hover:text-white">Loja</Link>
+              <Link to="/sobre" className="transition hover:text-white">Sobre</Link>
+              <Link to="/contactos" className="transition hover:text-white">Contactos</Link>
+              <Link to="/carrinho" className="transition hover:text-white">Carrinho</Link>
+              <Link to="/checkout" className="transition hover:text-white">Checkout</Link>
+              <Link to="/politica-privacidade" className="transition hover:text-white">Política de Privacidade</Link>
+              <Link to="/politica-cookies" className="transition hover:text-white">Política de Cookies</Link>
+              <Link to="/termos-condicoes" className="transition hover:text-white">Termos e Condições</Link>
             </div>
 
             <div className="mt-6 rounded-[1.3rem] border border-white/10 bg-white/[0.03] p-4">
@@ -114,17 +92,9 @@ const Footer: React.FC = () => {
             <div className="mt-5 space-y-3">
               <div className="grid grid-cols-[60px_minmax(0,1fr)_118px] items-center gap-3 rounded-[1.35rem] border border-white/10 bg-white/[0.03] px-3 py-2.5 transition hover:border-white/15 hover:bg-white/[0.05]">
                 <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                  <img
-                    src="/paypal.svg"
-                    alt="PayPal"
-                    className="h-[33px] w-auto object-contain"
-                  />
+                  <img src="/paypal.svg" alt="PayPal" className="h-[33px] w-auto object-contain" />
                 </div>
-
-                <span className="whitespace-nowrap text-[15px] font-medium tracking-[0.01em] text-white">
-                  PayPal
-                </span>
-
+                <span className="whitespace-nowrap text-[15px] font-medium tracking-[0.01em] text-white">PayPal</span>
                 <span className="inline-flex w-[118px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-emerald-200/80">
                   Disponível
                 </span>
@@ -132,17 +102,9 @@ const Footer: React.FC = () => {
 
               <div className="grid grid-cols-[60px_minmax(0,1fr)_118px] items-center gap-3 rounded-[1.35rem] border border-white/10 bg-white/[0.03] px-3 py-2.5 transition hover:border-white/15 hover:bg-white/[0.05]">
                 <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                  <img
-                    src="/stripe.svg"
-                    alt="Stripe"
-                    className="h-[33px] w-auto object-contain"
-                  />
+                  <img src="/stripe.svg" alt="Stripe" className="h-[33px] w-auto object-contain" />
                 </div>
-
-                <span className="whitespace-nowrap text-[15px] font-medium tracking-[0.01em] text-white">
-                  Stripe
-                </span>
-
+                <span className="whitespace-nowrap text-[15px] font-medium tracking-[0.01em] text-white">Stripe</span>
                 <span className="inline-flex w-[118px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-amber-200/80">
                   Brevemente
                 </span>
@@ -150,17 +112,9 @@ const Footer: React.FC = () => {
 
               <div className="grid grid-cols-[60px_minmax(0,1fr)_118px] items-center gap-3 rounded-[1.35rem] border border-white/10 bg-white/[0.03] px-3 py-2.5 transition hover:border-white/15 hover:bg-white/[0.05]">
                 <div className="flex h-9 w-[60px] items-center justify-center rounded-[0.85rem] bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                  <img
-                    src="/mbway.svg"
-                    alt="MB WAY"
-                    className="h-[30px] w-auto object-contain"
-                  />
+                  <img src="/mbway.svg" alt="MB WAY" className="h-[30px] w-auto object-contain" />
                 </div>
-
-                <span className="whitespace-nowrap text-[15px] font-medium tracking-[0.01em] text-white">
-                  MB WAY
-                </span>
-
+                <span className="whitespace-nowrap text-[15px] font-medium tracking-[0.01em] text-white">MB WAY</span>
                 <span className="inline-flex w-[118px] items-center justify-center rounded-full border border-white/10 bg-white/[0.04] py-1 text-center text-[10px] uppercase tracking-[0.28em] text-amber-200/80">
                   Brevemente
                 </span>
@@ -182,15 +136,9 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-white/50">
-            <Link to="/politica-privacidade" className="transition hover:text-white">
-              Política de Privacidade
-            </Link>
-            <Link to="/politica-cookies" className="transition hover:text-white">
-              Política de Cookies
-            </Link>
-            <Link to="/termos-condicoes" className="transition hover:text-white">
-              Termos e Condições
-            </Link>
+            <Link to="/politica-privacidade" className="transition hover:text-white">Política de Privacidade</Link>
+            <Link to="/politica-cookies" className="transition hover:text-white">Política de Cookies</Link>
+            <Link to="/termos-condicoes" className="transition hover:text-white">Termos e Condições</Link>
           </div>
         </div>
       </div>

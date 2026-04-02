@@ -1,4 +1,5 @@
 import { buildChatKnowledge, chatContext, type ChatContext } from '../../src/data/chatContext';
+import { productCategories, products, type Product } from '../../src/data/products';
 
 type ChatRole = 'user' | 'assistant';
 
@@ -75,6 +76,10 @@ function sanitizeHistory(history: unknown): Array<{ role: ChatRole; content: str
     .slice(-8);
 }
 
+function formatPrice(value: number) {
+  return `${value.toFixed(2).replace('.', ',')} €`;
+}
+
 function buildResolvedContext(env: ChatEnv): ChatContext {
   const storeName = sanitizeText(env.CHATBOT_STORE_NAME, 120);
   const supportEmail = sanitizeText(env.CHATBOT_SUPPORT_EMAIL, 200);
@@ -99,23 +104,66 @@ function buildResolvedContext(env: ChatEnv): ChatContext {
   };
 }
 
+function buildCategoryKnowledge() {
+  return productCategories
+    .map((category) => `${category.label} (${category.value})`)
+    .join('\n');
+}
+
+function buildProductLine(product: Product) {
+  const categoryLabel =
+    productCategories.find((category) => category.value === product.category)?.label || product.category;
+
+  const flags = [
+    product.isBestSeller ? 'best seller' : '',
+    product.isNew ? 'novo' : ''
+  ]
+    .filter(Boolean)
+    .join(', ');
+
+  return [
+    `Nome: ${product.name}`,
+    `Slug: ${product.slug}`,
+    `Categoria: ${categoryLabel}`,
+    `Preço: ${formatPrice(product.price)}`,
+    product.compareAtPrice ? `Preço anterior: ${formatPrice(product.compareAtPrice)}` : '',
+    `Resumo: ${product.shortDescription}`,
+    `Descrição: ${product.description}`,
+    product.tags.length ? `Tags: ${product.tags.join(', ')}` : '',
+    flags ? `Destaques: ${flags}` : ''
+  ]
+    .filter(Boolean)
+    .join('\n');
+}
+
+function buildProductKnowledge() {
+  return products.map((product) => buildProductLine(product)).join('\n\n');
+}
+
 function buildSystemPrompt(env: ChatEnv) {
   const context = buildResolvedContext(env);
   const knowledge = buildChatKnowledge(context);
+  const categoryKnowledge = buildCategoryKnowledge();
+  const productKnowledge = buildProductKnowledge();
 
   return [
-    `És o assistente virtual da loja ${context.storeName}.`,
+    `És a assistente virtual da loja ${context.storeName}.`,
     'Responde sempre em português de Portugal.',
     `O teu tom deve ser ${context.tone}.`,
     `O teu público principal é: ${context.audience}.`,
-    'Ajuda os clientes com produtos, categorias, envios, pagamentos, embalagem discreta, disponibilidade, encomendas e dúvidas gerais da loja.',
+    'Ajuda os clientes com produtos, categorias, envios, pagamentos, embalagem discreta, disponibilidade no catálogo, encomendas e dúvidas gerais da loja.',
     'Nunca inventes preços, stock, promoções, prazos exatos, métodos de pagamento, ingredientes, materiais ou características técnicas que não tenham sido confirmados.',
+    'Só podes usar preços que estejam presentes no catálogo abaixo.',
+    'Não confirmes stock real. Podes dizer que um produto existe no catálogo atual, mas que a disponibilidade final deve ser validada pela loja se necessário.',
+    'Quando o cliente pedir ajuda a escolher, sugere produtos ou categorias do catálogo real abaixo de forma clara, discreta e útil.',
+    'Quando o cliente mencionar um produto específico, responde com base no nome, categoria, resumo, descrição e preço desse produto se ele existir no catálogo.',
     'Quando não souberes uma resposta específica, diz claramente que precisas de confirmação humana e orienta para contacto direto.',
     'Nunca peças dados completos de cartão, IBAN, passwords, códigos de autenticação ou documentos pessoais no chat.',
-    'Quando o cliente pedir aconselhamento de produto, dá sugestões gerais e seguras com base no contexto dado, sem linguagem explícita desnecessária.',
     'Mantém as respostas curtas a médias, claras e úteis.',
     'Sempre que fizer sentido, termina com um próximo passo simples.',
-    `Base de conhecimento da loja:\n\n${knowledge}`
+    `Base de conhecimento da loja:\n\n${knowledge}`,
+    `Categorias reais da loja:\n\n${categoryKnowledge}`,
+    `Catálogo real atual:\n\n${productKnowledge}`
   ].join('\n\n');
 }
 
@@ -124,48 +172,50 @@ function extractReply(result: unknown) {
     return result.trim();
   }
 
-  if (result && typeof result === 'object') {
-    const value = result as Record<string, unknown>;
+  if (!result || typeof result !== 'object') {
+    return '';
+  }
 
-    if (typeof value.response === 'string') {
-      return value.response.trim();
+  const value = result as Record<string, unknown>;
+
+  if (typeof value.response === 'string') {
+    return value.response.trim();
+  }
+
+  if (typeof value.output_text === 'string') {
+    return value.output_text.trim();
+  }
+
+  if (Array.isArray(value.result)) {
+    const text = value.result
+      .map((item) => {
+        if (typeof item === 'string') {
+          return item;
+        }
+
+        if (item && typeof item === 'object' && typeof (item as Record<string, unknown>).text === 'string') {
+          return (item as Record<string, unknown>).text as string;
+        }
+
+        return '';
+      })
+      .join(' ')
+      .trim();
+
+    if (text) {
+      return text;
+    }
+  }
+
+  if (value.result && typeof value.result === 'object') {
+    const nested = value.result as Record<string, unknown>;
+
+    if (typeof nested.response === 'string') {
+      return nested.response.trim();
     }
 
-    if (typeof value.output_text === 'string') {
-      return value.output_text.trim();
-    }
-
-    if (Array.isArray(value.result)) {
-      const text = value.result
-        .map((item) => {
-          if (typeof item === 'string') {
-            return item;
-          }
-
-          if (item && typeof item === 'object' && typeof (item as Record<string, unknown>).text === 'string') {
-            return (item as Record<string, unknown>).text as string;
-          }
-
-          return '';
-        })
-        .join(' ')
-        .trim();
-
-      if (text) {
-        return text;
-      }
-    }
-
-    if (value.result && typeof value.result === 'object') {
-      const nested = value.result as Record<string, unknown>;
-
-      if (typeof nested.response === 'string') {
-        return nested.response.trim();
-      }
-
-      if (typeof nested.output_text === 'string') {
-        return nested.output_text.trim();
-      }
+    if (typeof nested.output_text === 'string') {
+      return nested.output_text.trim();
     }
   }
 
@@ -237,7 +287,7 @@ export async function handleChatRequest(request: Request, env: ChatEnv) {
         ...history,
         { role: 'user', content: message }
       ],
-      max_tokens: 500,
+      max_tokens: 700,
       temperature: 0.4
     });
 

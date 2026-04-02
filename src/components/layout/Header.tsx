@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, ShoppingBag, X } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
-const logoSrc = '/apple-touch-icon.png';
+const logoSrc = '/logo.png';
 
 const Header: React.FC = () => {
   const location = useLocation();

@@ -8,6 +8,13 @@ type ChatMessage = {
   content: string;
 };
 
+type ChatResponse = {
+  ok?: boolean;
+  reply?: string;
+  error?: string;
+  model?: string;
+};
+
 const initialMessages: ChatMessage[] = [
   {
     role: 'assistant',
@@ -69,14 +76,26 @@ const ChatWidget: React.FC = () => {
         signal: abortRef.current.signal
       });
 
-      const data = (await response.json()) as {
-        ok?: boolean;
-        reply?: string;
-        error?: string;
-      };
+      const raw = await response.text();
 
-      if (!response.ok || !data.ok || typeof data.reply !== 'string' || !data.reply.trim()) {
-        throw new Error(data.error || 'Não foi possível obter resposta');
+      let data: ChatResponse = {};
+
+      try {
+        data = raw ? (JSON.parse(raw) as ChatResponse) : {};
+      } catch {
+        data = {};
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || raw || `Erro HTTP ${response.status}`);
+      }
+
+      if (!data.ok) {
+        throw new Error(data.error || 'Pedido sem sucesso');
+      }
+
+      if (typeof data.reply !== 'string' || !data.reply.trim()) {
+        throw new Error(data.error || 'Resposta vazia do assistente');
       }
 
       const reply = data.reply.trim();
@@ -93,12 +112,16 @@ const ChatWidget: React.FC = () => {
         return;
       }
 
+      const errorMessage =
+        error instanceof Error && error.message
+          ? error.message
+          : 'Não foi possível responder neste momento.';
+
       setMessages((current) => [
         ...current,
         {
           role: 'assistant',
-          content:
-            'Não foi possível responder neste momento. Tenta novamente dentro de instantes.'
+          content: `Erro do assistente: ${errorMessage}`
         }
       ]);
     } finally {

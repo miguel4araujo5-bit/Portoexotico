@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-const GA_MEASUREMENT_ID = 'G-6QB707Y0JZ';
+const GA_MEASUREMENT_ID = 'G-Z5G94LR7D7';
 
 let gaInitialized = false;
 let scriptLoadingPromise: Promise<void> | null = null;

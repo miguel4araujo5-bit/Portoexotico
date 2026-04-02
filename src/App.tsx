@@ -14,6 +14,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import About from './pages/Sobre';
 import Contactos from './pages/Contactos';
+import PoliticaCookies from './pages/PoliticaCookies';
 import AdminLogin from './pages/AdminLogin';
 import AdminOrders from './pages/AdminOrders';
 import AdminRoute from './components/admin/AdminRoute';
@@ -144,25 +145,6 @@ const PrivacyPolicyPage: React.FC = () => {
   );
 };
 
-const CookiesPolicyPage: React.FC = () => {
-  return (
-    <main className="min-h-screen bg-neutral-950 px-6 py-16 text-white md:px-10">
-      <div className="mx-auto max-w-5xl">
-        <p className="text-xs uppercase tracking-[0.3em] text-white/40">Legal</p>
-        <h1 className="mt-3 text-3xl font-semibold md:text-5xl">Política de Cookies</h1>
-
-        <div className="mt-8 space-y-6 text-sm leading-7 text-white/75 md:text-[15px]">
-          <p>
-            Este website utiliza cookies para garantir o seu correto funcionamento e, quando
-            aplicável, para melhorar a experiência de navegação, medir desempenho e analisar
-            utilização.
-          </p>
-        </div>
-      </div>
-    </main>
-  );
-};
-
 const TermsPage: React.FC = () => {
   return (
     <main className="min-h-screen bg-neutral-950 px-6 py-16 text-white md:px-10">
@@ -205,7 +187,7 @@ const App: React.FC = () => {
         <Route path="/sobre" element={<About />} />
         <Route path="/contactos" element={<Contactos />} />
         <Route path="/politica-privacidade" element={<PrivacyPolicyPage />} />
-        <Route path="/politica-cookies" element={<CookiesPolicyPage />} />
+        <Route path="/politica-cookies" element={<PoliticaCookies />} />
         <Route path="/termos-condicoes" element={<TermsPage />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route

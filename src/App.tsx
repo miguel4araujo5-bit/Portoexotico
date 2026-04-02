@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { trackPageView } from './lib/analytics';
 import AgeGate from './components/common/AgeGate';
 import CookieBanner from './components/common/CookieBanner';
+import ScrollToTop from './components/common/ScrollToTop';
 import ChatWidget from './components/chat/ChatWidget';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -47,6 +48,8 @@ const App: React.FC = () => {
 
   return (
     <>
+      <ScrollToTop />
+
       <Helmet>
         <title>Porto Exótico | Boutique Íntima Online</title>
         <meta

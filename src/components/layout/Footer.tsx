@@ -84,6 +84,15 @@ const Footer: React.FC = () => {
               <Link to="/checkout" className="transition hover:text-white">
                 Checkout
               </Link>
+              <Link to="/politica-privacidade" className="transition hover:text-white">
+                Política de Privacidade
+              </Link>
+              <Link to="/politica-cookies" className="transition hover:text-white">
+                Política de Cookies
+              </Link>
+              <Link to="/termos-condicoes" className="transition hover:text-white">
+                Termos e Condições
+              </Link>
             </div>
 
             <div className="mt-6 rounded-[1.3rem] border border-white/10 bg-white/[0.03] p-4">
@@ -166,9 +175,23 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="relative border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-5 text-xs text-white/40 md:flex-row md:items-center md:justify-between md:px-10">
-          <p>© 2026 Porto Exótico. Todos os direitos reservados.</p>
-          <p>Privacidade em primeiro lugar. Envio discreto. Checkout protegido.</p>
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-5 text-xs text-white/40 md:px-10">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <p>© 2026 Porto Exótico. Todos os direitos reservados.</p>
+            <p>Privacidade em primeiro lugar. Envio discreto. Checkout protegido.</p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-white/50">
+            <Link to="/politica-privacidade" className="transition hover:text-white">
+              Política de Privacidade
+            </Link>
+            <Link to="/politica-cookies" className="transition hover:text-white">
+              Política de Cookies
+            </Link>
+            <Link to="/termos-condicoes" className="transition hover:text-white">
+              Termos e Condições
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

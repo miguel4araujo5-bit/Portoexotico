@@ -1,4 +1,4 @@
-import { products } from '../../src/data/products';
+import { products, type Product } from '../../src/data/products';
 import { buildChatKnowledge, chatContext } from '../../src/data/chatContext';
 
 export type ChatEnv = {
@@ -27,15 +27,20 @@ const DEFAULT_MODEL = '@cf/ibm-granite/granite-4.0-h-micro';
 
 const SYSTEM_PROMPT = `És a Diana, assistente virtual da Porto Exótico.
 Responde sempre em português de Portugal.
-Tom: discreto, elegante, acolhedor e profissional.
-Mantém respostas curtas, claras e naturais.
+Tom: discreto, elegante, acolhedor, sensual de forma subtil e profissional.
+Mantém respostas curtas, claras, naturais e confiantes.
 
 Regras obrigatórias:
 - Nunca inventes produtos, marcas, preços, promoções, stock, prazos, pagamentos ou políticas.
 - Só podes mencionar ou sugerir produtos presentes no catálogo fornecido no contexto.
-- Se não conseguires confirmar um produto, disponibilidade ou detalhe operacional, diz isso com transparência.
+- Se a cliente mencionar um artigo específico que não corresponda claramente ao catálogo, não o confirmes.
+- Nesses casos, diz com elegância que não consegues confirmar esse artigo específico e sugere até 3 alternativas reais do catálogo.
 - Nunca assumas detalhes operacionais como certos.
-- Não dês aconselhamento médico nem faças promessas sobre resultados.`;
+- Não dês aconselhamento médico nem faças promessas sobre resultados.
+
+Estilo:
+- Podes ser envolvente, sofisticada e sugestiva, mas nunca vulgar ou explícita.
+- Quando sugerires alternativas, fá-lo com bom gosto, subtileza e discrição.`;
 
 function buildCatalogContext() {
   if (!products.length) {
@@ -48,6 +53,91 @@ function buildCatalogContext() {
       (product) =>
         `- ${product.name} | categoria: ${product.category} | preço: ${product.price.toFixed(2).replace('.', ',')}€ | tags: ${product.tags.join(', ')}`
     ),
+  ].join('\n');
+}
+
+function normalizeText(value: string) {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, ' ')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function scoreProductMatch(message: string, product: Product) {
+  const normalizedMessage = normalizeText(message);
+  const normalizedName = normalizeText(product.name);
+  const normalizedSlug = normalizeText(product.slug);
+  const messageTokens = new Set(
+    normalizedMessage.split(' ').filter((token) => token.length >= 4)
+  );
+
+  let score = 0;
+
+  if (normalizedMessage.includes(normalizedName)) {
+    score += 8;
+  }
+
+  if (normalizedMessage.includes(normalizedSlug)) {
+    score += 7;
+  }
+
+  for (const word of normalizedName.split(' ').filter((token) => token.length >= 4)) {
+    if (messageTokens.has(word)) {
+      score += 2;
+    }
+  }
+
+  for (const tag of product.tags) {
+    const normalizedTag = normalizeText(tag);
+
+    if (normalizedTag.length >= 4 && messageTokens.has(normalizedTag)) {
+      score += 2;
+    }
+  }
+
+  if (messageTokens.has(normalizeText(product.category))) {
+    score += 1;
+  }
+
+  return score;
+}
+
+function findMatchedProducts(message: string) {
+  return products
+    .map((product) => ({
+      product,
+      score: scoreProductMatch(message, product),
+    }))
+    .filter((item) => item.score >= 6)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map((item) => item.product);
+}
+
+function buildRequestGuardContext(message: string) {
+  const matches = findMatchedProducts(message);
+
+  if (matches.length > 0) {
+    return [
+      'Correspondência encontrada entre a mensagem da cliente e o catálogo.',
+      'Se mencionares produtos nesta resposta, dá prioridade apenas a estes:',
+      ...matches.map(
+        (product) =>
+          `- ${product.name} | categoria: ${product.category} | preço: ${product.price.toFixed(2).replace('.', ',')}€`
+      ),
+    ].join('\n');
+  }
+
+  return [
+    'Não foi encontrada correspondência clara entre a mensagem da cliente e o nome de um produto do catálogo.',
+    'Se a cliente estiver a pedir ou a confirmar um artigo específico pelo nome, não o confirmes.',
+    'Diz com elegância que não consegues confirmar esse artigo específico no catálogo atual.',
+    'Depois sugere até 3 alternativas reais do catálogo, mantendo um tom sofisticado, discreto e sugestivo.',
+    'Se a pergunta for geral e não sobre um artigo específico, responde normalmente com base no catálogo e no contexto da loja.',
   ].join('\n');
 }
 
@@ -253,6 +343,7 @@ export async function handleChatRequest(request: Request, env: ChatEnv) {
   const model = env.PORTOEXOTICO_CHAT_MODEL?.trim() || DEFAULT_MODEL;
   const knowledge = buildChatKnowledge(chatContext);
   const catalog = buildCatalogContext();
+  const requestGuard = buildRequestGuardContext(message);
 
   const messages: ChatMessage[] = [
     {
@@ -266,6 +357,10 @@ export async function handleChatRequest(request: Request, env: ChatEnv) {
     {
       role: 'system',
       content: catalog,
+    },
+    {
+      role: 'system',
+      content: requestGuard,
     },
     ...history,
     {

@@ -46,7 +46,7 @@ const CookieBanner: React.FC = () => {
         setHasAccepted(accepted);
 
         if (accepted) {
-          enableGA();
+          void enableGA();
         } else {
           disableGA();
         }
@@ -92,7 +92,7 @@ const CookieBanner: React.FC = () => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     setHasSavedChoice(true);
     setHasAccepted(true);
-    enableGA();
+    void enableGA();
     setIsVisible(false);
   };
 

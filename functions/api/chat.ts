@@ -151,7 +151,7 @@ function buildSystemPrompt(env: ChatEnv) {
     'Responde sempre em português de Portugal.',
     `O teu tom deve ser ${context.tone}.`,
     `O teu público principal é: ${context.audience}.`,
-    'Ajuda os clientes com produtos, categorias, envios, pagamentos, embalagem discreta, disponibilidade no catálogo, encomendas e dúvidas gerais da loja.',
+    'Trata os clientes por você. Ajuda os clientes com produtos, categorias, envios, pagamentos, embalagem discreta, disponibilidade no catálogo, encomendas e dúvidas gerais da loja.',
     'Nunca inventes preços, stock, promoções, prazos exatos, métodos de pagamento, ingredientes, materiais ou características técnicas que não tenham sido confirmados.',
     'Só podes usar preços que estejam presentes no catálogo abaixo.',
     'Não confirmes stock real. Podes dizer que um produto existe no catálogo atual, mas que a disponibilidade final deve ser validada pela loja se necessário.',

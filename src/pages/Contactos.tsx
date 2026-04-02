@@ -22,8 +22,7 @@ const mapEmbedSrc =
 const mapExternalUrl =
   'https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Mamede%20de%20Infesta';
 const supportWhatsAppDigits = supportWhatsApp.replace(/\D/g, '');
-const logoSvgSrc = '/favicon.svg';
-const logoFallbackSrc = '/favicon-96x96.png';
+const logoSrc = '/logo.png';
 
 const channels = [
   supportEmail
@@ -74,14 +73,7 @@ const Contactos: React.FC = () => {
                 to="/"
                 className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white/90 px-4 py-3 shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]"
               >
-                <picture>
-                  <source srcSet={logoSvgSrc} type="image/svg+xml" />
-                  <img
-                    src={logoFallbackSrc}
-                    alt="Porto Exótico"
-                    className="h-8 w-8 object-contain"
-                  />
-                </picture>
+                <img src={logoSrc} alt="Porto Exótico" className="h-8 w-8 object-contain" />
 
                 <div className="min-w-0">
                   <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
@@ -273,14 +265,7 @@ const Contactos: React.FC = () => {
                     to="/"
                     className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white px-4 py-3 shadow-[0_10px_28px_rgba(143,53,93,0.08)]"
                   >
-                    <picture>
-                      <source srcSet={logoSvgSrc} type="image/svg+xml" />
-                      <img
-                        src={logoFallbackSrc}
-                        alt="Porto Exótico"
-                        className="h-8 w-8 object-contain"
-                      />
-                    </picture>
+                    <img src={logoSrc} alt="Porto Exótico" className="h-8 w-8 object-contain" />
 
                     <div className="min-w-0">
                       <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">

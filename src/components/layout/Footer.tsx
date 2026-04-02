@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logoSrc from '../../assets/logo.png';
 
+const logoSrc = '/logo.png';
 const supportEmail = 'portoexotico@gmail.com';
 
 const Footer: React.FC = () => {

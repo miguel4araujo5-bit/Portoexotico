@@ -1,6 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, CreditCard, Lock, Package, Wallet, ShieldCheck, Sparkles } from 'lucide-react';
+import {
+  CheckCircle2,
+  CreditCard,
+  Lock,
+  Package,
+  Wallet,
+  ShieldCheck,
+  Sparkles,
+} from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 type PaymentMethod = 'paypal' | 'stripe' | 'mbway';
@@ -37,11 +45,16 @@ const logoFallbackSrc = '/favicon-96x96.png';
 const Checkout: React.FC = () => {
   const { items, subtotal } = useCart();
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>('paypal');
+  const [acceptedLegal, setAcceptedLegal] = useState(false);
+  const [acceptedMarketing, setAcceptedMarketing] = useState(false);
 
   const selectedOption = useMemo(
     () => paymentOptions.find((option) => option.id === selectedPayment),
     [selectedPayment]
   );
+
+  const isSelectedPaymentAvailable = selectedOption?.status === 'available';
+  const canProceed = acceptedLegal && isSelectedPaymentAvailable;
 
   if (items.length === 0) {
     return (
@@ -210,6 +223,82 @@ const Checkout: React.FC = () => {
                     placeholder="Localidade"
                     className="rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
                   />
+                </div>
+
+                <div className="mt-6 rounded-[1.5rem] border border-[#8f355d]/10 bg-[#fffafb] p-5">
+                  <div className="flex items-start gap-3">
+                    <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
+                    <div>
+                      <p className="text-sm font-medium text-[#6f2947]">Proteção de dados</p>
+                      <p className="mt-2 text-sm leading-6 text-neutral-600">
+                        Os seus dados são utilizados apenas para processar a encomenda, gerir o
+                        envio, prestar apoio ao cliente e cumprir obrigações legais, nos termos da
+                        nossa{' '}
+                        <Link
+                          to="/politica-privacidade"
+                          className="font-medium text-[#7a2f4f] transition hover:text-[#8f355d]"
+                        >
+                          Política de Privacidade
+                        </Link>
+                        .
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 space-y-4">
+                    <label className="flex items-start gap-3 rounded-[1.2rem] border border-[#8f355d]/10 bg-white px-4 py-4">
+                      <input
+                        type="checkbox"
+                        checked={acceptedLegal}
+                        onChange={(event) => setAcceptedLegal(event.target.checked)}
+                        className="mt-1 h-4 w-4 rounded border-[#8f355d]/30 text-[#8f355d] focus:ring-[#8f355d]/30"
+                      />
+                      <span className="text-sm leading-6 text-neutral-700">
+                        Li e aceito a{' '}
+                        <Link
+                          to="/politica-privacidade"
+                          className="font-medium text-[#7a2f4f] transition hover:text-[#8f355d]"
+                        >
+                          Política de Privacidade
+                        </Link>{' '}
+                        e os{' '}
+                        <Link
+                          to="/termos-condicoes"
+                          className="font-medium text-[#7a2f4f] transition hover:text-[#8f355d]"
+                        >
+                          Termos e Condições
+                        </Link>
+                        .
+                      </span>
+                    </label>
+
+                    <label className="flex items-start gap-3 rounded-[1.2rem] border border-[#8f355d]/10 bg-white px-4 py-4">
+                      <input
+                        type="checkbox"
+                        checked={acceptedMarketing}
+                        onChange={(event) => setAcceptedMarketing(event.target.checked)}
+                        className="mt-1 h-4 w-4 rounded border-[#8f355d]/30 text-[#8f355d] focus:ring-[#8f355d]/30"
+                      />
+                      <span className="text-sm leading-6 text-neutral-700">
+                        Quero receber novidades, campanhas e lançamentos da Porto Exótico por email
+                        e/ou outros meios eletrónicos.
+                      </span>
+                    </label>
+                  </div>
+
+                  {!acceptedLegal ? (
+                    <p className="mt-4 text-xs leading-6 text-[#8f355d]">
+                      Para concluir a encomenda, é necessário aceitar a Política de Privacidade e os
+                      Termos e Condições.
+                    </p>
+                  ) : null}
+
+                  {acceptedMarketing ? (
+                    <p className="mt-4 text-xs leading-6 text-neutral-500">
+                      Poderá retirar este consentimento a qualquer momento através dos contactos
+                      disponibilizados pela Porto Exótico.
+                    </p>
+                  ) : null}
                 </div>
               </div>
 
@@ -386,10 +475,28 @@ const Checkout: React.FC = () => {
 
               <button
                 type="button"
-                className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#8f355d_0%,#a84f78_100%)] px-6 py-3 text-sm font-medium text-white shadow-[0_16px_38px_rgba(143,53,93,0.24)] transition duration-300 hover:-translate-y-0.5"
+                disabled={!canProceed}
+                className={[
+                  'mt-6 inline-flex w-full items-center justify-center rounded-full px-6 py-3 text-sm font-medium text-white transition duration-300',
+                  canProceed
+                    ? 'bg-[linear-gradient(135deg,#8f355d_0%,#a84f78_100%)] shadow-[0_16px_38px_rgba(143,53,93,0.24)] hover:-translate-y-0.5'
+                    : 'cursor-not-allowed bg-neutral-300 text-white shadow-none',
+                ].join(' ')}
               >
                 Continuar com {selectedPayment === 'paypal' ? 'PayPal' : 'método disponível brevemente'}
               </button>
+
+              {!acceptedLegal ? (
+                <p className="mt-4 text-xs leading-6 text-[#8f355d]">
+                  Falta aceitar a Política de Privacidade e os Termos e Condições para continuar.
+                </p>
+              ) : null}
+
+              {acceptedLegal && !isSelectedPaymentAvailable ? (
+                <p className="mt-4 text-xs leading-6 text-[#8f355d]">
+                  O método selecionado ainda não está disponível para conclusão da encomenda.
+                </p>
+              ) : null}
 
               <p className="mt-4 text-xs leading-6 text-neutral-500">
                 O resumo da encomenda está preparado para uma finalização simples, discreta e clara.

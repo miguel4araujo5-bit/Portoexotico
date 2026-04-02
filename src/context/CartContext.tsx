@@ -7,6 +7,7 @@ import React, {
   useState,
 } from 'react';
 import type { Product } from '../data/products';
+import { trackAddToCart } from '../lib/analytics';
 
 type CartItem = {
   product: Product;
@@ -150,6 +151,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       return [...currentItems, { product, quantity: safeQuantity }];
+    });
+
+    trackAddToCart({
+      item_id: product.id,
+      item_name: product.name,
+      item_category: product.category,
+      item_category2: product.tags[0],
+      price: product.price,
+      quantity: safeQuantity,
     });
   }, []);
 

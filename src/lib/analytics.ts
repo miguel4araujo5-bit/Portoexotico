@@ -142,6 +142,12 @@ type TrackCartItem = {
   item_id?: string;
   item_name: string;
   item_category?: string;
+  item_category2?: string;
+  item_category3?: string;
+  item_category4?: string;
+  item_category5?: string;
+  item_brand?: string;
+  item_variant?: string;
   price?: number;
   quantity?: number;
 };
@@ -170,9 +176,15 @@ export const trackAddToCart = (
         item_id: item.item_id,
         item_name: item.item_name,
         item_category: item.item_category,
+        item_category2: item.item_category2,
+        item_category3: item.item_category3,
+        item_category4: item.item_category4,
+        item_category5: item.item_category5,
+        item_brand: item.item_brand,
+        item_variant: item.item_variant,
         price: item.price,
         quantity: item.quantity ?? 1,
       },
     ],
   });
-};;
+};

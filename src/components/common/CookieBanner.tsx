@@ -9,7 +9,7 @@ type CookieConsentRecord = {
 };
 
 const STORAGE_KEY = 'portoexotico-cookie-consent-v1';
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+const GA_MEASUREMENT_ID = 'G-6QB707Y0JZ';
 
 const CookieBanner: React.FC = () => {
   const location = useLocation();

@@ -320,4 +320,4 @@ export async function handleChatRequest(request: Request, env: ChatEnv) {
       { status: 500 }
     );
   }
-}
+} 

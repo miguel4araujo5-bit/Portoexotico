@@ -46,7 +46,7 @@ const Header: React.FC = () => {
             <img
               src={logoSrc}
               alt="Porto Exótico"
-              className="h-10 w-10 shrink-0 object-contain sm:h-11 sm:w-11"
+              className="h-12 w-12 shrink-0 object-contain sm:h-14 sm:w-14"
             />
 
             <div className="min-w-0">

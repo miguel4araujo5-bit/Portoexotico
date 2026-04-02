@@ -179,7 +179,7 @@ const ChatWidget: React.FC = () => {
                   <img
                     src={assistantAvatar}
                     alt="Diana"
-                    className="h-14 w-14 object-contain"
+                    className="h-16 w-16 object-contain"
                   />
                   <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-emerald-500" />
                 </div>

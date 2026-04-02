@@ -32,7 +32,6 @@ const ChatWidget: React.FC = () => {
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
-  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -57,16 +56,6 @@ const ChatWidget: React.FC = () => {
   }, [isOpen, messages, isSending]);
 
   const canSend = useMemo(() => input.trim().length > 0 && !isSending, [input, isSending]);
-
-  const lastUserMessageIndex = useMemo(() => {
-    for (let index = messages.length - 1; index >= 0; index -= 1) {
-      if (messages[index].role === 'user') {
-        return index;
-      }
-    }
-
-    return -1;
-  }, [messages]);
 
   const sendMessage = async () => {
     const content = input.trim();
@@ -188,13 +177,14 @@ const ChatWidget: React.FC = () => {
               <img
                 src={assistantAvatar}
                 alt="Diana"
-                className="h-14 w-14 shrink-0 object-contain"
+                className="h-12 w-12 shrink-0 object-contain"
               />
               <div>
                 <p className="text-[11px] uppercase tracking-[0.28em] text-[#8f355d]/70">
                   Assistente
                 </p>
-                <h3 className="mt-1 text-base font-semibold text-neutral-900">Porto Exótico</h3>
+                <h3 className="mt-0.5 text-base font-semibold text-neutral-900">Diana</h3>
+                <p className="text-xs text-neutral-500">Porto Exótico</p>
               </div>
             </div>
 
@@ -208,47 +198,41 @@ const ChatWidget: React.FC = () => {
             </button>
           </div>
 
-          <div
-            ref={messagesContainerRef}
-            className="flex-1 space-y-4 overflow-y-auto bg-white px-4 py-4"
-          >
+          <div className="flex-1 space-y-4 overflow-y-auto bg-white px-4 py-4">
             {messages.map((message, index) => {
               const isUser = message.role === 'user';
-              const showReadByDiana =
-                isUser &&
-                index === lastUserMessageIndex &&
-                messages.slice(index + 1).some((item) => item.role === 'assistant');
 
-              return (
-                <div
-                  key={`${message.role}-${index}`}
-                  className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div className="flex max-w-[85%] flex-col">
-                    <div
-                      className={`whitespace-pre-wrap rounded-3xl px-4 py-3 text-sm leading-6 ${
-                        isUser
-                          ? 'rounded-br-md bg-[#8f355d] text-white'
-                          : 'rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] text-neutral-900'
-                      }`}
-                    >
+              if (isUser) {
+                return (
+                  <div key={`${message.role}-${index}`} className="flex justify-end">
+                    <div className="max-w-[85%] whitespace-pre-wrap rounded-3xl rounded-br-md bg-[#8f355d] px-4 py-3 text-sm leading-6 text-white">
                       {message.content}
                     </div>
+                  </div>
+                );
+              }
 
-                    {showReadByDiana ? (
-                      <img
-                        src={assistantAvatar}
-                        alt="Lido pela Diana"
-                        className="mt-2 ml-auto h-5 w-5 object-contain opacity-90"
-                      />
-                    ) : null}
+              return (
+                <div key={`${message.role}-${index}`} className="flex items-end gap-2">
+                  <img
+                    src={assistantAvatar}
+                    alt="Diana"
+                    className="h-8 w-8 shrink-0 object-contain"
+                  />
+                  <div className="max-w-[85%] whitespace-pre-wrap rounded-3xl rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] px-4 py-3 text-sm leading-6 text-neutral-900">
+                    {message.content}
                   </div>
                 </div>
               );
             })}
 
             {isSending ? (
-              <div className="flex justify-start">
+              <div className="flex items-end gap-2">
+                <img
+                  src={assistantAvatar}
+                  alt="Diana"
+                  className="h-8 w-8 shrink-0 object-contain"
+                />
                 <div className="max-w-[85%] rounded-3xl rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] px-4 py-3 text-sm text-neutral-500">
                   A responder...
                 </div>

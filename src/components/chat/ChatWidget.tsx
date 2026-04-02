@@ -30,6 +30,8 @@ const ChatWidget: React.FC = () => {
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const openChat = () => setIsOpen(true);
@@ -40,6 +42,17 @@ const ChatWidget: React.FC = () => {
       window.removeEventListener('portoexotico:open-chat', openChat);
     };
   }, []);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    messagesEndRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end'
+    });
+  }, [isOpen, messages, isSending]);
 
   const canSend = useMemo(() => input.trim().length > 0 && !isSending, [input, isSending]);
 
@@ -176,7 +189,10 @@ const ChatWidget: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex-1 space-y-4 overflow-y-auto bg-white px-4 py-4">
+          <div
+            ref={messagesContainerRef}
+            className="flex-1 space-y-4 overflow-y-auto bg-white px-4 py-4"
+          >
             {messages.map((message, index) => {
               const isUser = message.role === 'user';
 
@@ -205,6 +221,8 @@ const ChatWidget: React.FC = () => {
                 </div>
               </div>
             ) : null}
+
+            <div ref={messagesEndRef} />
           </div>
 
           <form onSubmit={handleSubmit} className="border-t border-[#8f355d]/10 bg-white p-4">

@@ -26,7 +26,7 @@ const clearGACookies = () => {
     .flat();
 
   const uniqueDomains = Array.from(new Set(['', ...domainCandidates]));
-  const paths = ['/', window.location.pathname || '/'];
+  const paths = Array.from(new Set(['/', window.location.pathname || '/']));
 
   for (const name of cookieNames) {
     for (const domain of uniqueDomains) {
@@ -85,15 +85,10 @@ export const initGA = async (measurementId: string = GA_MEASUREMENT_ID) => {
   if (!gaInitialized) {
     window.gtag('js', new Date());
     window.gtag('config', measurementId, {
-      page_path: window.location.pathname + window.location.search + window.location.hash,
+      send_page_view: false,
     });
     gaInitialized = true;
-    return;
   }
-
-  window.gtag('config', measurementId, {
-    page_path: window.location.pathname + window.location.search + window.location.hash,
-  });
 };
 
 export const enableGA = async (measurementId: string = GA_MEASUREMENT_ID) => {
@@ -114,8 +109,16 @@ export const disableGA = (measurementId: string = GA_MEASUREMENT_ID) => {
   clearGACookies();
 };
 
-export const trackPageView = (measurementId: string = GA_MEASUREMENT_ID) => {
-  if (typeof window === 'undefined' || typeof window.gtag !== 'function') {
+export const trackPageView = (
+  pagePath?: string,
+  pageTitle?: string,
+  measurementId: string = GA_MEASUREMENT_ID
+) => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return;
+  }
+
+  if (typeof window.gtag !== 'function') {
     return;
   }
 
@@ -123,9 +126,14 @@ export const trackPageView = (measurementId: string = GA_MEASUREMENT_ID) => {
     return;
   }
 
+  const resolvedPagePath =
+    pagePath || `${window.location.pathname}${window.location.search}${window.location.hash}`;
+
+  const resolvedPageTitle = pageTitle || document.title;
+
   window.gtag('event', 'page_view', {
-    page_path: window.location.pathname + window.location.search + window.location.hash,
+    page_path: resolvedPagePath,
     page_location: window.location.href,
-    page_title: document.title,
+    page_title: resolvedPageTitle,
   });
 };

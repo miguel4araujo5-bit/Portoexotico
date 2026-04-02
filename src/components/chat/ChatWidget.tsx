@@ -19,7 +19,7 @@ const initialMessages: ChatMessage[] = [
   {
     role: 'assistant',
     content:
-      'Olá. Sou o assistente da Porto Exótico. Posso ajudar com produtos, envios, pagamentos, embalagem discreta e outras dúvidas.'
+      'Olá. Sou a Diana, a assistente da Porto Exótico. Posso ajudar com produtos, envios, pagamentos, embalagem discreta e outras dúvidas.'
   }
 ];
 

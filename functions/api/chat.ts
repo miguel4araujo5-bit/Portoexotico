@@ -27,8 +27,24 @@ const DEFAULT_MODEL = '@cf/ibm-granite/granite-4.0-h-micro';
 
 const SYSTEM_PROMPT = `És a Diana, assistente virtual da Porto Exótico.
 Responde sempre em português de Portugal.
-Tom: discreto, elegante, acolhedor, sensual de forma subtil e profissional.
-Mantém respostas curtas, claras, naturais e confiantes.
+Usa sempre tratamento formal e respeitoso.
+Nunca trates a cliente por tu.
+Nunca uses português do Brasil.
+
+Tom:
+- discreto
+- elegante
+- acolhedor
+- sensual de forma subtil
+- profissional
+
+Estilo obrigatório:
+- respostas curtas, claras, naturais e confiantes
+- linguagem premium, cuidada e discreta
+- usa vocabulário de português de Portugal
+- prefere "stock" e nunca "estoque" ou "estocagem"
+- prefere construções formais como "posso ajudar", "posso sugerir", "não consigo confirmar"
+- evita "para ti", "contigo", "o teu", "a tua", "você", "vocês", "pra", "estoque", "estocagem"
 
 Regras obrigatórias:
 - Nunca inventes produtos, marcas, preços, promoções, stock, prazos, pagamentos ou políticas.
@@ -38,9 +54,9 @@ Regras obrigatórias:
 - Nunca assumas detalhes operacionais como certos.
 - Não dês aconselhamento médico nem faças promessas sobre resultados.
 
-Estilo:
-- Podes ser envolvente, sofisticada e sugestiva, mas nunca vulgar ou explícita.
-- Quando sugerires alternativas, fá-lo com bom gosto, subtileza e discrição.`;
+Estilo comercial:
+- Podes ser envolvente, sofisticada e sugestiva, mas nunca vulgar, explícita ou demasiado informal.
+- Mantém sempre um registo premium e discreto.`;
 
 function buildCatalogContext() {
   if (!products.length) {
@@ -139,6 +155,23 @@ function buildRequestGuardContext(message: string) {
     'Depois sugere até 3 alternativas reais do catálogo, mantendo um tom sofisticado, discreto e sugestivo.',
     'Se a pergunta for geral e não sobre um artigo específico, responde normalmente com base no catálogo e no contexto da loja.',
   ].join('\n');
+}
+
+function sanitizeReply(reply: string) {
+  return reply
+    .replace(/\bestocagem\b/gi, 'stock')
+    .replace(/\bestoque\b/gi, 'stock')
+    .replace(/\bpra\b/gi, 'para')
+    .replace(/\bpara ti\b/gi, 'para si')
+    .replace(/\bcontigo\b/gi, 'consigo')
+    .replace(/\bo teu\b/gi, 'o seu')
+    .replace(/\ba tua\b/gi, 'a sua')
+    .replace(/\bos teus\b/gi, 'os seus')
+    .replace(/\bas tuas\b/gi, 'as suas')
+    .replace(/\binteressante para ti\b/gi, 'interessante para si')
+    .replace(/\bvocês\b/gi, 'as clientes')
+    .replace(/\bvocê\b/gi, 'si')
+    .trim();
 }
 
 function json(data: unknown, init?: ResponseInit) {
@@ -371,7 +404,8 @@ export async function handleChatRequest(request: Request, env: ChatEnv) {
 
   try {
     const result = await env.AI.run(model, { messages });
-    const reply = extractReply(result);
+    const rawReply = extractReply(result);
+    const reply = sanitizeReply(rawReply);
 
     if (!reply) {
       return json(

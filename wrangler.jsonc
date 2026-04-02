@@ -24,5 +24,15 @@
       "binding": "ADMIN_RATE_LIMIT_KV",
       "id": "7f813017044b4a3f89cb7f3980bbd1ed"
     }
+  ],
+  "routes": [
+    {
+      "pattern": "portoexotico.pt/*",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.portoexotico.pt/*",
+      "custom_domain": true
+    }
   ]
 }

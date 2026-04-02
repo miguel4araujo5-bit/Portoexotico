@@ -68,15 +68,16 @@ const Home: React.FC = () => {
               </Link>
 
               <button
-              type="button"
-              onClick={() => window.dispatchEvent(new CustomEvent('portoexotico:open-chat'))}
-              className="inline-flex items-center gap-2 rounded-full border border-[#8f355d]/10 bg-white/80 px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-[#9b5a79] shadow-[0_10px_30px_rgba(143,53,93,0.06)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/20 hover:bg-white hover:shadow-[0_14px_36px_rgba(143,53,93,0.1)]"
-              aria-label="Converse com a nossa assistente virtual"
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('portoexotico:open-chat'))}
+                className="inline-flex items-center gap-2 rounded-full border border-[#8f355d]/10 bg-white/80 px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-[#9b5a79] shadow-[0_10px_30px_rgba(143,53,93,0.06)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/20 hover:bg-white hover:shadow-[0_14px_36px_rgba(143,53,93,0.1)]"
+                aria-label="Converse com a nossa assistente virtual"
               >
-              <Sparkles className="h-4 w-4" />
-              Converse com a nossa assistente virtual
+                <Sparkles className="h-4 w-4" />
+                Converse com a nossa assistente virtual
               </button>
-              
+            </div>
+
             <h1 className="mt-6 max-w-5xl font-serif text-5xl font-semibold leading-[0.96] text-[#6f2947] md:text-7xl">
               Sensualidade, discrição e uma experiência de compra pensada para converter.
             </h1>

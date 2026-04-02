@@ -124,14 +124,35 @@ export default {
   async fetch(request: Request, env: WorkerEnv): Promise<Response> {
     const url = new URL(request.url);
 
-    if (url.pathname === '/api/admin/login') {
-      return handleAdminLogin(request, env);
-    }
+    try {
+      if (url.pathname === '/api/admin/login') {
+        return await handleAdminLogin(request, env);
+      }
 
-    if (url.pathname === '/api/chat') {
-      return handleChatRequest(request, env);
-    }
+      if (url.pathname === '/api/chat') {
+        return await handleChatRequest(request, env);
+      }
 
-    return env.ASSETS.fetch(request);
+      return env.ASSETS.fetch(request);
+    } catch (error) {
+      const message =
+        error instanceof Error && error.message ? error.message : 'Erro interno do worker';
+
+      const stack =
+        error instanceof Error && error.stack ? error.stack : 'Sem stack disponível';
+
+      if (url.pathname.startsWith('/api/')) {
+        return json(
+          {
+            ok: false,
+            error: message,
+            stack
+          },
+          { status: 500 }
+        );
+      }
+
+      return new Response('Erro interno do worker', { status: 500 });
+    }
   }
 };

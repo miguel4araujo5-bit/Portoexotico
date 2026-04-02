@@ -171,75 +171,85 @@ const ChatWidget: React.FC = () => {
   return (
     <>
       {isOpen ? (
-        <div className="fixed bottom-4 right-4 z-50 flex h-[36rem] w-[calc(100vw-2rem)] max-w-[24rem] flex-col overflow-hidden rounded-[2rem] border border-[#8f355d]/15 bg-white shadow-[0_20px_80px_rgba(32,12,22,0.18)]">
-          <div className="flex items-center justify-between border-b border-[#8f355d]/10 bg-[#fcf8fa] px-5 py-4">
-            <div className="flex items-center gap-3">
-              <img
-                src={assistantAvatar}
-                alt="Diana"
-                className="h-12 w-12 shrink-0 object-contain"
-              />
-              <div>
-                <p className="text-[11px] uppercase tracking-[0.28em] text-[#8f355d]/70">
-                  Assistente
-                </p>
-                <h3 className="mt-0.5 text-base font-semibold text-neutral-900">Diana</h3>
-                <p className="text-xs text-neutral-500">Porto Exótico</p>
-              </div>
-            </div>
+        <div className="fixed bottom-4 right-4 z-50 flex h-[39rem] w-[calc(100vw-2rem)] max-w-[25rem] flex-col overflow-hidden rounded-[2rem] border border-[#8f355d]/12 bg-white shadow-[0_24px_90px_rgba(32,12,22,0.20)]">
+          <div className="border-b border-[#8f355d]/10 bg-[linear-gradient(180deg,#fcf8fa_0%,#fff_100%)] px-5 py-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <div className="relative shrink-0">
+                  <img
+                    src={assistantAvatar}
+                    alt="Diana"
+                    className="h-12 w-12 object-contain"
+                  />
+                  <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-emerald-500" />
+                </div>
 
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#8f355d]/10 bg-white text-neutral-700 transition hover:border-[#8f355d]/20 hover:text-neutral-950"
-              aria-label="Fechar chat"
-            >
-              <X className="h-5 w-5" />
-            </button>
+                <div className="min-w-0">
+                  <p className="text-[11px] uppercase tracking-[0.28em] text-[#8f355d]/65">
+                    Assistente virtual
+                  </p>
+                  <h3 className="truncate text-[1.05rem] font-semibold leading-5 text-neutral-900">
+                    Diana
+                  </h3>
+                  <p className="truncate text-xs text-neutral-500">Porto Exótico</p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#8f355d]/10 bg-white text-neutral-700 transition hover:border-[#8f355d]/20 hover:text-neutral-950"
+                aria-label="Fechar chat"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
           </div>
 
-          <div className="flex-1 space-y-4 overflow-y-auto bg-white px-4 py-4">
-            {messages.map((message, index) => {
-              const isUser = message.role === 'user';
+          <div className="flex-1 overflow-y-auto bg-white px-4 py-4">
+            <div className="space-y-4">
+              {messages.map((message, index) => {
+                const isUser = message.role === 'user';
 
-              if (isUser) {
+                if (isUser) {
+                  return (
+                    <div key={`${message.role}-${index}`} className="flex justify-end">
+                      <div className="max-w-[82%] whitespace-pre-wrap rounded-[1.6rem] rounded-br-md bg-[#8f355d] px-4 py-3 text-sm leading-6 text-white shadow-[0_10px_25px_rgba(143,53,93,0.18)]">
+                        {message.content}
+                      </div>
+                    </div>
+                  );
+                }
+
                 return (
-                  <div key={`${message.role}-${index}`} className="flex justify-end">
-                    <div className="max-w-[85%] whitespace-pre-wrap rounded-3xl rounded-br-md bg-[#8f355d] px-4 py-3 text-sm leading-6 text-white">
+                  <div key={`${message.role}-${index}`} className="flex items-end gap-2.5">
+                    <img
+                      src={assistantAvatar}
+                      alt="Diana"
+                      className="mb-1 h-8 w-8 shrink-0 object-contain"
+                    />
+                    <div className="max-w-[82%] whitespace-pre-wrap rounded-[1.6rem] rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] px-4 py-3 text-sm leading-6 text-neutral-900">
                       {message.content}
                     </div>
                   </div>
                 );
-              }
+              })}
 
-              return (
-                <div key={`${message.role}-${index}`} className="flex items-end gap-2">
+              {isSending ? (
+                <div className="flex items-end gap-2.5">
                   <img
                     src={assistantAvatar}
                     alt="Diana"
-                    className="h-8 w-8 shrink-0 object-contain"
+                    className="mb-1 h-8 w-8 shrink-0 object-contain"
                   />
-                  <div className="max-w-[85%] whitespace-pre-wrap rounded-3xl rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] px-4 py-3 text-sm leading-6 text-neutral-900">
-                    {message.content}
+                  <div className="max-w-[82%] rounded-[1.6rem] rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] px-4 py-3 text-sm text-neutral-500">
+                    A responder...
                   </div>
                 </div>
-              );
-            })}
+              ) : null}
 
-            {isSending ? (
-              <div className="flex items-end gap-2">
-                <img
-                  src={assistantAvatar}
-                  alt="Diana"
-                  className="h-8 w-8 shrink-0 object-contain"
-                />
-                <div className="max-w-[85%] rounded-3xl rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] px-4 py-3 text-sm text-neutral-500">
-                  A responder...
-                </div>
-              </div>
-            ) : null}
-
-            <div ref={messagesEndRef} />
+              <div ref={messagesEndRef} />
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="border-t border-[#8f355d]/10 bg-white p-4">
@@ -247,7 +257,7 @@ const ChatWidget: React.FC = () => {
               Escreva a sua mensagem
             </label>
 
-            <div className="rounded-[1.5rem] border border-[#8f355d]/15 bg-[#fcf8fa] p-2">
+            <div className="rounded-[1.75rem] border border-[#8f355d]/12 bg-[#fcf8fa] p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
               <textarea
                 id="porto-exotico-chat-input"
                 value={input}
@@ -256,10 +266,10 @@ const ChatWidget: React.FC = () => {
                 rows={3}
                 maxLength={700}
                 placeholder="Escreva aqui a sua dúvida..."
-                className="min-h-[88px] w-full resize-none bg-transparent px-3 py-2 text-sm text-neutral-900 outline-none placeholder:text-neutral-400"
+                className="min-h-[88px] w-full resize-none bg-transparent px-3 py-2 text-sm leading-6 text-neutral-900 outline-none placeholder:text-neutral-400"
               />
 
-              <div className="flex items-center justify-between px-2 pb-1 pt-2">
+              <div className="flex items-center justify-between gap-3 px-2 pb-1 pt-2">
                 <p className="text-xs text-neutral-500">
                   Produtos, envios, pagamentos e dúvidas gerais
                 </p>
@@ -267,7 +277,7 @@ const ChatWidget: React.FC = () => {
                 <button
                   type="submit"
                   disabled={!canSend}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#8f355d] text-white transition hover:bg-[#7c2f52] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#8f355d] text-white shadow-[0_10px_24px_rgba(143,53,93,0.28)] transition hover:bg-[#7c2f52] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
                   aria-label="Enviar mensagem"
                 >
                   <Send className="h-4 w-4" />

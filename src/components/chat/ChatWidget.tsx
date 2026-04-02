@@ -16,6 +16,8 @@ type ChatResponse = {
   stack?: string;
 };
 
+const assistantAvatar = '/diana-avatar.png';
+
 const initialMessages: ChatMessage[] = [
   {
     role: 'assistant',
@@ -172,11 +174,18 @@ const ChatWidget: React.FC = () => {
       {isOpen ? (
         <div className="fixed bottom-4 right-4 z-50 flex h-[36rem] w-[calc(100vw-2rem)] max-w-[24rem] flex-col overflow-hidden rounded-[2rem] border border-[#8f355d]/15 bg-white shadow-[0_20px_80px_rgba(32,12,22,0.18)]">
           <div className="flex items-center justify-between border-b border-[#8f355d]/10 bg-[#fcf8fa] px-5 py-4">
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.28em] text-[#8f355d]/70">
-                Assistente
-              </p>
-              <h3 className="mt-1 text-base font-semibold text-neutral-900">Porto Exótico</h3>
+            <div className="flex items-center gap-3">
+              <img
+                src={assistantAvatar}
+                alt="Diana"
+                className="h-11 w-11 shrink-0 object-contain"
+              />
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.28em] text-[#8f355d]/70">
+                  Assistente
+                </p>
+                <h3 className="mt-1 text-base font-semibold text-neutral-900">Porto Exótico</h3>
+              </div>
             </div>
 
             <button

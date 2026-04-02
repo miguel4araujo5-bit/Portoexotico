@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShieldCheck, Cookie, Lock } from 'lucide-react';
+import { ShieldCheck, Lock } from 'lucide-react';
 
-type ConsentRecord = {
+type AgeConsentRecord = {
   ageVerified: boolean;
-  cookiesAccepted: boolean;
   acceptedAt: string;
 };
 
-const STORAGE_KEY = 'portoexotico-consent-v1';
+const STORAGE_KEY = 'portoexotico-age-gate-v1';
 
 const AgeGate: React.FC = () => {
   const location = useLocation();
   const [status, setStatus] = useState<'loading' | 'open' | 'accepted'>('loading');
   const [isAdult, setIsAdult] = useState(false);
-  const [acceptsCookies, setAcceptsCookies] = useState(false);
   const [error, setError] = useState('');
 
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -33,9 +31,9 @@ const AgeGate: React.FC = () => {
         return;
       }
 
-      const parsed = JSON.parse(raw) as Partial<ConsentRecord>;
+      const parsed = JSON.parse(raw) as Partial<AgeConsentRecord>;
 
-      if (parsed.ageVerified && parsed.cookiesAccepted) {
+      if (parsed.ageVerified) {
         setStatus('accepted');
         return;
       }
@@ -64,14 +62,13 @@ const AgeGate: React.FC = () => {
   }, [status]);
 
   const handleAccept = () => {
-    if (!isAdult || !acceptsCookies) {
-      setError('Para continuar, confirme que tem mais de 18 anos e aceite os cookies.');
+    if (!isAdult) {
+      setError('Para continuar, confirme que tem mais de 18 anos.');
       return;
     }
 
-    const payload: ConsentRecord = {
+    const payload: AgeConsentRecord = {
       ageVerified: true,
-      cookiesAccepted: true,
       acceptedAt: new Date().toISOString(),
     };
 
@@ -112,7 +109,7 @@ const AgeGate: React.FC = () => {
             id="age-gate-title"
             className="mt-6 font-serif text-3xl font-semibold leading-tight text-[#6f2947] md:text-5xl"
           >
-            Confirmação de idade e cookies
+            Confirmação de idade
           </h1>
 
           <p
@@ -120,8 +117,7 @@ const AgeGate: React.FC = () => {
             className="mt-5 max-w-2xl text-sm leading-7 text-neutral-700 md:text-base"
           >
             Este website destina-se exclusivamente a maiores de 18 anos. Para continuar, confirme
-            a sua maioridade e aceite a utilização de cookies necessários para funcionamento,
-            segurança e melhoria da experiência.
+            que tem idade legal para aceder ao conteúdo e à loja online.
           </p>
 
           <div className="mt-8 grid gap-4">
@@ -138,25 +134,6 @@ const AgeGate: React.FC = () => {
                 </span>
                 <span className="mt-1 block text-sm leading-6 text-neutral-600">
                   O acesso à loja e aos seus conteúdos é reservado a utilizadores maiores de idade.
-                </span>
-              </span>
-            </label>
-
-            <label className="flex items-start gap-4 rounded-[1.4rem] border border-[#8f355d]/10 bg-white/90 p-4">
-              <input
-                type="checkbox"
-                checked={acceptsCookies}
-                onChange={(event) => setAcceptsCookies(event.target.checked)}
-                className="mt-1 h-4 w-4 rounded border-[#8f355d]/30 text-[#8f355d] focus:ring-[#8f355d]"
-              />
-              <span className="block">
-                <span className="flex items-center gap-2 text-sm font-semibold text-[#6f2947]">
-                  <Cookie className="h-4 w-4" />
-                  Aceito a utilização de cookies
-                </span>
-                <span className="mt-1 block text-sm leading-6 text-neutral-600">
-                  Utilizamos cookies para navegação, segurança, desempenho e funcionamento da
-                  experiência de compra.
                 </span>
               </span>
             </label>
@@ -194,7 +171,7 @@ const AgeGate: React.FC = () => {
           </div>
 
           <div className="mt-5 text-xs leading-6 text-neutral-500">
-            Ao continuar, confirma a sua maioridade e a aceitação dos cookies aplicáveis.
+            Ao continuar, confirma apenas a sua maioridade para aceder ao website.
           </div>
 
           <div className="mt-2 text-xs leading-6 text-neutral-500">

@@ -41,7 +41,7 @@ const Header: React.FC = () => {
         <div className="flex min-h-24 items-center justify-between gap-4 py-4">
           <Link
             to="/"
-            className="group flex min-w-0 items-center gap-4 rounded-full border border-[#8f355d]/10 bg-white/95 px-4 py-3 shadow-[0_16px_40px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/20 hover:shadow-[0_22px_52px_rgba(143,53,93,0.14)] sm:px-5"
+            className="group flex min-w-0 items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white/95 px-5 py-4 shadow-[0_16px_40px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8f355d]/20 hover:shadow-[0_22px_52px_rgba(143,53,93,0.14)] sm:px-6"
           >
             <img
               src={logoSrc}
@@ -50,10 +50,10 @@ const Header: React.FC = () => {
             />
 
             <div className="min-w-0">
-              <span className="block truncate font-serif text-[1.6rem] font-semibold leading-none tracking-[0.01em] text-[#7a2f4f] sm:text-[2.1rem]">
+              <span className="block truncate font-serif text-[1.45rem] font-semibold leading-none tracking-[0.01em] text-[#7a2f4f] sm:text-[2rem]">
                 Porto Exótico
               </span>
-              <span className="mt-1.5 block truncate text-[9px] font-medium uppercase tracking-[0.38em] text-[#a55b7d] sm:text-[11px]">
+              <span className="mt-1.5 block truncate text-[8px] font-medium uppercase tracking-[0.34em] text-[#a55b7d] sm:text-[10px]">
                 Compra discreta e segura
               </span>
             </div>

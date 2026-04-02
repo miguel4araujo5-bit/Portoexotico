@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Cookie, ShieldCheck } from 'lucide-react';
+import { initGA } from '../../lib/analytics';
 
 type CookieConsentRecord = {
   cookiesAccepted: boolean;
@@ -8,6 +9,7 @@ type CookieConsentRecord = {
 };
 
 const STORAGE_KEY = 'portoexotico-cookie-consent-v1';
+const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
 
 const CookieBanner: React.FC = () => {
   const location = useLocation();
@@ -32,6 +34,10 @@ const CookieBanner: React.FC = () => {
       const parsed = JSON.parse(raw) as Partial<CookieConsentRecord>;
 
       if (typeof parsed.cookiesAccepted === 'boolean') {
+        if (parsed.cookiesAccepted === true) {
+          initGA(GA_MEASUREMENT_ID);
+        }
+
         setIsVisible(false);
         return;
       }
@@ -49,6 +55,7 @@ const CookieBanner: React.FC = () => {
     };
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    initGA(GA_MEASUREMENT_ID);
     setIsVisible(false);
   };
 

@@ -43,8 +43,12 @@ const App: React.FC = () => {
   const isAdminRoute = location.pathname === '/admin' || location.pathname.startsWith('/admin/');
 
   useEffect(() => {
-    trackPageView(location.pathname + location.search, document.title);
-  }, [location]);
+    if (isAdminRoute) {
+      return;
+    }
+
+    trackPageView(location.pathname + location.search + location.hash, document.title);
+  }, [isAdminRoute, location.pathname, location.search, location.hash]);
 
   return (
     <>

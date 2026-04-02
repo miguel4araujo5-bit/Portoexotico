@@ -27,11 +27,11 @@
   ],
   "routes": [
     {
-      "pattern": "portoexotico.pt/*",
+      "pattern": "portoexotico.pt",
       "custom_domain": true
     },
     {
-      "pattern": "www.portoexotico.pt/*",
+      "pattern": "www.portoexotico.pt",
       "custom_domain": true
     }
   ]

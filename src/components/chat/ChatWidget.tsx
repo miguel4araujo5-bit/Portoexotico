@@ -13,6 +13,7 @@ type ChatResponse = {
   reply?: string;
   error?: string;
   model?: string;
+  stack?: string;
 };
 
 const initialMessages: ChatMessage[] = [
@@ -87,15 +88,27 @@ const ChatWidget: React.FC = () => {
       }
 
       if (!response.ok) {
-        throw new Error(data.error || raw || `Erro HTTP ${response.status}`);
+        const combinedError = [data.error || raw || `Erro HTTP ${response.status}`, data.stack]
+          .filter(Boolean)
+          .join('\n\n');
+
+        throw new Error(combinedError);
       }
 
       if (!data.ok) {
-        throw new Error(data.error || 'Pedido sem sucesso');
+        const combinedError = [data.error || 'Pedido sem sucesso', data.stack]
+          .filter(Boolean)
+          .join('\n\n');
+
+        throw new Error(combinedError);
       }
 
       if (typeof data.reply !== 'string' || !data.reply.trim()) {
-        throw new Error(data.error || 'Resposta vazia do assistente');
+        const combinedError = [data.error || 'Resposta vazia do assistente', data.stack]
+          .filter(Boolean)
+          .join('\n\n');
+
+        throw new Error(combinedError);
       }
 
       const reply = data.reply.trim();
@@ -173,7 +186,7 @@ const ChatWidget: React.FC = () => {
                   className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-3xl px-4 py-3 text-sm leading-6 ${
+                    className={`max-w-[85%] whitespace-pre-wrap rounded-3xl px-4 py-3 text-sm leading-6 ${
                       isUser
                         ? 'rounded-br-md bg-[#8f355d] text-white'
                         : 'rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] text-neutral-900'

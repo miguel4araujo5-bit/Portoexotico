@@ -179,9 +179,9 @@ const ChatWidget: React.FC = () => {
                   <img
                     src={assistantAvatar}
                     alt="Diana"
-                    className="h-16 w-16 object-cover""
+                    className="h-16 w-16 rounded-full object-cover"
                   />
-                  <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-emerald-500" />
+                  <span className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white bg-emerald-500" />
                 </div>
 
                 <div className="min-w-0">
@@ -226,7 +226,7 @@ const ChatWidget: React.FC = () => {
                     <img
                       src={assistantAvatar}
                       alt="Diana"
-                      className="mb-1 h-8 w-8 shrink-0 object-contain"
+                      className="mb-1 h-8 w-8 shrink-0 rounded-full object-cover"
                     />
                     <div className="max-w-[82%] whitespace-pre-wrap rounded-[1.6rem] rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] px-4 py-3 text-sm leading-6 text-neutral-900">
                       {message.content}
@@ -240,7 +240,7 @@ const ChatWidget: React.FC = () => {
                   <img
                     src={assistantAvatar}
                     alt="Diana"
-                    className="mb-1 h-8 w-8 shrink-0 object-contain"
+                    className="mb-1 h-8 w-8 shrink-0 rounded-full object-cover"
                   />
                   <div className="max-w-[82%] rounded-[1.6rem] rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] px-4 py-3 text-sm text-neutral-500">
                     A responder...

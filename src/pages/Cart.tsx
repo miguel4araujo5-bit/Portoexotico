@@ -14,8 +14,7 @@ import { useCart } from '../context/CartContext';
 import { productCategories } from '../data/products';
 
 const fallbackImage = '/produtos/Satisfyer.webp';
-const logoSvgSrc = '/favicon.svg';
-const logoFallbackSrc = '/favicon-96x96.png';
+const logoSrc = '/logo.png';
 
 const Cart: React.FC = () => {
   const { items, subtotal, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -44,14 +43,7 @@ const Cart: React.FC = () => {
             to="/"
             className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white px-4 py-3 shadow-[0_14px_36px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_42px_rgba(143,53,93,0.14)]"
           >
-            <picture>
-              <source srcSet={logoSvgSrc} type="image/svg+xml" />
-              <img
-                src={logoFallbackSrc}
-                alt="Porto Exótico"
-                className="h-8 w-8 object-contain"
-              />
-            </picture>
+            <img src={logoSrc} alt="Porto Exótico" className="h-8 w-8 object-contain" />
 
             <div className="min-w-0">
               <span className="block font-serif text-lg font-semibold leading-none tracking-[0.01em] text-[#7a2f4f]">
@@ -259,14 +251,7 @@ const Cart: React.FC = () => {
                 to="/"
                 className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white px-4 py-3 shadow-[0_14px_36px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_42px_rgba(143,53,93,0.14)]"
               >
-                <picture>
-                  <source srcSet={logoSvgSrc} type="image/svg+xml" />
-                  <img
-                    src={logoFallbackSrc}
-                    alt="Porto Exótico"
-                    className="h-8 w-8 object-contain"
-                  />
-                </picture>
+                <img src={logoSrc} alt="Porto Exótico" className="h-8 w-8 object-contain" />
 
                 <div className="min-w-0">
                   <span className="block font-serif text-lg font-semibold leading-none tracking-[0.01em] text-[#7a2f4f]">

@@ -1,5 +1,5 @@
-import { products } from '../src/data/products';
-import { buildChatKnowledge, chatContext } from '../src/data/chatContext';
+import { products } from '../../src/data/products';
+import { buildChatKnowledge, chatContext } from '../../src/data/chatContext';
 
 export type ChatEnv = {
   AI: {

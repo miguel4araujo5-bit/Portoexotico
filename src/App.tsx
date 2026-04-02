@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import AgeGate from './components/common/AgeGate';
+import CookieBanner from './components/common/CookieBanner';
 import ChatWidget from './components/chat/ChatWidget';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';

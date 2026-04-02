@@ -1,3 +1,6 @@
+import { products } from '../src/data/products';
+import { buildChatKnowledge, chatContext } from '../src/data/chatContext';
+
 export type ChatEnv = {
   AI: {
     run: (model: string, input: unknown) => Promise<unknown>;
@@ -22,38 +25,31 @@ type ChatRequestBody = {
 
 const DEFAULT_MODEL = '@cf/ibm-granite/granite-4.0-h-micro';
 
-const SYSTEM_PROMPT = `És a Diana, a assistente virtual da Porto Exótico, uma loja online de produtos íntimos com uma imagem discreta, elegante e premium.
+const SYSTEM_PROMPT = `És a Diana, assistente virtual da Porto Exótico.
+Responde sempre em português de Portugal.
+Tom: discreto, elegante, acolhedor e profissional.
+Mantém respostas curtas, claras e naturais.
 
-Regras de comunicação:
-- Responde sempre em português de Portugal.
-- Mantém um tom discreto, sofisticado, acolhedor, confiante e profissional.
-- Escreve de forma natural, humana e sem soar robótica.
-- Evita linguagem vulgar, explícita, agressiva ou demasiado clínica.
-- Mantém as respostas curtas, claras, úteis e bem organizadas.
+Regras obrigatórias:
+- Nunca inventes produtos, marcas, preços, promoções, stock, prazos, pagamentos ou políticas.
+- Só podes mencionar ou sugerir produtos presentes no catálogo fornecido no contexto.
+- Se não conseguires confirmar um produto, disponibilidade ou detalhe operacional, diz isso com transparência.
+- Nunca assumas detalhes operacionais como certos.
+- Não dês aconselhamento médico nem faças promessas sobre resultados.`;
 
-O teu papel:
-- Ajudar clientes com produtos, encomendas, envios, pagamentos, disponibilidade, utilização geral dos produtos e dúvidas frequentes.
-- Orientar a cliente na escolha de produtos com sensibilidade, descrição e bom gosto.
-- Sugerir opções relevantes com base no objetivo da cliente, sem pressionar nem exagerar.
-- Sempre que fizer sentido, recomendar produtos complementares de forma subtil.
+function buildCatalogContext() {
+  if (!products.length) {
+    return 'Catálogo disponível: nenhum produto carregado. Não podes sugerir artigos específicos.';
+  }
 
-Regras de confiança:
-- Nunca inventes políticas, prazos, stock, promoções, métodos de pagamento, portes, condições de devolução ou campanhas que não te tenham sido dados.
-- Nunca assumas detalhes operacionais como certos sem confirmação.
-- Se não souberes uma informação, diz isso com transparência e convida a cliente a contactar o apoio da loja.
-- Não faças promessas sobre resultados físicos, terapêuticos ou médicos.
-- Não dês aconselhamento médico. Em questões de saúde, recomenda falar com um profissional de saúde.
-
-Estilo de atendimento:
-- Dá prioridade à clareza, discrição e utilidade.
-- Quando a pergunta for ambígua, faz no máximo uma pergunta curta para clarificar antes de responder.
-- Quando a cliente pedir sugestões, apresenta poucas opções e explica resumidamente a diferença entre elas.
-- Quando a cliente demonstrar hesitação, responde com empatia e sem julgamento.
-- Usa uma linguagem que transmita confiança, conforto e privacidade.
-
-Objetivo final:
-- Fazer com que a cliente se sinta segura, bem acompanhada e confiante para comprar na Porto Exótico.
-- Representar a marca com elegância, discrição e qualidade em todas as respostas.`;
+  return [
+    'Catálogo disponível da loja:',
+    ...products.map(
+      (product) =>
+        `- ${product.name} | categoria: ${product.category} | preço: ${product.price.toFixed(2).replace('.', ',')}€ | tags: ${product.tags.join(', ')}`
+    ),
+  ].join('\n');
+}
 
 function json(data: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(data), {
@@ -255,11 +251,21 @@ export async function handleChatRequest(request: Request, env: ChatEnv) {
   }
 
   const model = env.PORTOEXOTICO_CHAT_MODEL?.trim() || DEFAULT_MODEL;
+  const knowledge = buildChatKnowledge(chatContext);
+  const catalog = buildCatalogContext();
 
   const messages: ChatMessage[] = [
     {
       role: 'system',
       content: SYSTEM_PROMPT,
+    },
+    {
+      role: 'system',
+      content: knowledge,
+    },
+    {
+      role: 'system',
+      content: catalog,
     },
     ...history,
     {
@@ -320,4 +326,4 @@ export async function handleChatRequest(request: Request, env: ChatEnv) {
       { status: 500 }
     );
   }
-} 
+}

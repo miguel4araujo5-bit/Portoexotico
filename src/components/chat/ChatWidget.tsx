@@ -58,6 +58,16 @@ const ChatWidget: React.FC = () => {
 
   const canSend = useMemo(() => input.trim().length > 0 && !isSending, [input, isSending]);
 
+  const lastUserMessageIndex = useMemo(() => {
+    for (let index = messages.length - 1; index >= 0; index -= 1) {
+      if (messages[index].role === 'user') {
+        return index;
+      }
+    }
+
+    return -1;
+  }, [messages]);
+
   const sendMessage = async () => {
     const content = input.trim();
 
@@ -178,7 +188,7 @@ const ChatWidget: React.FC = () => {
               <img
                 src={assistantAvatar}
                 alt="Diana"
-                className="h-11 w-11 shrink-0 object-contain"
+                className="h-14 w-14 shrink-0 object-contain"
               />
               <div>
                 <p className="text-[11px] uppercase tracking-[0.28em] text-[#8f355d]/70">
@@ -204,20 +214,34 @@ const ChatWidget: React.FC = () => {
           >
             {messages.map((message, index) => {
               const isUser = message.role === 'user';
+              const showReadByDiana =
+                isUser &&
+                index === lastUserMessageIndex &&
+                messages.slice(index + 1).some((item) => item.role === 'assistant');
 
               return (
                 <div
                   key={`${message.role}-${index}`}
                   className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div
-                    className={`max-w-[85%] whitespace-pre-wrap rounded-3xl px-4 py-3 text-sm leading-6 ${
-                      isUser
-                        ? 'rounded-br-md bg-[#8f355d] text-white'
-                        : 'rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] text-neutral-900'
-                    }`}
-                  >
-                    {message.content}
+                  <div className="flex max-w-[85%] flex-col">
+                    <div
+                      className={`whitespace-pre-wrap rounded-3xl px-4 py-3 text-sm leading-6 ${
+                        isUser
+                          ? 'rounded-br-md bg-[#8f355d] text-white'
+                          : 'rounded-bl-md border border-[#8f355d]/10 bg-[#fcf8fa] text-neutral-900'
+                      }`}
+                    >
+                      {message.content}
+                    </div>
+
+                    {showReadByDiana ? (
+                      <img
+                        src={assistantAvatar}
+                        alt="Lido pela Diana"
+                        className="mt-2 ml-auto h-5 w-5 object-contain opacity-90"
+                      />
+                    ) : null}
                   </div>
                 </div>
               );
@@ -236,7 +260,7 @@ const ChatWidget: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="border-t border-[#8f355d]/10 bg-white p-4">
             <label htmlFor="porto-exotico-chat-input" className="sr-only">
-              Escreve a tua mensagem
+              Escreva a sua mensagem
             </label>
 
             <div className="rounded-[1.5rem] border border-[#8f355d]/15 bg-[#fcf8fa] p-2">
@@ -247,7 +271,7 @@ const ChatWidget: React.FC = () => {
                 onKeyDown={handleKeyDown}
                 rows={3}
                 maxLength={700}
-                placeholder="Escreve aqui a tua dúvida..."
+                placeholder="Escreva aqui a sua dúvida..."
                 className="min-h-[88px] w-full resize-none bg-transparent px-3 py-2 text-sm text-neutral-900 outline-none placeholder:text-neutral-400"
               />
 

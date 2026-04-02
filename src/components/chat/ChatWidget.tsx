@@ -75,15 +75,17 @@ const ChatWidget: React.FC = () => {
         error?: string;
       };
 
-      if (!response.ok || !data.ok || !data.reply) {
+      if (!response.ok || !data.ok || typeof data.reply !== 'string' || !data.reply.trim()) {
         throw new Error(data.error || 'Não foi possível obter resposta');
       }
+
+      const reply = data.reply.trim();
 
       setMessages((current) => [
         ...current,
         {
           role: 'assistant',
-          content: data.reply
+          content: reply
         }
       ]);
     } catch (error) {
@@ -125,9 +127,7 @@ const ChatWidget: React.FC = () => {
               <p className="text-[11px] uppercase tracking-[0.28em] text-[#8f355d]/70">
                 Assistente
               </p>
-              <h3 className="mt-1 text-base font-semibold text-neutral-900">
-                Porto Exótico
-              </h3>
+              <h3 className="mt-1 text-base font-semibold text-neutral-900">Porto Exótico</h3>
             </div>
 
             <button

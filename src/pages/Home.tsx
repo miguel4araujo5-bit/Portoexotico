@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { productCategories, products } from '../data/products';
 
-const logoSrc = '/apple-touch-icon.png';
+const logoSrc = '/logo.png';
 
 const categoryDescriptions: Record<string, string> = {
   prazer: 'Seleção pensada para prazer, intensidade e discrição com um visual mais premium.',

@@ -179,13 +179,15 @@ const Home: React.FC = () => {
 
             <div className="relative overflow-hidden rounded-[2rem] border border-[#8f355d]/10 bg-white/72 p-3 shadow-[0_28px_90px_rgba(100,33,62,0.14)] backdrop-blur-xl">
               <div className="grid gap-3 lg:grid-cols-[0.96fr_1.04fr]">
-                <div className="relative min-h-[460px] overflow-hidden rounded-[1.7rem] border border-[#8f355d]/10">
-                  <img
-                    src={heroProduct?.image}
-                    alt={heroProduct?.name}
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,16,0.08),rgba(48,13,30,0.78))]" />
+                <div className="relative overflow-hidden rounded-[1.7rem] border border-[#8f355d]/10 bg-[#f7edf2]">
+                  <div className="flex h-[460px] items-center justify-center p-8 md:p-10">
+                    <img
+                      src={heroProduct?.image}
+                      alt={heroProduct?.name}
+                      className="h-full w-full max-w-[78%] object-contain object-center"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,16,0.06),rgba(48,13,30,0.38))]" />
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-white/70">
                       Destaque premium
@@ -260,11 +262,11 @@ const Home: React.FC = () => {
                         to={`/produto/${product.slug}`}
                         className="group overflow-hidden rounded-[1.5rem] border border-[#8f355d]/10 bg-white shadow-[0_12px_30px_rgba(143,53,93,0.06)] transition duration-300 hover:-translate-y-1"
                       >
-                        <div className="aspect-[4/4.2] overflow-hidden">
+                        <div className="flex h-[220px] items-center justify-center overflow-hidden bg-[#f7edf2] p-4">
                           <img
                             src={product.image}
                             alt={product.name}
-                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                            className="h-full w-full max-w-[82%] object-contain object-center transition duration-500 group-hover:scale-105"
                           />
                         </div>
                         <div className="p-4">
@@ -347,13 +349,15 @@ const Home: React.FC = () => {
                 to={`/produto/${product.slug}`}
                 className="group overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/[0.04] transition duration-300 hover:-translate-y-1 hover:bg-white/[0.07]"
               >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,16,0.02),rgba(20,10,16,0.42))]" />
+                <div className="relative overflow-hidden bg-[#f7edf2]">
+                  <div className="flex h-[360px] items-center justify-center p-6">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="h-full w-full max-w-[82%] object-contain object-center transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,16,0.02),rgba(20,10,16,0.24))]" />
 
                   <div className="absolute left-4 top-4 flex flex-wrap gap-2">
                     {product.isNew ? (

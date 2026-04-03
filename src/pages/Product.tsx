@@ -83,14 +83,16 @@ const Product: React.FC = () => {
     <main className="min-h-screen bg-[#fcf8fa] px-6 py-16 text-neutral-900 md:px-10">
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.02fr_0.98fr]">
         <section className="overflow-hidden rounded-[2rem] border border-[#8f355d]/10 bg-white shadow-[0_24px_70px_rgba(143,53,93,0.08)]">
-          <div className="relative aspect-[4/5] overflow-hidden bg-[#f7edf2]">
-            <img
-              src={product.image || fallbackImage}
-              alt={product.name}
-              className="h-full w-full object-cover"
-            />
+          <div className="relative min-h-[420px] overflow-hidden bg-[#f7edf2] md:min-h-[560px]">
+            <div className="flex h-full min-h-[420px] items-center justify-center p-6 md:min-h-[560px] md:p-10">
+              <img
+                src={product.image || fallbackImage}
+                alt={product.name}
+                className="max-h-full w-full object-contain"
+              />
+            </div>
 
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(25,10,18,0.03),rgba(44,12,28,0.42))]" />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(25,10,18,0.03),rgba(44,12,28,0.22))]" />
 
             <div className="absolute left-5 top-5 flex flex-wrap gap-2">
               <span className="rounded-full border border-white/15 bg-white/85 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#7a2f4f] shadow-[0_8px_20px_rgba(0,0,0,0.08)]">

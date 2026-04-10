@@ -26,6 +26,7 @@ const supportWhatsAppDigits = supportWhatsApp.replace(/\D/g, '');
 const logoSrc = '/logo.png';
 const siteUrl = 'https://www.portoexotico.pt';
 const canonicalUrl = `${siteUrl}/contactos`;
+const defaultImage = `${siteUrl}/logo.png`;
 
 const channels = [
   supportEmail
@@ -75,6 +76,21 @@ const Contactos: React.FC = () => {
     },
   };
 
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Porto Exótico',
+    url: siteUrl,
+    logo: defaultImage,
+    email: supportEmail,
+    areaServed: 'Portugal',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: locationLabel,
+      addressCountry: 'PT',
+    },
+  };
+
   return (
     <main className="bg-[#fcf8fa] text-neutral-900">
       <Helmet>
@@ -91,15 +107,20 @@ const Contactos: React.FC = () => {
         />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content={`${siteUrl}/logo.png`} />
+        <meta property="og:image" content={defaultImage} />
+        <meta property="og:image:secure_url" content={defaultImage} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:alt" content="Porto Exótico - Contactos" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Contactos | Porto Exótico" />
         <meta
           name="twitter:description"
           content="Apoio ao cliente com discrição, clareza e atenção para encomendas, pagamentos e privacidade."
         />
-        <meta name="twitter:image" content={`${siteUrl}/logo.png`} />
+        <meta name="twitter:image" content={defaultImage} />
+        <meta name="twitter:image:alt" content="Porto Exótico - Contactos" />
         <script type="application/ld+json">{JSON.stringify(contactSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
       </Helmet>
 
       <section className="relative overflow-hidden border-b border-[#8f355d]/10">
@@ -198,6 +219,7 @@ const Contactos: React.FC = () => {
                           href={channel.href}
                           target={channel.label === 'Instagram' ? '_blank' : undefined}
                           rel={channel.label === 'Instagram' ? 'noreferrer' : undefined}
+                          aria-label={`Abrir canal de ${channel.label}`}
                           className="flex items-center justify-between gap-4 rounded-[1.5rem] border border-[#8f355d]/10 bg-[#fffafb] px-5 py-4 transition duration-300 hover:border-[#8f355d]/25 hover:bg-white"
                         >
                           <div className="flex items-center gap-4">
@@ -259,6 +281,7 @@ const Contactos: React.FC = () => {
                     href={mapExternalUrl}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label="Abrir localização no mapa"
                     className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-[#fffafb] px-5 py-3 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-white"
                   >
                     Abrir mapa

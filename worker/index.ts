@@ -8,7 +8,7 @@ import {
   methodNotAllowed,
   requireAdmin,
   unauthorized,
-  verifyPassword,
+  verifyAdminPassword,
   type Env as AuthEnv
 } from '../functions/_utils/auth';
 import { handleChatRequest, type ChatEnv } from '../functions/api/chat';
@@ -422,23 +422,7 @@ async function handleAdminLogin(request: Request, env: WorkerEnv) {
   }
 
   const usernameMatches = username === env.ADMIN_USERNAME;
-
-  let passwordMatches = false;
-
-  if (env.ADMIN_PASSWORD) {
-    passwordMatches = password === env.ADMIN_PASSWORD;
-  } else if (env.ADMIN_PASSWORD_SALT && env.ADMIN_PASSWORD_HASH) {
-    passwordMatches = await verifyPassword(
-      password,
-      env.ADMIN_PASSWORD_SALT,
-      env.ADMIN_PASSWORD_HASH
-    );
-  } else {
-    return json(
-      { ok: false, error: 'Password do admin não configurada no servidor' },
-      { status: 500 }
-    );
-  }
+  const passwordMatches = await verifyAdminPassword(password, env);
 
   if (!usernameMatches || !passwordMatches) {
     if (env.ADMIN_RATE_LIMIT_KV) {

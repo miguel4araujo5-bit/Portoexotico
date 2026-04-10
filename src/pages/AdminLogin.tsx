@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const logoSvgSrc = '/favicon.svg';
-const logoFallbackSrc = '/favicon-96x96.png';
+const logoSvgSrc = '/logo.png';
+const logoFallbackSrc = '/favicon.ico';
 
 const AdminLogin: React.FC = () => {
   const navigate = useNavigate();

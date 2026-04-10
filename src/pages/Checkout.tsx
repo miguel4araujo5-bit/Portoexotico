@@ -35,8 +35,8 @@ const paymentOptions: Array<{
   {
     id: 'mbway',
     label: 'MB WAY',
-    status: 'soon',
-    description: 'Disponível brevemente após ativação e validação.',
+    status: 'available',
+    description: 'Pagamento disponível por MB WAY com validação manual da encomenda.',
   },
 ];
 
@@ -44,6 +44,7 @@ const logoSvgSrc = '/favicon.svg';
 const logoFallbackSrc = '/favicon-96x96.png';
 const siteUrl = 'https://www.portoexotico.pt';
 const canonicalUrl = `${siteUrl}/checkout`;
+const mbwayPhoneNumber = '938777576';
 
 const Checkout: React.FC = () => {
   const { items, subtotal } = useCart();
@@ -476,6 +477,21 @@ const Checkout: React.FC = () => {
                             <p className="mt-3 text-sm leading-6 text-neutral-600">
                               {option.description}
                             </p>
+
+                            {option.id === 'mbway' && isSelected ? (
+                              <div className="mt-4 rounded-[1.1rem] border border-[#8f355d]/10 bg-white px-4 py-4">
+                                <p className="text-xs uppercase tracking-[0.24em] text-[#9b5a79]">
+                                  Número MB WAY
+                                </p>
+                                <p className="mt-2 text-lg font-semibold text-[#6f2947]">
+                                  {mbwayPhoneNumber}
+                                </p>
+                                <p className="mt-2 text-sm leading-6 text-neutral-600">
+                                  Efetue o pagamento para este número e, após validação, a sua
+                                  encomenda seguirá para processamento.
+                                </p>
+                              </div>
+                            ) : null}
                           </div>
 
                           {!isSoon ? (
@@ -496,7 +512,9 @@ const Checkout: React.FC = () => {
                   <p className="mt-3 text-sm leading-6 text-neutral-700">
                     {selectedOption?.id === 'paypal'
                       ? 'O PayPal é atualmente o método selecionado para a conclusão da encomenda.'
-                      : 'Este método ficará disponível assim que a respetiva configuração estiver concluída.'}
+                      : selectedOption?.id === 'mbway'
+                        ? `O MB WAY está selecionado. O pagamento deverá ser realizado para o número ${mbwayPhoneNumber}.`
+                        : 'Este método ficará disponível assim que a respetiva configuração estiver concluída.'}
                   </p>
                 </div>
               </div>
@@ -579,6 +597,19 @@ const Checkout: React.FC = () => {
                 </div>
               </div>
 
+              {selectedPayment === 'mbway' ? (
+                <div className="mt-6 rounded-[1.5rem] border border-[#8f355d]/10 bg-[#fffafb] p-5">
+                  <p className="text-xs uppercase tracking-[0.24em] text-[#9b5a79]">
+                    Pagamento MB WAY
+                  </p>
+                  <p className="mt-2 text-lg font-semibold text-[#6f2947]">{mbwayPhoneNumber}</p>
+                  <p className="mt-2 text-sm leading-6 text-neutral-600">
+                    Utilize este número para efetuar o pagamento por MB WAY. A confirmação da
+                    encomenda será validada manualmente.
+                  </p>
+                </div>
+              ) : null}
+
               <button
                 type="button"
                 disabled={!canProceed}
@@ -589,7 +620,11 @@ const Checkout: React.FC = () => {
                     : 'cursor-not-allowed bg-neutral-300 text-white shadow-none',
                 ].join(' ')}
               >
-                {canProceed ? 'Continuar com PayPal' : 'Reveja os requisitos para continuar'}
+                {canProceed
+                  ? selectedPayment === 'mbway'
+                    ? 'Confirmar encomenda com MB WAY'
+                    : 'Continuar com PayPal'
+                  : 'Reveja os requisitos para continuar'}
               </button>
 
               {!acceptedLegal ? (
@@ -604,9 +639,16 @@ const Checkout: React.FC = () => {
                 </p>
               ) : null}
 
-              <p className="mt-4 text-xs leading-6 text-neutral-500">
-                O resumo da encomenda está preparado para uma finalização simples, discreta e clara.
-              </p>
+              {selectedPayment === 'mbway' ? (
+                <p className="mt-4 text-xs leading-6 text-neutral-500">
+                  Após o pagamento por MB WAY, a validação poderá ser confirmada manualmente antes
+                  do processamento da encomenda.
+                </p>
+              ) : (
+                <p className="mt-4 text-xs leading-6 text-neutral-500">
+                  O resumo da encomenda está preparado para uma finalização simples, discreta e clara.
+                </p>
+              )}
 
               <Link
                 to="/carrinho"

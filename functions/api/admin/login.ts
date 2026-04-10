@@ -35,7 +35,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   if (!env.ADMIN_USERNAME || !env.ADMIN_SESSION_SECRET) {
     return json(
-      { ok: false, error: 'Configuração de autenticação incompleta no servidor' },
+      {
+        ok: false,
+        error: 'Configuração de autenticação incompleta no servidor'
+      },
       { status: 500 }
     );
   }
@@ -49,7 +52,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     if (attempts >= MAX_ATTEMPTS) {
       return json(
-        { ok: false, error: 'Demasiadas tentativas. Tenta novamente mais tarde.' },
+        {
+          ok: false,
+          error: 'Demasiadas tentativas. Tenta novamente mais tarde.'
+        },
         { status: 429 }
       );
     }
@@ -69,7 +75,21 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       });
     }
 
-    return json({ ok: false, error: 'Credenciais inválidas' }, { status: 401 });
+    return json(
+      {
+        ok: false,
+        error: 'Credenciais inválidas',
+        debug: {
+          usernameMatches,
+          passwordMatches,
+          hasAdminUsername: Boolean(env.ADMIN_USERNAME),
+          hasAdminPassword: Boolean(env.ADMIN_PASSWORD),
+          hasAdminPasswordHash: Boolean(env.ADMIN_PASSWORD_HASH),
+          hasAdminPasswordSalt: Boolean(env.ADMIN_PASSWORD_SALT)
+        }
+      },
+      { status: 401 }
+    );
   }
 
   if (env.ADMIN_RATE_LIMIT_KV) {

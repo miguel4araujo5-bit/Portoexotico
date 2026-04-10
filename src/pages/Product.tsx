@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 import {
   ArrowRight,
@@ -15,6 +16,7 @@ import { useCart } from '../context/CartContext';
 const logoSvgSrc = '/favicon.svg';
 const logoFallbackSrc = '/favicon-96x96.png';
 const fallbackImage = '/produtos/Satisfyer.webp';
+const siteUrl = 'https://www.portoexotico.pt';
 
 const Product: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -24,6 +26,16 @@ const Product: React.FC = () => {
   if (!product) {
     return (
       <main className="min-h-screen bg-[#fcf8fa] px-6 py-16 text-neutral-900 md:px-10">
+        <Helmet>
+          <title>Produto não encontrado | Porto Exótico</title>
+          <meta
+            name="description"
+            content="O produto que procura não está disponível ou foi removido da loja Porto Exótico."
+          />
+          <meta name="robots" content="noindex,follow" />
+          <link rel="canonical" href={`${siteUrl}/produto/${slug ?? ''}`} />
+        </Helmet>
+
         <div className="mx-auto max-w-5xl">
           <Link
             to="/"
@@ -79,8 +91,90 @@ const Product: React.FC = () => {
   const alreadyInCart = isInCart(product.id);
   const savings = product.compareAtPrice ? product.compareAtPrice - product.price : 0;
 
+  const canonicalUrl = `${siteUrl}/produto/${product.slug}`;
+  const pageTitle = `${product.name} | Porto Exótico`;
+  const pageDescription =
+    product.shortDescription ||
+    product.description ||
+    `${product.name} disponível na Porto Exótico com compra discreta, elegante e segura.`;
+
+  const productImage = product.image || fallbackImage;
+  const productImageUrl = productImage.startsWith('http')
+    ? productImage
+    : `${siteUrl}${productImage}`;
+
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description || product.shortDescription,
+    image: [productImageUrl],
+    category: categoryLabel,
+    sku: String(product.id),
+    brand: {
+      '@type': 'Brand',
+      name: 'Porto Exótico',
+    },
+    offers: {
+      '@type': 'Offer',
+      url: canonicalUrl,
+      priceCurrency: 'EUR',
+      price: product.price.toFixed(2),
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+    },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Início',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Loja',
+        item: `${siteUrl}/loja`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: product.name,
+        item: canonicalUrl,
+      },
+    ],
+  };
+
   return (
     <main className="min-h-screen bg-[#fcf8fa] px-6 py-16 text-neutral-900 md:px-10">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta
+          name="keywords"
+          content={`${product.name}, ${categoryLabel}, compra discreta, boutique íntima online, Porto Exótico`}
+        />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="product" />
+        <meta property="og:image" content={productImageUrl} />
+        <meta property="product:price:amount" content={product.price.toFixed(2)} />
+        <meta property="product:price:currency" content="EUR" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={productImageUrl} />
+        <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+      </Helmet>
+
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.02fr_0.98fr]">
         <section className="overflow-hidden rounded-[2rem] border border-[#8f355d]/10 bg-white shadow-[0_24px_70px_rgba(143,53,93,0.08)]">
           <div className="relative min-h-[420px] overflow-hidden bg-[#f7edf2] md:min-h-[560px]">

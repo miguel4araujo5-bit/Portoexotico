@@ -1,106 +1,108 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
-  Clock3,
-  Instagram,
+  CreditCard,
+  HeartHandshake,
   Lock,
-  Mail,
-  MapPin,
-  MessageCircle,
+  PackageCheck,
   ShieldCheck,
-  ShoppingBag,
+  Sparkles,
 } from 'lucide-react';
 
-const supportEmail = 'portoexotico@gmail.com';
-const supportWhatsApp = '';
-const instagramUrl = '';
-const instagramHandle = '';
-const locationLabel = 'São Mamede de Infesta';
-const mapEmbedSrc =
-  'https://www.google.com/maps?q=S%C3%A3o%20Mamede%20de%20Infesta&z=13&output=embed';
-const mapExternalUrl =
-  'https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Mamede%20de%20Infesta';
-const supportWhatsAppDigits = supportWhatsApp.replace(/\D/g, '');
-const logoSrc = '/logo.png';
+const siteUrl = 'https://www.portoexotico.pt';
+const canonicalUrl = `${siteUrl}/sobre`;
 
-const channels = [
-  supportEmail
-    ? {
-        label: 'Email',
-        value: supportEmail,
-        href: `mailto:${supportEmail}`,
-        icon: Mail,
-      }
-    : null,
-  supportWhatsApp
-    ? {
-        label: 'WhatsApp',
-        value: supportWhatsApp,
-        href: `https://wa.me/${supportWhatsAppDigits}`,
-        icon: MessageCircle,
-      }
-    : null,
-  instagramUrl && instagramHandle
-    ? {
-        label: 'Instagram',
-        value: instagramHandle,
-        href: instagramUrl,
-        icon: Instagram,
-      }
-    : null,
-].filter(Boolean) as Array<{
-  label: string;
-  value: string;
-  href: string;
-  icon: typeof Mail;
-}>;
+const About: React.FC = () => {
+  const aboutPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'Sobre a Porto Exótico',
+    url: canonicalUrl,
+    inLanguage: 'pt-PT',
+    about: {
+      '@type': 'Organization',
+      name: 'Porto Exótico',
+      url: siteUrl,
+      description:
+        'Boutique íntima online focada em discrição, conforto, elegância e uma experiência de compra segura.',
+    },
+  };
 
-const Contactos: React.FC = () => {
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Porto Exótico',
+    url: siteUrl,
+    logo: `${siteUrl}/logo.png`,
+    description:
+      'Loja online discreta e elegante para produtos íntimos, com foco em privacidade, confiança e experiência premium.',
+  };
+
   return (
     <main className="bg-[#fcf8fa] text-neutral-900">
+      <Helmet>
+        <title>Sobre | Porto Exótico</title>
+        <meta
+          name="description"
+          content="Conheça a Porto Exótico, uma boutique íntima online pensada para uma experiência de compra discreta, confortável, segura e mais elegante."
+        />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content="Sobre | Porto Exótico" />
+        <meta
+          property="og:description"
+          content="Uma loja pensada para comprar com discrição, conforto e confiança."
+        />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={`${siteUrl}/logo.png`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Sobre | Porto Exótico" />
+        <meta
+          name="twitter:description"
+          content="Conheça a Porto Exótico e a proposta de uma experiência íntima mais discreta, segura e elegante."
+        />
+        <meta name="twitter:image" content={`${siteUrl}/logo.png`} />
+        <script type="application/ld+json">{JSON.stringify(aboutPageSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
+      </Helmet>
+
       <section className="relative overflow-hidden border-b border-[#8f355d]/10">
         <div className="absolute inset-0">
-          <div className="absolute left-[-8%] top-[-8%] h-[28rem] w-[28rem] rounded-full bg-[#b24d79]/10 blur-3xl" />
-          <div className="absolute right-[-8%] top-[12%] h-[24rem] w-[24rem] rounded-full bg-[#e7c9a5]/20 blur-3xl" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(143,53,93,0.06),transparent_42%),linear-gradient(180deg,rgba(252,248,250,0.94),rgba(252,248,250,0.98))]" />
+          <div className="absolute left-[-10%] top-[-10%] h-[28rem] w-[28rem] rounded-full bg-[#b24d79]/10 blur-3xl" />
+          <div className="absolute bottom-[-14%] right-[-8%] h-[24rem] w-[24rem] rounded-full bg-[#e7c9a5]/20 blur-3xl" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(143,53,93,0.06),transparent_38%),linear-gradient(180deg,rgba(252,248,250,0.92),rgba(252,248,250,0.98))]" />
         </div>
 
         <div className="container-custom relative py-16 md:py-20">
           <div className="max-w-4xl">
-            <div className="flex flex-wrap items-center gap-3">
-              <Link
-                to="/"
-                className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white/90 px-4 py-3 shadow-[0_10px_30px_rgba(143,53,93,0.08)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_14px_40px_rgba(143,53,93,0.14)]"
-              >
-                <img src={logoSrc} alt="Porto Exótico" className="h-8 w-8 object-contain" />
-
-                <div className="min-w-0">
-                  <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
-                    Porto Exótico
-                  </span>
-                  <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
-                    Compra discreta e segura
-                  </span>
-                </div>
-              </Link>
-
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#8f355d]/10 bg-white/80 px-4 py-2 text-[11px] uppercase tracking-[0.32em] text-[#9b5a79] shadow-[0_10px_30px_rgba(143,53,93,0.06)]">
-                <MessageCircle className="h-4 w-4" />
-                Contactos
-              </span>
-            </div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#8f355d]/10 bg-white/80 px-4 py-2 text-[11px] uppercase tracking-[0.32em] text-[#9b5a79] shadow-[0_10px_30px_rgba(143,53,93,0.06)]">
+              <Sparkles className="h-4 w-4" />
+              Sobre a Porto Exótico
+            </span>
 
             <h1 className="mt-6 font-serif text-4xl font-semibold leading-tight text-[#6f2947] md:text-6xl">
-              Apoio ao cliente com discrição, clareza e atenção.
+              Uma loja pensada para comprar com discrição, conforto e confiança.
             </h1>
 
             <p className="mt-6 max-w-3xl text-base leading-8 text-neutral-700 md:text-lg">
-              Se pretender esclarecimentos sobre artigos, encomendas, pagamentos ou apoio pós-venda,
-              a Porto Exótico procura responder com atenção, reserva e uma experiência de contacto
-              mais cuidada. A marca está baseada em São Mamede de Infesta, na zona do Porto, com
-              contacto disponível por email e com contacto telefónico disponível em breve.
+              A Porto Exótico nasce com um objetivo claro: oferecer uma experiência de compra
+              íntima mais elegante, reservada e segura. Cada detalhe da loja foi pensado para
+              transmitir confiança, facilitar a escolha e valorizar a privacidade de quem compra.
             </p>
+
+            <div className="mt-8 flex flex-wrap gap-2">
+              <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-emerald-700">
+                Compra segura
+              </span>
+              <span className="rounded-full border border-[#8f355d]/10 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-[#7a2f4f]">
+                Envio discreto
+              </span>
+              <span className="rounded-full border border-[#8f355d]/10 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-[#7a2f4f]">
+                Seleção cuidada
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -109,26 +111,29 @@ const Contactos: React.FC = () => {
         <div className="container-custom">
           <div className="grid gap-5 md:grid-cols-3">
             <div className="rounded-[1.8rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_18px_44px_rgba(143,53,93,0.06)]">
-              <ShoppingBag className="h-5 w-5 text-[#8f355d]" />
-              <h2 className="mt-5 text-xl font-semibold text-[#6f2947]">Encomendas e compras</h2>
+              <Lock className="h-5 w-5 text-[#8f355d]" />
+              <h2 className="mt-5 text-xl font-semibold text-[#6f2947]">Discrição em primeiro lugar</h2>
               <p className="mt-3 text-sm leading-7 text-neutral-700">
-                Esclarecimentos sobre artigos, disponibilidade, carrinho e processo de compra.
+                A experiência foi desenhada para transmitir reserva, conforto e serenidade em cada
+                etapa da compra.
+              </p>
+            </div>
+
+            <div className="rounded-[1.8rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_18px_44px_rgba(143,53,93,0.06)]">
+              <HeartHandshake className="h-5 w-5 text-[#8f355d]" />
+              <h2 className="mt-5 text-xl font-semibold text-[#6f2947]">Escolha mais confiante</h2>
+              <p className="mt-3 text-sm leading-7 text-neutral-700">
+                A seleção privilegia artigos com apelo visual, conforto e uma apresentação mais
+                clara, para reduzir hesitação e facilitar a decisão.
               </p>
             </div>
 
             <div className="rounded-[1.8rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_18px_44px_rgba(143,53,93,0.06)]">
               <ShieldCheck className="h-5 w-5 text-[#8f355d]" />
-              <h2 className="mt-5 text-xl font-semibold text-[#6f2947]">Pagamentos e segurança</h2>
+              <h2 className="mt-5 text-xl font-semibold text-[#6f2947]">Experiência mais segura</h2>
               <p className="mt-3 text-sm leading-7 text-neutral-700">
-                Informação sobre checkout, métodos de pagamento e uma experiência de compra segura.
-              </p>
-            </div>
-
-            <div className="rounded-[1.8rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_18px_44px_rgba(143,53,93,0.06)]">
-              <Lock className="h-5 w-5 text-[#8f355d]" />
-              <h2 className="mt-5 text-xl font-semibold text-[#6f2947]">Privacidade e discrição</h2>
-              <p className="mt-3 text-sm leading-7 text-neutral-700">
-                Questões relacionadas com embalagem, envio discreto e confidencialidade.
+                A navegação, a linguagem e o processo de compra foram pensados para transmitir
+                clareza, confiança e simplicidade.
               </p>
             </div>
           </div>
@@ -137,180 +142,92 @@ const Contactos: React.FC = () => {
 
       <section className="section-padding border-b border-[#8f355d]/10 bg-[#fffafb]">
         <div className="container-custom">
-          <div className="grid gap-8 lg:grid-cols-[1fr_0.95fr]">
-            <div className="space-y-5">
-              <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_20px_60px_rgba(143,53,93,0.06)] md:p-8">
-                <span className="inline-block rounded-full border border-[#8f355d]/10 bg-[#fffafb] px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#9b5a79]">
-                  Canais oficiais
-                </span>
+          <div className="max-w-3xl">
+            <span className="inline-block rounded-full border border-[#8f355d]/10 bg-white px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#9b5a79]">
+              Porque escolher a Porto Exótico
+            </span>
+            <h2 className="mt-5 font-serif text-4xl font-semibold leading-tight text-[#6f2947] md:text-5xl">
+              Uma marca pensada para vender com elegância e servir com discrição.
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-700">
+              Mais do que apresentar produtos, a Porto Exótico procura criar uma experiência mais
+              cuidada, mais confortável e mais respeitadora da privacidade de cada cliente.
+            </p>
+          </div>
 
-                {channels.length > 0 ? (
-                  <div className="mt-6 space-y-4">
-                    {channels.map((channel) => {
-                      const Icon = channel.icon;
-
-                      return (
-                        <a
-                          key={channel.label}
-                          href={channel.href}
-                          target={channel.label === 'Instagram' ? '_blank' : undefined}
-                          rel={channel.label === 'Instagram' ? 'noreferrer' : undefined}
-                          className="flex items-center justify-between gap-4 rounded-[1.5rem] border border-[#8f355d]/10 bg-[#fffafb] px-5 py-4 transition duration-300 hover:border-[#8f355d]/25 hover:bg-white"
-                        >
-                          <div className="flex items-center gap-4">
-                            <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#8f355d]/10 bg-white text-[#8f355d]">
-                              <Icon className="h-5 w-5" />
-                            </div>
-
-                            <div>
-                              <p className="text-sm font-medium text-[#6f2947]">{channel.label}</p>
-                              <p className="mt-1 text-sm text-neutral-600">{channel.value}</p>
-                            </div>
-                          </div>
-
-                          <ArrowRight className="h-4 w-4 text-[#8f355d]" />
-                        </a>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="mt-6 rounded-[1.5rem] border border-dashed border-[#8f355d]/15 bg-[#fffafb] p-6">
-                    <p className="text-sm font-medium text-[#6f2947]">Canais de contacto a configurar</p>
-                    <p className="mt-3 max-w-2xl text-sm leading-7 text-neutral-600">
-                      Esta página já está preparada. O email oficial já pode ser disponibilizado e o
-                      contacto telefónico será adicionado em breve, juntamente com outros canais
-                      oficiais da marca.
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_20px_60px_rgba(143,53,93,0.06)] md:p-8">
-                <div className="flex items-center gap-3">
-                  <MapPin className="h-5 w-5 text-[#8f355d]" />
-                  <h2 className="text-xl font-semibold text-[#6f2947]">Localização</h2>
-                </div>
-
-                <p className="mt-4 text-sm leading-7 text-neutral-700">
-                  A Porto Exótico está baseada em {locationLabel}, na zona do Porto, apresentando,
-                  para já, apenas uma referência geográfica geral, sem divulgação de morada exata ou
-                  ponto físico de atendimento.
-                </p>
-
-                <div className="mt-6 overflow-hidden rounded-[1.6rem] border border-[#8f355d]/10 bg-[#fffafb]">
-                  <iframe
-                    src={mapEmbedSrc}
-                    title={`Mapa de ${locationLabel}`}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="h-[320px] w-full border-0"
-                  />
-                </div>
-
-                <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-sm leading-7 text-neutral-600">
-                    Mapa meramente indicativo da zona de São Mamede de Infesta.
-                  </p>
-
-                  <a
-                    href={mapExternalUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-[#fffafb] px-5 py-3 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-white"
-                  >
-                    Abrir mapa
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
-                </div>
-              </div>
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded-[1.8rem] border border-[#8f355d]/10 bg-white p-5 shadow-[0_14px_34px_rgba(143,53,93,0.06)]">
+              <PackageCheck className="h-5 w-5 text-[#8f355d]" />
+              <p className="mt-4 text-sm font-medium text-[#6f2947]">Envio discreto</p>
+              <p className="mt-2 text-sm leading-6 text-neutral-600">
+                Embalagem neutra e uma apresentação exterior mais reservada.
+              </p>
             </div>
 
-            <div className="space-y-5">
-              <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_20px_60px_rgba(143,53,93,0.06)] md:p-8">
-                <div className="flex items-center gap-3">
-                  <Clock3 className="h-5 w-5 text-[#8f355d]" />
-                  <h2 className="text-xl font-semibold text-[#6f2947]">Atendimento</h2>
-                </div>
+            <div className="rounded-[1.8rem] border border-[#8f355d]/10 bg-white p-5 shadow-[0_14px_34px_rgba(143,53,93,0.06)]">
+              <CreditCard className="h-5 w-5 text-[#8f355d]" />
+              <p className="mt-4 text-sm font-medium text-[#6f2947]">Compra segura</p>
+              <p className="mt-2 text-sm leading-6 text-neutral-600">
+                Um processo simples, claro e pensado para gerar confiança.
+              </p>
+            </div>
 
-                <p className="mt-4 text-sm leading-7 text-neutral-700">
-                  A comunicação da marca procura ser clara, cuidada e discreta, com atenção tanto ao
-                  apoio pré-compra como ao acompanhamento pós-venda. O email está disponível como
-                  canal de contacto e o número de telemóvel será disponibilizado em breve.
+            <div className="rounded-[1.8rem] border border-[#8f355d]/10 bg-white p-5 shadow-[0_14px_34px_rgba(143,53,93,0.06)]">
+              <Sparkles className="h-5 w-5 text-[#8f355d]" />
+              <p className="mt-4 text-sm font-medium text-[#6f2947]">Seleção premium</p>
+              <p className="mt-2 text-sm leading-6 text-neutral-600">
+                Uma curadoria mais elegante, orientada para conforto, estética e intenção de compra.
+              </p>
+            </div>
+
+            <div className="rounded-[1.8rem] border border-[#8f355d]/10 bg-white p-5 shadow-[0_14px_34px_rgba(143,53,93,0.06)]">
+              <Lock className="h-5 w-5 text-[#8f355d]" />
+              <p className="mt-4 text-sm font-medium text-[#6f2947]">Privacidade garantida</p>
+              <p className="mt-2 text-sm leading-6 text-neutral-600">
+                Uma experiência mais reservada, cuidada e pensada para o seu conforto.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding bg-[#fcf8fa]">
+        <div className="container-custom">
+          <div className="relative overflow-hidden rounded-[2rem] border border-[#8f355d]/10 bg-white px-6 py-10 shadow-[0_20px_60px_rgba(143,53,93,0.08)] md:px-10 md:py-14">
+            <div className="absolute inset-0">
+              <div className="absolute left-[-10%] top-0 h-52 w-52 rounded-full bg-[#b24d79]/10 blur-3xl" />
+              <div className="absolute bottom-[-10%] right-0 h-44 w-44 rounded-full bg-[#e7c9a5]/16 blur-3xl" />
+            </div>
+
+            <div className="relative flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+              <div className="max-w-3xl">
+                <span className="inline-block rounded-full border border-[#8f355d]/10 bg-[#fffafb] px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#9b5a79]">
+                  Descubra a coleção
+                </span>
+                <h2 className="mt-5 font-serif text-4xl font-semibold leading-tight text-[#6f2947] md:text-5xl">
+                  Explore uma experiência de compra discreta, segura e mais confiante.
+                </h2>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-700">
+                  Entre na loja e descubra uma seleção pensada para diferentes preferências,
+                  momentos e estilos, sempre com foco em discrição e conforto.
                 </p>
-
-                <div className="mt-6 grid gap-3">
-                  <div className="rounded-[1.4rem] border border-[#8f355d]/10 bg-[#fffafb] p-4">
-                    <p className="text-sm font-medium text-[#6f2947]">Apoio à compra</p>
-                    <p className="mt-2 text-sm leading-6 text-neutral-600">
-                      Esclarecimentos sobre artigos, categorias, escolha e processo de encomenda.
-                    </p>
-                  </div>
-
-                  <div className="rounded-[1.4rem] border border-[#8f355d]/10 bg-[#fffafb] p-4">
-                    <p className="text-sm font-medium text-[#6f2947]">Apoio pós-venda</p>
-                    <p className="mt-2 text-sm leading-6 text-neutral-600">
-                      Informação relacionada com acompanhamento, confiança e experiência de compra.
-                    </p>
-                  </div>
-
-                  <div className="rounded-[1.4rem] border border-[#8f355d]/10 bg-[#fffafb] p-4">
-                    <p className="text-sm font-medium text-[#6f2947]">Privacidade</p>
-                    <p className="mt-2 text-sm leading-6 text-neutral-600">
-                      Uma abordagem reservada e orientada para discrição em toda a comunicação.
-                    </p>
-                  </div>
-                </div>
               </div>
 
-              <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white p-6 shadow-[0_20px_60px_rgba(143,53,93,0.06)] md:p-8">
-                <div className="flex flex-wrap items-center gap-3">
-                  <Link
-                    to="/"
-                    className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white px-4 py-3 shadow-[0_10px_28px_rgba(143,53,93,0.08)]"
-                  >
-                    <img src={logoSrc} alt="Porto Exótico" className="h-8 w-8 object-contain" />
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <Link
+                  to="/loja"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#8f355d] px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52]"
+                >
+                  Descobrir a loja
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
 
-                    <div className="min-w-0">
-                      <span className="block font-serif text-lg font-semibold leading-none tracking-[0.02em] text-[#7a2f4f]">
-                        Porto Exótico
-                      </span>
-                      <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.28em] text-[#a55b7d]">
-                        Compra discreta e segura
-                      </span>
-                    </div>
-                  </Link>
-
-                  <span className="inline-block rounded-full border border-[#8f355d]/10 bg-[#fffafb] px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#9b5a79]">
-                    Continue a explorar
-                  </span>
-                </div>
-
-                <h2 className="mt-5 font-serif text-3xl font-semibold leading-tight text-[#6f2947]">
-                  Descubra a coleção com total discrição e confiança.
-                </h2>
-
-                <p className="mt-4 text-sm leading-7 text-neutral-700">
-                  Enquanto o contacto telefónico não fica disponível, a loja continua aberta para
-                  explorar categorias, produtos e uma experiência de compra mais cuidada, com apoio
-                  por email já ativo.
-                </p>
-
-                <div className="mt-6 flex flex-col gap-4 sm:flex-row">
-                  <Link
-                    to="/loja"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#8f355d] px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_rgba(143,53,93,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7d2f52]"
-                  >
-                    Descobrir a loja
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-
-                  <Link
-                    to="/sobre"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-[#fffafb] px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-white"
-                  >
-                    Saber mais
-                  </Link>
-                </div>
+                <Link
+                  to="/contactos"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-[#fffafb] px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-white"
+                >
+                  Falar connosco
+                </Link>
               </div>
             </div>
           </div>
@@ -320,4 +237,4 @@ const Contactos: React.FC = () => {
   );
 };
 
-export default Contactos;
+export default About;

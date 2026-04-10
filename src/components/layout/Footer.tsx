@@ -178,6 +178,26 @@ const Footer: React.FC = () => {
             <p className="mt-5 text-sm leading-7 text-white/55">
               Opções de pagamento pensadas para uma experiência mais simples, elegante e discreta.
             </p>
+
+            <div className="mt-6 rounded-[1.3rem] border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-[10px] uppercase tracking-[0.28em] text-white/35">
+                Explorar rapidamente
+              </p>
+              <div className="mt-3 flex flex-col gap-3 text-sm text-white/68">
+                <Link to="/loja" className="transition hover:text-white">
+                  Ver coleção completa
+                </Link>
+                <Link to="/carrinho" className="transition hover:text-white">
+                  Rever carrinho
+                </Link>
+                <Link to="/checkout" className="transition hover:text-white">
+                  Finalizar encomenda
+                </Link>
+                <Link to="/contactos" className="transition hover:text-white">
+                  Apoio ao cliente
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

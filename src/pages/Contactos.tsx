@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -23,6 +24,8 @@ const mapExternalUrl =
   'https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Mamede%20de%20Infesta';
 const supportWhatsAppDigits = supportWhatsApp.replace(/\D/g, '');
 const logoSrc = '/logo.png';
+const siteUrl = 'https://www.portoexotico.pt';
+const canonicalUrl = `${siteUrl}/contactos`;
 
 const channels = [
   supportEmail
@@ -57,8 +60,47 @@ const channels = [
 }>;
 
 const Contactos: React.FC = () => {
+  const contactSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Contactos Porto Exótico',
+    url: canonicalUrl,
+    inLanguage: 'pt-PT',
+    about: {
+      '@type': 'Organization',
+      name: 'Porto Exótico',
+      url: siteUrl,
+      email: supportEmail,
+    },
+  };
+
   return (
     <main className="bg-[#fcf8fa] text-neutral-900">
+      <Helmet>
+        <title>Contactos | Porto Exótico</title>
+        <meta
+          name="description"
+          content="Contacte a Porto Exótico para apoio sobre artigos, encomendas, pagamentos, privacidade e experiência de compra. Atendimento com discrição, clareza e atenção."
+        />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content="Contactos | Porto Exótico" />
+        <meta
+          property="og:description"
+          content="Apoio ao cliente com discrição, clareza e atenção para encomendas, pagamentos e privacidade."
+        />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={`${siteUrl}/logo.png`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contactos | Porto Exótico" />
+        <meta
+          name="twitter:description"
+          content="Apoio ao cliente com discrição, clareza e atenção para encomendas, pagamentos e privacidade."
+        />
+        <meta name="twitter:image" content={`${siteUrl}/logo.png`} />
+        <script type="application/ld+json">{JSON.stringify(contactSchema)}</script>
+      </Helmet>
+
       <section className="relative overflow-hidden border-b border-[#8f355d]/10">
         <div className="absolute inset-0">
           <div className="absolute left-[-8%] top-[-8%] h-[28rem] w-[28rem] rounded-full bg-[#b24d79]/10 blur-3xl" />

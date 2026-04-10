@@ -26,6 +26,7 @@ const siteUrl = 'https://www.portoexotico.pt';
 const defaultTitle = 'Porto Exótico | Boutique Íntima Online';
 const defaultDescription =
   'Loja online discreta e elegante para produtos íntimos, com uma experiência premium, navegação simples e pagamentos seguros.';
+const defaultImage = `${siteUrl}/logo.png`;
 
 const PlaceholderPage: React.FC<{ title: string; description?: string }> = ({
   title,
@@ -56,6 +57,7 @@ const PlaceholderPage: React.FC<{ title: string; description?: string }> = ({
 const App: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname === '/admin' || location.pathname.startsWith('/admin/');
+  const currentUrl = `${siteUrl}${location.pathname}`;
 
   useEffect(() => {
     if (isAdminRoute) {
@@ -75,17 +77,25 @@ const App: React.FC = () => {
         <meta name="application-name" content="Porto Exótico" />
         <meta name="apple-mobile-web-app-title" content="Porto Exótico" />
         <meta name="theme-color" content="#8f355d" />
+        {!isAdminRoute ? <meta name="robots" content="index,follow" /> : null}
+        {!isAdminRoute ? <link rel="canonical" href={currentUrl} /> : null}
+
         <meta property="og:site_name" content="Porto Exótico" />
         <meta property="og:locale" content="pt_PT" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={defaultTitle} />
         <meta property="og:description" content={defaultDescription} />
-        <meta property="og:url" content={`${siteUrl}${location.pathname}`} />
-        <meta property="og:image" content={`${siteUrl}/logo.png`} />
+        <meta property="og:url" content={currentUrl} />
+        <meta property="og:image" content={defaultImage} />
+        <meta property="og:image:secure_url" content={defaultImage} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:alt" content="Porto Exótico - Boutique Íntima Online" />
+
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={defaultTitle} />
         <meta name="twitter:description" content={defaultDescription} />
-        <meta name="twitter:image" content={`${siteUrl}/logo.png`} />
+        <meta name="twitter:image" content={defaultImage} />
+        <meta name="twitter:image:alt" content="Porto Exótico - Boutique Íntima Online" />
       </Helmet>
 
       {!isAdminRoute ? <Header /> : null}

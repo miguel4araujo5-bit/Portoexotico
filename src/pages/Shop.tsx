@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   ChevronRight,
@@ -13,6 +14,7 @@ import { productCategories, products, type ProductCategory } from '../data/produ
 
 const fallbackImage = '/produtos/Satisfyer.webp';
 const logoSrc = '/logo.png';
+const canonicalUrl = 'https://www.portoexotico.pt/loja';
 
 const categoryDescriptions: Record<ProductCategory, string> = {
   prazer: 'Seleção pensada para prazer, intensidade e uma experiência mais premium.',
@@ -56,6 +58,34 @@ const Shop: React.FC = () => {
 
   return (
     <main className="bg-[#fcf8fa] text-neutral-900">
+      <Helmet>
+        <title>Loja | Porto Exótico</title>
+        <meta
+          name="description"
+          content="Explore a coleção Porto Exótico com produtos de prazer, acessórios, lubrificantes, preservativos e artigos de excitação. Compra discreta, elegante e segura."
+        />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta
+          name="keywords"
+          content="loja íntima online, sex shop portugal, produtos de prazer, acessórios íntimos, lubrificantes, preservativos, excitação, compra discreta"
+        />
+        <meta property="og:title" content="Loja | Porto Exótico" />
+        <meta
+          property="og:description"
+          content="Descubra a coleção Porto Exótico com mais clareza, discrição e confiança na compra."
+        />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.portoexotico.pt/logo.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Loja | Porto Exótico" />
+        <meta
+          name="twitter:description"
+          content="Explore produtos íntimos selecionados para uma experiência premium e discreta."
+        />
+        <meta name="twitter:image" content="https://www.portoexotico.pt/logo.png" />
+      </Helmet>
+
       <section className="relative overflow-hidden border-b border-[#8f355d]/10">
         <div className="absolute inset-0">
           <div className="absolute left-[-8%] top-[-8%] h-[28rem] w-[28rem] rounded-full bg-[#b24d79]/10 blur-3xl" />
@@ -168,6 +198,7 @@ const Shop: React.FC = () => {
                   placeholder="Pesquisar por produto, característica ou categoria"
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
+                  aria-label="Pesquisar produtos da loja"
                   className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] py-3 pl-11 pr-4 text-sm text-neutral-800 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
                 />
               </div>
@@ -176,6 +207,8 @@ const Shop: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setSelectedCategory('all')}
+                  aria-label="Filtrar por todos os produtos"
+                  aria-pressed={selectedCategory === 'all'}
                   className={`rounded-full px-4 py-2 text-sm transition ${
                     selectedCategory === 'all'
                       ? 'bg-[#8f355d] text-white shadow-[0_12px_26px_rgba(143,53,93,0.22)]'
@@ -190,6 +223,8 @@ const Shop: React.FC = () => {
                     key={category.value}
                     type="button"
                     onClick={() => setSelectedCategory(category.value)}
+                    aria-label={`Filtrar por ${category.label}`}
+                    aria-pressed={selectedCategory === category.value}
                     className={`rounded-full px-4 py-2 text-sm transition ${
                       selectedCategory === category.value
                         ? 'bg-[#8f355d] text-white shadow-[0_12px_26px_rgba(143,53,93,0.22)]'

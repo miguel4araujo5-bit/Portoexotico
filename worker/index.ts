@@ -1,9 +1,13 @@
 import {
   badRequest,
+  buildExpiredSessionCookie,
   buildSessionCookie,
   createSessionToken,
   getClientIp,
   json,
+  methodNotAllowed,
+  requireAdmin,
+  unauthorized,
   verifyPassword,
   type Env as AuthEnv
 } from '../functions/_utils/auth';
@@ -407,6 +411,40 @@ async function handleAdminLogin(request: Request, env: WorkerEnv) {
   );
 }
 
+async function handleAdminSession(request: Request, env: WorkerEnv) {
+  if (request.method !== 'GET') {
+    return methodNotAllowed();
+  }
+
+  const session = await requireAdmin(request, env);
+
+  if (!session) {
+    return unauthorized();
+  }
+
+  return json({
+    ok: true,
+    user: {
+      username: session.u
+    }
+  });
+}
+
+async function handleAdminLogout(request: Request) {
+  if (request.method !== 'POST') {
+    return methodNotAllowed();
+  }
+
+  return json(
+    { ok: true },
+    {
+      headers: {
+        'Set-Cookie': buildExpiredSessionCookie()
+      }
+    }
+  );
+}
+
 export default {
   async fetch(request: Request, env: WorkerEnv): Promise<Response> {
     const url = new URL(request.url);
@@ -414,6 +452,14 @@ export default {
     try {
       if (url.pathname === '/api/admin/login') {
         return await handleAdminLogin(request, env);
+      }
+
+      if (url.pathname === '/api/admin/session') {
+        return await handleAdminSession(request, env);
+      }
+
+      if (url.pathname === '/api/admin/logout') {
+        return await handleAdminLogout(request);
       }
 
       if (url.pathname === '/api/chat') {

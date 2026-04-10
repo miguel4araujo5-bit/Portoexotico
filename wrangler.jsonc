@@ -3,6 +3,7 @@
   "name": "portoexotico",
   "main": "./worker/index.ts",
   "compatibility_date": "2026-03-31",
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
@@ -25,6 +26,12 @@
       "id": "7f813017044b4a3f89cb7f3980bbd1ed"
     }
   ],
+  "vars": {
+    "PAYPAL_ENVIRONMENT": "sandbox",
+    "MBWAY_PHONE_NUMBER": "938777576",
+    "STORE_NAME": "Porto Exótico",
+    "STORE_EMAIL": "geral@portoexotico.pt"
+  },
   "routes": [
     {
       "pattern": "portoexotico.pt",

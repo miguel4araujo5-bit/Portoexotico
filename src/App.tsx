@@ -26,7 +26,7 @@ const siteUrl = 'https://www.portoexotico.pt';
 const defaultTitle = 'Porto Exótico | Boutique Íntima Online';
 const defaultDescription =
   'Loja online discreta e elegante para produtos íntimos, com uma experiência premium, navegação simples e pagamentos seguros.';
-const defaultImage = `${siteUrl}/logo.png`;
+const defaultImage = `${siteUrl}/og-image.jpg?v=1`;
 
 const PlaceholderPage: React.FC<{ title: string; description?: string }> = ({
   title,

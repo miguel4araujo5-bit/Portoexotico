@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -13,6 +14,7 @@ import {
 import { productCategories, products } from '../data/products';
 
 const logoSrc = '/logo.png';
+const canonicalUrl = 'https://www.portoexotico.pt/';
 
 const categoryDescriptions: Record<string, string> = {
   prazer: 'Seleção pensada para prazer, intensidade e discrição com um visual mais premium.',
@@ -31,8 +33,66 @@ const Home: React.FC = () => {
   const secondaryProducts = featuredProducts.slice(1, 4);
   const featuredCategories = productCategories.slice(0, 5);
 
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Porto Exótico',
+    url: 'https://www.portoexotico.pt',
+    logo: 'https://www.portoexotico.pt/logo.png',
+    description:
+      'Boutique íntima online com foco em discrição, elegância, confiança e experiência de compra premium.',
+  };
+
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Porto Exótico',
+    url: 'https://www.portoexotico.pt',
+    inLanguage: 'pt-PT',
+    description:
+      'Loja online discreta e elegante para produtos íntimos, com experiência premium e compra segura.',
+  };
+
   return (
     <main className="bg-[#fcf8fa] text-neutral-900">
+      <Helmet>
+        <title>
+          Porto Exótico | Boutique Íntima Online Discreta, Elegante e Segura
+        </title>
+        <meta
+          name="description"
+          content="Descubra uma boutique íntima online com produtos de prazer, acessórios, lubrificantes, preservativos e artigos de excitação. Compra discreta, elegante e segura."
+        />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta
+          name="keywords"
+          content="boutique íntima online, sex shop discreta, loja íntima online portugal, produtos de prazer, lubrificantes, preservativos, acessórios íntimos, compra discreta"
+        />
+        <meta
+          property="og:title"
+          content="Porto Exótico | Boutique Íntima Online Discreta, Elegante e Segura"
+        />
+        <meta
+          property="og:description"
+          content="Produtos íntimos selecionados para quem valoriza privacidade, elegância e uma experiência de compra premium."
+        />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.portoexotico.pt/logo.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Porto Exótico | Boutique Íntima Online Discreta, Elegante e Segura"
+        />
+        <meta
+          name="twitter:description"
+          content="Compra discreta, experiência premium e seleção cuidada de produtos íntimos."
+        />
+        <meta name="twitter:image" content="https://www.portoexotico.pt/logo.png" />
+        <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
+      </Helmet>
+
       <section className="relative overflow-hidden border-b border-[#8f355d]/10">
         <div className="absolute inset-0">
           <div className="absolute left-[-10%] top-[-8%] h-[30rem] w-[30rem] rounded-full bg-[#b24d79]/10 blur-3xl" />

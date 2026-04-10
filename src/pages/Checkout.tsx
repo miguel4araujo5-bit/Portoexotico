@@ -2,8 +2,10 @@ import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
+  AlertCircle,
   CheckCircle2,
   CreditCard,
+  Loader2,
   Lock,
   Package,
   Wallet,
@@ -13,6 +15,15 @@ import {
 import { useCart } from '../context/CartContext';
 
 type PaymentMethod = 'paypal' | 'stripe' | 'mbway';
+
+type CheckoutFormData = {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  postalCode: string;
+  locality: string;
+};
 
 const paymentOptions: Array<{
   id: PaymentMethod;
@@ -46,11 +57,28 @@ const siteUrl = 'https://www.portoexotico.pt';
 const canonicalUrl = `${siteUrl}/checkout`;
 const mbwayPhoneNumber = '938777576';
 
+const initialFormData: CheckoutFormData = {
+  fullName: '',
+  email: '',
+  phone: '',
+  address: '',
+  postalCode: '',
+  locality: '',
+};
+
 const Checkout: React.FC = () => {
   const { items, subtotal } = useCart();
+
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>('paypal');
   const [acceptedLegal, setAcceptedLegal] = useState(false);
   const [acceptedMarketing, setAcceptedMarketing] = useState(false);
+  const [formData, setFormData] = useState<CheckoutFormData>(initialFormData);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof CheckoutFormData, string>>>(
+    {}
+  );
+  const [checkoutError, setCheckoutError] = useState('');
+  const [checkoutSuccess, setCheckoutSuccess] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const selectedOption = useMemo(
     () => paymentOptions.find((option) => option.id === selectedPayment),
@@ -58,7 +86,7 @@ const Checkout: React.FC = () => {
   );
 
   const isSelectedPaymentAvailable = selectedOption?.status === 'available';
-  const canProceed = acceptedLegal && isSelectedPaymentAvailable;
+  const canProceed = acceptedLegal && isSelectedPaymentAvailable && !isSubmitting;
 
   const checkoutSchema = {
     '@context': 'https://schema.org',
@@ -71,6 +99,182 @@ const Checkout: React.FC = () => {
       name: 'Porto Exótico',
       url: siteUrl,
     },
+  };
+
+  const handleInputChange =
+    (field: keyof CheckoutFormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+
+      setFormData((current) => ({
+        ...current,
+        [field]: value,
+      }));
+
+      setFieldErrors((current) => {
+        if (!current[field]) {
+          return current;
+        }
+
+        return {
+          ...current,
+          [field]: '',
+        };
+      });
+
+      if (checkoutError) {
+        setCheckoutError('');
+      }
+
+      if (checkoutSuccess) {
+        setCheckoutSuccess('');
+      }
+    };
+
+  const validateForm = () => {
+    const nextErrors: Partial<Record<keyof CheckoutFormData, string>> = {};
+
+    if (!formData.fullName.trim()) {
+      nextErrors.fullName = 'Indique o seu nome completo.';
+    }
+
+    if (!formData.email.trim()) {
+      nextErrors.email = 'Indique o seu email.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      nextErrors.email = 'Indique um email válido.';
+    }
+
+    if (!formData.phone.trim()) {
+      nextErrors.phone = 'Indique o seu telefone.';
+    }
+
+    if (!formData.address.trim()) {
+      nextErrors.address = 'Indique a sua morada.';
+    }
+
+    if (!formData.postalCode.trim()) {
+      nextErrors.postalCode = 'Indique o código-postal.';
+    }
+
+    if (!formData.locality.trim()) {
+      nextErrors.locality = 'Indique a localidade.';
+    }
+
+    setFieldErrors(nextErrors);
+
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const buildPayload = () => {
+    return {
+      customer: {
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        address: formData.address.trim(),
+        postalCode: formData.postalCode.trim(),
+        locality: formData.locality.trim(),
+      },
+      marketingConsent: acceptedMarketing,
+      paymentMethod: selectedPayment,
+      items: items.map((item) => ({
+        productId: item.product.id,
+        name: item.product.name,
+        quantity: item.quantity,
+        unitPrice: item.product.price,
+        lineTotal: item.product.price * item.quantity,
+      })),
+      subtotal,
+      total: subtotal,
+      currency: 'EUR',
+    };
+  };
+
+  const handleCheckout = async () => {
+    setCheckoutError('');
+    setCheckoutSuccess('');
+
+    if (!acceptedLegal) {
+      setCheckoutError(
+        'Para concluir a encomenda, é necessário aceitar a Política de Privacidade e os Termos e Condições.'
+      );
+      return;
+    }
+
+    if (!isSelectedPaymentAvailable) {
+      setCheckoutError('O método selecionado ainda não está disponível.');
+      return;
+    }
+
+    const isFormValid = validateForm();
+
+    if (!isFormValid) {
+      setCheckoutError('Preencha corretamente os dados obrigatórios para continuar.');
+      return;
+    }
+
+    if (selectedPayment === 'stripe') {
+      setCheckoutError('O Stripe estará disponível brevemente.');
+      return;
+    }
+
+    const payload = buildPayload();
+
+    try {
+      setIsSubmitting(true);
+
+      if (selectedPayment === 'paypal') {
+        const response = await fetch('/api/payments/paypal/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json().catch(() => null);
+
+        if (!response.ok) {
+          throw new Error(result?.message || 'Não foi possível iniciar o pagamento com PayPal.');
+        }
+
+        if (result?.approvalUrl) {
+          window.location.href = result.approvalUrl;
+          return;
+        }
+
+        throw new Error('Não foi recebida a ligação de aprovação do PayPal.');
+      }
+
+      if (selectedPayment === 'mbway') {
+        const response = await fetch('/api/payments/mbway/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json().catch(() => null);
+
+        if (!response.ok) {
+          throw new Error(result?.message || 'Não foi possível registar a encomenda MB WAY.');
+        }
+
+        setCheckoutSuccess(
+          result?.message ||
+            `Encomenda registada com sucesso. Efetue o pagamento MB WAY para o número ${mbwayPhoneNumber}.`
+        );
+        return;
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Ocorreu um erro inesperado ao processar a encomenda.';
+      setCheckoutError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (items.length === 0) {
@@ -269,9 +473,14 @@ const Checkout: React.FC = () => {
                       type="text"
                       name="fullName"
                       autoComplete="name"
+                      value={formData.fullName}
+                      onChange={handleInputChange('fullName')}
                       placeholder="Nome completo"
                       className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
                     />
+                    {fieldErrors.fullName ? (
+                      <p className="mt-2 text-xs leading-5 text-[#8f355d]">{fieldErrors.fullName}</p>
+                    ) : null}
                   </label>
 
                   <label className="block">
@@ -280,9 +489,14 @@ const Checkout: React.FC = () => {
                       type="email"
                       name="email"
                       autoComplete="email"
+                      value={formData.email}
+                      onChange={handleInputChange('email')}
                       placeholder="Email"
                       className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
                     />
+                    {fieldErrors.email ? (
+                      <p className="mt-2 text-xs leading-5 text-[#8f355d]">{fieldErrors.email}</p>
+                    ) : null}
                   </label>
 
                   <label className="block">
@@ -291,9 +505,14 @@ const Checkout: React.FC = () => {
                       type="tel"
                       name="phone"
                       autoComplete="tel"
+                      value={formData.phone}
+                      onChange={handleInputChange('phone')}
                       placeholder="Telefone"
                       className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
                     />
+                    {fieldErrors.phone ? (
+                      <p className="mt-2 text-xs leading-5 text-[#8f355d]">{fieldErrors.phone}</p>
+                    ) : null}
                   </label>
 
                   <label className="block md:col-span-2">
@@ -302,9 +521,14 @@ const Checkout: React.FC = () => {
                       type="text"
                       name="address"
                       autoComplete="street-address"
+                      value={formData.address}
+                      onChange={handleInputChange('address')}
                       placeholder="Morada"
                       className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
                     />
+                    {fieldErrors.address ? (
+                      <p className="mt-2 text-xs leading-5 text-[#8f355d]">{fieldErrors.address}</p>
+                    ) : null}
                   </label>
 
                   <label className="block">
@@ -313,9 +537,16 @@ const Checkout: React.FC = () => {
                       type="text"
                       name="postalCode"
                       autoComplete="postal-code"
+                      value={formData.postalCode}
+                      onChange={handleInputChange('postalCode')}
                       placeholder="Código-postal"
                       className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
                     />
+                    {fieldErrors.postalCode ? (
+                      <p className="mt-2 text-xs leading-5 text-[#8f355d]">
+                        {fieldErrors.postalCode}
+                      </p>
+                    ) : null}
                   </label>
 
                   <label className="block">
@@ -324,9 +555,16 @@ const Checkout: React.FC = () => {
                       type="text"
                       name="locality"
                       autoComplete="address-level2"
+                      value={formData.locality}
+                      onChange={handleInputChange('locality')}
                       placeholder="Localidade"
                       className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
                     />
+                    {fieldErrors.locality ? (
+                      <p className="mt-2 text-xs leading-5 text-[#8f355d]">
+                        {fieldErrors.locality}
+                      </p>
+                    ) : null}
                   </label>
                 </div>
 
@@ -433,6 +671,8 @@ const Checkout: React.FC = () => {
                         onClick={() => {
                           if (!isSoon) {
                             setSelectedPayment(option.id);
+                            setCheckoutError('');
+                            setCheckoutSuccess('');
                           }
                         }}
                         className={[
@@ -610,9 +850,28 @@ const Checkout: React.FC = () => {
                 </div>
               ) : null}
 
+              {checkoutError ? (
+                <div className="mt-6 rounded-[1.4rem] border border-red-200 bg-red-50 px-4 py-4">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
+                    <p className="text-sm leading-6 text-red-700">{checkoutError}</p>
+                  </div>
+                </div>
+              ) : null}
+
+              {checkoutSuccess ? (
+                <div className="mt-6 rounded-[1.4rem] border border-emerald-200 bg-emerald-50 px-4 py-4">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+                    <p className="text-sm leading-6 text-emerald-700">{checkoutSuccess}</p>
+                  </div>
+                </div>
+              ) : null}
+
               <button
                 type="button"
                 disabled={!canProceed}
+                onClick={handleCheckout}
                 className={[
                   'mt-6 inline-flex w-full items-center justify-center rounded-full px-6 py-3 text-sm font-medium text-white transition duration-300',
                   canProceed
@@ -620,11 +879,20 @@ const Checkout: React.FC = () => {
                     : 'cursor-not-allowed bg-neutral-300 text-white shadow-none',
                 ].join(' ')}
               >
-                {canProceed
-                  ? selectedPayment === 'mbway'
-                    ? 'Confirmar encomenda com MB WAY'
-                    : 'Continuar com PayPal'
-                  : 'Reveja os requisitos para continuar'}
+                {isSubmitting ? (
+                  <span className="inline-flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    A processar
+                  </span>
+                ) : canProceed ? (
+                  selectedPayment === 'mbway' ? (
+                    'Confirmar encomenda com MB WAY'
+                  ) : (
+                    'Continuar com PayPal'
+                  )
+                ) : (
+                  'Reveja os requisitos para continuar'
+                )}
               </button>
 
               {!acceptedLegal ? (

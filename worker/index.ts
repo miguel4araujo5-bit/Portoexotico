@@ -13,6 +13,12 @@ type WorkerEnv = AuthEnv &
   ChatEnv & {
     ASSETS: Fetcher;
     ADMIN_PASSWORD?: string;
+    PAYPAL_CLIENT_ID?: string;
+    PAYPAL_CLIENT_SECRET?: string;
+    PAYPAL_ENVIRONMENT?: string;
+    STORE_NAME?: string;
+    STORE_EMAIL?: string;
+    MBWAY_PHONE_NUMBER?: string;
   };
 
 type LoginBody = {
@@ -20,8 +26,289 @@ type LoginBody = {
   password?: string;
 };
 
+type CheckoutCustomer = {
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  postalCode?: string;
+  locality?: string;
+};
+
+type CheckoutItem = {
+  productId?: string | number;
+  name?: string;
+  quantity?: number;
+  unitPrice?: number;
+  lineTotal?: number;
+};
+
+type CheckoutBody = {
+  customer?: CheckoutCustomer;
+  marketingConsent?: boolean;
+  paymentMethod?: 'paypal' | 'stripe' | 'mbway';
+  items?: CheckoutItem[];
+  subtotal?: number;
+  total?: number;
+  currency?: string;
+};
+
 const MAX_ATTEMPTS = 7;
 const WINDOW_SECONDS = 15 * 60;
+
+function isValidCheckoutBody(body: CheckoutBody) {
+  if (!body || typeof body !== 'object') {
+    return false;
+  }
+
+  if (!body.customer || typeof body.customer !== 'object') {
+    return false;
+  }
+
+  if (!Array.isArray(body.items) || body.items.length === 0) {
+    return false;
+  }
+
+  if (typeof body.total !== 'number' || Number.isNaN(body.total) || body.total <= 0) {
+    return false;
+  }
+
+  return true;
+}
+
+function sanitizeText(value: unknown) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function normalizeCurrency(value: unknown) {
+  return typeof value === 'string' && value.trim() ? value.trim().toUpperCase() : 'EUR';
+}
+
+function formatAmount(value: number) {
+  return value.toFixed(2);
+}
+
+function getPaypalBaseUrl(env: WorkerEnv) {
+  return env.PAYPAL_ENVIRONMENT === 'live'
+    ? 'https://api-m.paypal.com'
+    : 'https://api-m.sandbox.paypal.com';
+}
+
+async function getPaypalAccessToken(env: WorkerEnv) {
+  if (!env.PAYPAL_CLIENT_ID || !env.PAYPAL_CLIENT_SECRET) {
+    throw new Error('Configuração PayPal incompleta no servidor.');
+  }
+
+  const auth = btoa(`${env.PAYPAL_CLIENT_ID}:${env.PAYPAL_CLIENT_SECRET}`);
+  const response = await fetch(`${getPaypalBaseUrl(env)}/v1/oauth2/token`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${auth}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: 'grant_type=client_credentials'
+  });
+
+  const result = (await response.json().catch(() => null)) as
+    | { access_token?: string; error_description?: string }
+    | null;
+
+  if (!response.ok || !result?.access_token) {
+    throw new Error(result?.error_description || 'Não foi possível autenticar no PayPal.');
+  }
+
+  return result.access_token;
+}
+
+async function handlePaypalCreateOrder(request: Request, env: WorkerEnv) {
+  if (request.method !== 'POST') {
+    return json({ ok: false, error: 'Método não permitido' }, { status: 405 });
+  }
+
+  let body: CheckoutBody;
+
+  try {
+    body = await request.json<CheckoutBody>();
+  } catch {
+    return badRequest('JSON inválido');
+  }
+
+  if (!isValidCheckoutBody(body)) {
+    return badRequest('Dados de checkout inválidos');
+  }
+
+  if (body.paymentMethod !== 'paypal') {
+    return badRequest('Método de pagamento inválido para esta rota');
+  }
+
+  const customer = body.customer || {};
+  const total = typeof body.total === 'number' ? body.total : 0;
+  const currency = normalizeCurrency(body.currency);
+
+  const accessToken = await getPaypalAccessToken(env);
+  const origin = new URL(request.url).origin;
+
+  const storeName = sanitizeText(env.STORE_NAME) || 'Porto Exótico';
+  const customerName = sanitizeText(customer.fullName);
+  const customerEmail = sanitizeText(customer.email);
+  const customerPhone = sanitizeText(customer.phone);
+  const customerAddress = sanitizeText(customer.address);
+  const customerPostalCode = sanitizeText(customer.postalCode);
+  const customerLocality = sanitizeText(customer.locality);
+
+  const itemTotal = body.items!.reduce((sum, item) => {
+    const quantity = typeof item.quantity === 'number' ? item.quantity : 0;
+    const unitPrice = typeof item.unitPrice === 'number' ? item.unitPrice : 0;
+    return sum + quantity * unitPrice;
+  }, 0);
+
+  const paypalOrderPayload = {
+    intent: 'CAPTURE',
+    purchase_units: [
+      {
+        description: `Encomenda ${storeName}`,
+        amount: {
+          currency_code: currency,
+          value: formatAmount(total),
+          breakdown: {
+            item_total: {
+              currency_code: currency,
+              value: formatAmount(itemTotal)
+            }
+          }
+        },
+        items: body.items!.map((item) => ({
+          name: sanitizeText(item.name) || 'Artigo',
+          quantity: String(typeof item.quantity === 'number' ? item.quantity : 1),
+          unit_amount: {
+            currency_code: currency,
+            value: formatAmount(typeof item.unitPrice === 'number' ? item.unitPrice : 0)
+          }
+        })),
+        custom_id: crypto.randomUUID(),
+        soft_descriptor: 'PORTOEXOTICO'
+      }
+    ],
+    application_context: {
+      brand_name: storeName,
+      user_action: 'PAY_NOW',
+      return_url: `${origin}/checkout?paypal=success`,
+      cancel_url: `${origin}/checkout?paypal=cancel`
+    },
+    payer: {
+      name: customerName
+        ? {
+            given_name: customerName
+          }
+        : undefined,
+      email_address: customerEmail || undefined,
+      phone: customerPhone
+        ? {
+            phone_type: 'MOBILE',
+            phone_number: {
+              national_number: customerPhone.replace(/\s+/g, '')
+            }
+          }
+        : undefined,
+      address:
+        customerAddress || customerPostalCode || customerLocality
+          ? {
+              address_line_1: customerAddress || undefined,
+              admin_area_2: customerLocality || undefined,
+              postal_code: customerPostalCode || undefined,
+              country_code: 'PT'
+            }
+          : undefined
+    }
+  };
+
+  const response = await fetch(`${getPaypalBaseUrl(env)}/v2/checkout/orders`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(paypalOrderPayload)
+  });
+
+  const result = (await response.json().catch(() => null)) as
+    | {
+        id?: string;
+        links?: Array<{ href?: string; rel?: string; method?: string }>;
+        message?: string;
+      }
+    | null;
+
+  if (!response.ok || !result?.id) {
+    return json(
+      {
+        ok: false,
+        error: result?.message || 'Não foi possível criar a order PayPal.'
+      },
+      { status: 500 }
+    );
+  }
+
+  const approvalUrl = result.links?.find((link) => link.rel === 'approve')?.href;
+
+  if (!approvalUrl) {
+    return json(
+      {
+        ok: false,
+        error: 'A ligação de aprovação do PayPal não foi devolvida.'
+      },
+      { status: 500 }
+    );
+  }
+
+  return json({
+    ok: true,
+    orderId: result.id,
+    approvalUrl
+  });
+}
+
+async function handleMbwayCreate(request: Request, env: WorkerEnv) {
+  if (request.method !== 'POST') {
+    return json({ ok: false, error: 'Método não permitido' }, { status: 405 });
+  }
+
+  let body: CheckoutBody;
+
+  try {
+    body = await request.json<CheckoutBody>();
+  } catch {
+    return badRequest('JSON inválido');
+  }
+
+  if (!isValidCheckoutBody(body)) {
+    return badRequest('Dados de checkout inválidos');
+  }
+
+  if (body.paymentMethod !== 'mbway') {
+    return badRequest('Método de pagamento inválido para esta rota');
+  }
+
+  const customer = body.customer || {};
+  const total = typeof body.total === 'number' ? body.total : 0;
+  const mbwayPhoneNumber = sanitizeText(env.MBWAY_PHONE_NUMBER) || '938777576';
+  const orderReference = crypto.randomUUID().slice(0, 8).toUpperCase();
+
+  const customerName = sanitizeText(customer.fullName);
+  const customerEmail = sanitizeText(customer.email);
+
+  if (!customerName || !customerEmail) {
+    return badRequest('Dados do cliente incompletos');
+  }
+
+  return json({
+    ok: true,
+    orderReference,
+    mbwayPhoneNumber,
+    total: formatAmount(total),
+    message: `Encomenda registada com sucesso. Efetue o pagamento de ${formatAmount(total)} € por MB WAY para o número ${mbwayPhoneNumber}. Referência interna: ${orderReference}. A encomenda ficará sujeita a validação manual.`
+  });
+}
 
 async function handleAdminLogin(request: Request, env: WorkerEnv) {
   if (request.method !== 'POST') {
@@ -131,6 +418,14 @@ export default {
 
       if (url.pathname === '/api/chat') {
         return await handleChatRequest(request, env);
+      }
+
+      if (url.pathname === '/api/payments/paypal/create-order') {
+        return await handlePaypalCreateOrder(request, env);
+      }
+
+      if (url.pathname === '/api/payments/mbway/create') {
+        return await handleMbwayCreate(request, env);
       }
 
       return env.ASSETS.fetch(request);

@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   CheckCircle2,
@@ -41,6 +42,8 @@ const paymentOptions: Array<{
 
 const logoSvgSrc = '/favicon.svg';
 const logoFallbackSrc = '/favicon-96x96.png';
+const siteUrl = 'https://www.portoexotico.pt';
+const canonicalUrl = `${siteUrl}/checkout`;
 
 const Checkout: React.FC = () => {
   const { items, subtotal } = useCart();
@@ -56,9 +59,47 @@ const Checkout: React.FC = () => {
   const isSelectedPaymentAvailable = selectedOption?.status === 'available';
   const canProceed = acceptedLegal && isSelectedPaymentAvailable;
 
+  const checkoutSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CheckoutPage',
+    name: 'Checkout Porto Exótico',
+    url: canonicalUrl,
+    inLanguage: 'pt-PT',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Porto Exótico',
+      url: siteUrl,
+    },
+  };
+
   if (items.length === 0) {
     return (
       <main className="min-h-screen bg-[#fcf8fa] px-6 py-16 text-neutral-900 md:px-10">
+        <Helmet>
+          <title>Checkout | Porto Exótico</title>
+          <meta
+            name="description"
+            content="Finalize a sua compra na Porto Exótico com discrição, confiança e uma experiência segura. Adicione artigos ao carrinho para continuar."
+          />
+          <link rel="canonical" href={canonicalUrl} />
+          <meta property="og:title" content="Checkout | Porto Exótico" />
+          <meta
+            property="og:description"
+            content="Finalize a sua compra com discrição, elegância e confiança na Porto Exótico."
+          />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:type" content="website" />
+          <meta property="og:image" content={`${siteUrl}/logo.png`} />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="Checkout | Porto Exótico" />
+          <meta
+            name="twitter:description"
+            content="Finalize a sua compra com discrição, elegância e confiança na Porto Exótico."
+          />
+          <meta name="twitter:image" content={`${siteUrl}/logo.png`} />
+          <script type="application/ld+json">{JSON.stringify(checkoutSchema)}</script>
+        </Helmet>
+
         <div className="mx-auto max-w-4xl">
           <Link
             to="/"
@@ -108,6 +149,31 @@ const Checkout: React.FC = () => {
 
   return (
     <main className="min-h-screen bg-[#fcf8fa] text-neutral-900">
+      <Helmet>
+        <title>Checkout | Porto Exótico</title>
+        <meta
+          name="description"
+          content="Finalize a sua encomenda na Porto Exótico com discrição, elegância e confiança. Confirme os dados, escolha o método disponível e conclua a compra."
+        />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content="Checkout | Porto Exótico" />
+        <meta
+          property="og:description"
+          content="Finalize a sua encomenda com discrição, elegância e confiança."
+        />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={`${siteUrl}/logo.png`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Checkout | Porto Exótico" />
+        <meta
+          name="twitter:description"
+          content="Finalize a sua encomenda com discrição, elegância e confiança."
+        />
+        <meta name="twitter:image" content={`${siteUrl}/logo.png`} />
+        <script type="application/ld+json">{JSON.stringify(checkoutSchema)}</script>
+      </Helmet>
+
       <section className="relative overflow-hidden border-b border-[#8f355d]/10 px-6 py-16 md:px-10">
         <div className="absolute inset-0">
           <div className="absolute left-[-8%] top-[-8%] h-[28rem] w-[28rem] rounded-full bg-[#b24d79]/10 blur-3xl" />
@@ -186,43 +252,81 @@ const Checkout: React.FC = () => {
 
           <div className="mt-12 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
             <section className="space-y-8">
-              <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white/82 p-6 shadow-[0_18px_50px_rgba(143,53,93,0.08)] backdrop-blur-md">
+              <form
+                className="rounded-[2rem] border border-[#8f355d]/10 bg-white/82 p-6 shadow-[0_18px_50px_rgba(143,53,93,0.08)] backdrop-blur-md"
+                onSubmit={(event) => event.preventDefault()}
+              >
                 <div className="flex items-center gap-3">
                   <Package className="h-5 w-5 text-[#8f355d]" />
                   <h2 className="text-xl font-semibold text-[#6f2947]">Dados de entrega</h2>
                 </div>
 
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
-                  <input
-                    type="text"
-                    placeholder="Nome completo"
-                    className="rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Telefone"
-                    className="rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Morada"
-                    className="rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white md:col-span-2"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Código-postal"
-                    className="rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Localidade"
-                    className="rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
-                  />
+                  <label className="block">
+                    <span className="sr-only">Nome completo</span>
+                    <input
+                      type="text"
+                      name="fullName"
+                      autoComplete="name"
+                      placeholder="Nome completo"
+                      className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="sr-only">Email</span>
+                    <input
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      placeholder="Email"
+                      className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="sr-only">Telefone</span>
+                    <input
+                      type="tel"
+                      name="phone"
+                      autoComplete="tel"
+                      placeholder="Telefone"
+                      className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
+                    />
+                  </label>
+
+                  <label className="block md:col-span-2">
+                    <span className="sr-only">Morada</span>
+                    <input
+                      type="text"
+                      name="address"
+                      autoComplete="street-address"
+                      placeholder="Morada"
+                      className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="sr-only">Código-postal</span>
+                    <input
+                      type="text"
+                      name="postalCode"
+                      autoComplete="postal-code"
+                      placeholder="Código-postal"
+                      className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="sr-only">Localidade</span>
+                    <input
+                      type="text"
+                      name="locality"
+                      autoComplete="address-level2"
+                      placeholder="Localidade"
+                      className="w-full rounded-2xl border border-[#8f355d]/10 bg-[#fffafb] px-4 py-3 text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-[#8f355d]/30 focus:bg-white"
+                    />
+                  </label>
                 </div>
 
                 <div className="mt-6 rounded-[1.5rem] border border-[#8f355d]/10 bg-[#fffafb] p-5">
@@ -300,7 +404,7 @@ const Checkout: React.FC = () => {
                     </p>
                   ) : null}
                 </div>
-              </div>
+              </form>
 
               <div className="rounded-[2rem] border border-[#8f355d]/10 bg-white/82 p-6 shadow-[0_18px_50px_rgba(143,53,93,0.08)] backdrop-blur-md">
                 <div className="flex items-center gap-3">
@@ -323,6 +427,8 @@ const Checkout: React.FC = () => {
                       <button
                         key={option.id}
                         type="button"
+                        aria-pressed={isSelected}
+                        aria-label={`Selecionar ${option.label}`}
                         onClick={() => {
                           if (!isSoon) {
                             setSelectedPayment(option.id);
@@ -483,7 +589,7 @@ const Checkout: React.FC = () => {
                     : 'cursor-not-allowed bg-neutral-300 text-white shadow-none',
                 ].join(' ')}
               >
-                Continuar com {selectedPayment === 'paypal' ? 'PayPal' : 'método disponível brevemente'}
+                {canProceed ? 'Continuar com PayPal' : 'Reveja os requisitos para continuar'}
               </button>
 
               {!acceptedLegal ? (

@@ -80,6 +80,12 @@ type OrderRow = {
   currency: string;
 };
 
+type PersistedOrderInput = {
+  body: CheckoutBody;
+  paymentProvider: string;
+  paymentReference?: string | null;
+};
+
 const MAX_ATTEMPTS = 7;
 const WINDOW_SECONDS = 15 * 60;
 const ORDER_STATUSES = new Set([
@@ -154,6 +160,118 @@ function mapOrderRow(row: OrderRow) {
     items: parseItemsJson(row.items_json),
     total_amount: typeof row.total_amount === 'number' ? row.total_amount : Number(row.total_amount),
     currency: row.currency
+  };
+}
+
+function createOrderId() {
+  const value = crypto.randomUUID().replace(/-/g, '').slice(0, 12).toUpperCase();
+  return `PE-${value}`;
+}
+
+function sanitizeCheckoutItems(items: CheckoutItem[]) {
+  return items
+    .filter(
+      (item) =>
+        item &&
+        item.productId !== undefined &&
+        item.productId !== null &&
+        sanitizeText(item.name) &&
+        typeof item.quantity === 'number' &&
+        item.quantity > 0 &&
+        typeof item.unitPrice === 'number' &&
+        item.unitPrice >= 0
+    )
+    .map((item) => ({
+      productId: String(item.productId),
+      name: sanitizeText(item.name) || 'Artigo',
+      quantity: Number(item.quantity),
+      unitPrice: Number(item.unitPrice),
+      image: item.image ? String(item.image) : undefined
+    }));
+}
+
+async function persistOrder(env: WorkerEnv, input: PersistedOrderInput) {
+  const customer = input.body.customer || {};
+  const customerName = sanitizeText(customer.fullName);
+  const customerEmail = sanitizeText(customer.email);
+  const customerPhone = sanitizeText(customer.phone);
+  const addressLine1 = sanitizeText(customer.address);
+  const postalCode = sanitizeText(customer.postalCode);
+  const city = sanitizeText(customer.locality);
+  const country = 'Portugal';
+  const currency = normalizeCurrency(input.body.currency);
+  const sanitizedItems = sanitizeCheckoutItems(input.body.items || []);
+  const totalAmount =
+    typeof input.body.total === 'number' && !Number.isNaN(input.body.total)
+      ? input.body.total
+      : sanitizedItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+
+  if (!customerName || !customerEmail || !addressLine1 || !postalCode || !city) {
+    throw new Error('Dados do cliente incompletos');
+  }
+
+  if (sanitizedItems.length === 0) {
+    throw new Error('Itens inválidos');
+  }
+
+  const now = new Date().toISOString();
+  const id = createOrderId();
+
+  await env.DB.prepare(
+    `
+      INSERT INTO orders (
+        id,
+        created_at,
+        updated_at,
+        status,
+        payment_status,
+        payment_provider,
+        payment_reference,
+        customer_name,
+        customer_email,
+        customer_phone,
+        address_line1,
+        address_line2,
+        postal_code,
+        city,
+        country,
+        notes,
+        items_json,
+        total_amount,
+        currency
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `
+  )
+    .bind(
+      id,
+      now,
+      now,
+      'pending',
+      'pending',
+      input.paymentProvider,
+      input.paymentReference || null,
+      customerName,
+      customerEmail,
+      customerPhone || null,
+      addressLine1,
+      null,
+      postalCode,
+      city,
+      country,
+      null,
+      JSON.stringify(sanitizedItems),
+      totalAmount,
+      currency
+    )
+    .run();
+
+  return {
+    id,
+    status: 'pending',
+    paymentStatus: 'pending',
+    totalAmount,
+    currency
   };
 }
 
@@ -330,6 +448,12 @@ async function handlePaypalCreateOrder(request: Request, env: WorkerEnv) {
     );
   }
 
+  await persistOrder(env, {
+    body,
+    paymentProvider: 'paypal',
+    paymentReference: result.id
+  });
+
   return json({
     ok: true,
     orderId: result.id,
@@ -369,6 +493,12 @@ async function handleMbwayCreate(request: Request, env: WorkerEnv) {
   if (!customerName || !customerEmail) {
     return badRequest('Dados do cliente incompletos');
   }
+
+  await persistOrder(env, {
+    body,
+    paymentProvider: 'mbway',
+    paymentReference: orderReference
+  });
 
   return json({
     ok: true,

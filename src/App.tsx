@@ -22,12 +22,27 @@ import AdminLogin from './pages/AdminLogin';
 import AdminOrders from './pages/AdminOrders';
 import AdminRoute from './components/admin/AdminRoute';
 
+const siteUrl = 'https://www.portoexotico.pt';
+const defaultTitle = 'Porto Exótico | Boutique Íntima Online';
+const defaultDescription =
+  'Loja online discreta e elegante para produtos íntimos, com uma experiência premium, navegação simples e pagamentos seguros.';
+
 const PlaceholderPage: React.FC<{ title: string; description?: string }> = ({
   title,
   description,
 }) => {
   return (
     <main className="min-h-screen bg-neutral-950 px-6 py-16 text-white md:px-10">
+      <Helmet>
+        <title>Página não encontrada | Porto Exótico</title>
+        <meta
+          name="description"
+          content="A página que procura não existe ou foi movida. Explore a boutique íntima online Porto Exótico."
+        />
+        <meta name="robots" content="noindex,follow" />
+        <link rel="canonical" href={`${siteUrl}/404`} />
+      </Helmet>
+
       <div className="mx-auto max-w-5xl">
         <h1 className="text-3xl font-semibold md:text-5xl">{title}</h1>
         {description ? (
@@ -55,11 +70,22 @@ const App: React.FC = () => {
       <ScrollToTop />
 
       <Helmet>
-        <title>Porto Exótico | Boutique Íntima Online</title>
-        <meta
-          name="description"
-          content="Loja online discreta e elegante para produtos íntimos, com uma experiência premium, navegação simples e pagamentos seguros."
-        />
+        <title>{defaultTitle}</title>
+        <meta name="description" content={defaultDescription} />
+        <meta name="application-name" content="Porto Exótico" />
+        <meta name="apple-mobile-web-app-title" content="Porto Exótico" />
+        <meta name="theme-color" content="#8f355d" />
+        <meta property="og:site_name" content="Porto Exótico" />
+        <meta property="og:locale" content="pt_PT" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={defaultTitle} />
+        <meta property="og:description" content={defaultDescription} />
+        <meta property="og:url" content={`${siteUrl}${location.pathname}`} />
+        <meta property="og:image" content={`${siteUrl}/logo.png`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={defaultTitle} />
+        <meta name="twitter:description" content={defaultDescription} />
+        <meta name="twitter:image" content={`${siteUrl}/logo.png`} />
       </Helmet>
 
       {!isAdminRoute ? <Header /> : null}

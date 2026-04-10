@@ -45,6 +45,7 @@ type CheckoutItem = {
   quantity?: number;
   unitPrice?: number;
   lineTotal?: number;
+  image?: string;
 };
 
 type CheckoutBody = {
@@ -57,8 +58,39 @@ type CheckoutBody = {
   currency?: string;
 };
 
+type OrderRow = {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  status: string;
+  payment_status: string;
+  payment_provider: string | null;
+  payment_reference: string | null;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string | null;
+  address_line1: string;
+  address_line2: string | null;
+  postal_code: string;
+  city: string;
+  country: string;
+  notes: string | null;
+  items_json: string;
+  total_amount: number;
+  currency: string;
+};
+
 const MAX_ATTEMPTS = 7;
 const WINDOW_SECONDS = 15 * 60;
+const ORDER_STATUSES = new Set([
+  'pending',
+  'paid',
+  'processing',
+  'shipped',
+  'completed',
+  'cancelled'
+]);
+const PAYMENT_STATUSES = new Set(['pending', 'paid', 'failed', 'refunded']);
 
 function isValidCheckoutBody(body: CheckoutBody) {
   if (!body || typeof body !== 'object') {
@@ -90,6 +122,39 @@ function normalizeCurrency(value: unknown) {
 
 function formatAmount(value: number) {
   return value.toFixed(2);
+}
+
+function parseItemsJson(value: string) {
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function mapOrderRow(row: OrderRow) {
+  return {
+    id: row.id,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+    status: row.status,
+    payment_status: row.payment_status,
+    payment_provider: row.payment_provider,
+    payment_reference: row.payment_reference,
+    customer_name: row.customer_name,
+    customer_email: row.customer_email,
+    customer_phone: row.customer_phone,
+    address_line1: row.address_line1,
+    address_line2: row.address_line2,
+    postal_code: row.postal_code,
+    city: row.city,
+    country: row.country,
+    notes: row.notes,
+    items: parseItemsJson(row.items_json),
+    total_amount: typeof row.total_amount === 'number' ? row.total_amount : Number(row.total_amount),
+    currency: row.currency
+  };
 }
 
 function getPaypalBaseUrl(env: WorkerEnv) {
@@ -126,7 +191,7 @@ async function getPaypalAccessToken(env: WorkerEnv) {
 
 async function handlePaypalCreateOrder(request: Request, env: WorkerEnv) {
   if (request.method !== 'POST') {
-    return json({ ok: false, error: 'Método não permitido' }, { status: 405 });
+    return methodNotAllowed();
   }
 
   let body: CheckoutBody;
@@ -274,7 +339,7 @@ async function handlePaypalCreateOrder(request: Request, env: WorkerEnv) {
 
 async function handleMbwayCreate(request: Request, env: WorkerEnv) {
   if (request.method !== 'POST') {
-    return json({ ok: false, error: 'Método não permitido' }, { status: 405 });
+    return methodNotAllowed();
   }
 
   let body: CheckoutBody;
@@ -316,7 +381,7 @@ async function handleMbwayCreate(request: Request, env: WorkerEnv) {
 
 async function handleAdminLogin(request: Request, env: WorkerEnv) {
   if (request.method !== 'POST') {
-    return json({ ok: false, error: 'Método não permitido' }, { status: 405 });
+    return methodNotAllowed();
   }
 
   let body: LoginBody;
@@ -445,6 +510,228 @@ async function handleAdminLogout(request: Request) {
   );
 }
 
+async function handleAdminOrders(request: Request, env: WorkerEnv, url: URL) {
+  if (request.method !== 'GET') {
+    return methodNotAllowed();
+  }
+
+  const session = await requireAdmin(request, env);
+
+  if (!session) {
+    return unauthorized();
+  }
+
+  const status = sanitizeText(url.searchParams.get('status'));
+  const paymentStatus = sanitizeText(url.searchParams.get('paymentStatus'));
+
+  const conditions: string[] = [];
+  const bindings: Array<string> = [];
+
+  if (status && status !== 'all') {
+    conditions.push('status = ?');
+    bindings.push(status);
+  }
+
+  if (paymentStatus && paymentStatus !== 'all') {
+    conditions.push('payment_status = ?');
+    bindings.push(paymentStatus);
+  }
+
+  const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+
+  const stmt = env.DB.prepare(`
+    SELECT
+      id,
+      created_at,
+      updated_at,
+      status,
+      payment_status,
+      payment_provider,
+      payment_reference,
+      customer_name,
+      customer_email,
+      customer_phone,
+      address_line1,
+      address_line2,
+      postal_code,
+      city,
+      country,
+      notes,
+      items_json,
+      total_amount,
+      currency
+    FROM orders
+    ${whereClause}
+    ORDER BY datetime(created_at) DESC
+  `).bind(...bindings);
+
+  const result = await stmt.all<OrderRow>();
+  const orders = (result.results || []).map(mapOrderRow);
+
+  return json({
+    ok: true,
+    orders
+  });
+}
+
+async function handleAdminOrderDetail(request: Request, env: WorkerEnv, orderId: string) {
+  const session = await requireAdmin(request, env);
+
+  if (!session) {
+    return unauthorized();
+  }
+
+  if (request.method === 'GET') {
+    const row = await env.DB.prepare(`
+      SELECT
+        id,
+        created_at,
+        updated_at,
+        status,
+        payment_status,
+        payment_provider,
+        payment_reference,
+        customer_name,
+        customer_email,
+        customer_phone,
+        address_line1,
+        address_line2,
+        postal_code,
+        city,
+        country,
+        notes,
+        items_json,
+        total_amount,
+        currency
+      FROM orders
+      WHERE id = ?
+      LIMIT 1
+    `)
+      .bind(orderId)
+      .first<OrderRow>();
+
+    if (!row) {
+      return json({ ok: false, error: 'Encomenda não encontrada' }, { status: 404 });
+    }
+
+    return json({
+      ok: true,
+      order: mapOrderRow(row)
+    });
+  }
+
+  if (request.method === 'PATCH') {
+    let body: { status?: string; payment_status?: string };
+
+    try {
+      body = await request.json<{ status?: string; payment_status?: string }>();
+    } catch {
+      return badRequest('JSON inválido');
+    }
+
+    const nextStatus = sanitizeText(body.status);
+    const nextPaymentStatus = sanitizeText(body.payment_status);
+
+    if (!nextStatus && !nextPaymentStatus) {
+      return badRequest('Sem alterações para aplicar');
+    }
+
+    if (nextStatus && !ORDER_STATUSES.has(nextStatus)) {
+      return badRequest('Estado de encomenda inválido');
+    }
+
+    if (nextPaymentStatus && !PAYMENT_STATUSES.has(nextPaymentStatus)) {
+      return badRequest('Estado de pagamento inválido');
+    }
+
+    const existing = await env.DB.prepare(`
+      SELECT
+        id,
+        created_at,
+        updated_at,
+        status,
+        payment_status,
+        payment_provider,
+        payment_reference,
+        customer_name,
+        customer_email,
+        customer_phone,
+        address_line1,
+        address_line2,
+        postal_code,
+        city,
+        country,
+        notes,
+        items_json,
+        total_amount,
+        currency
+      FROM orders
+      WHERE id = ?
+      LIMIT 1
+    `)
+      .bind(orderId)
+      .first<OrderRow>();
+
+    if (!existing) {
+      return json({ ok: false, error: 'Encomenda não encontrada' }, { status: 404 });
+    }
+
+    const updatedAt = new Date().toISOString();
+    const finalStatus = nextStatus || existing.status;
+    const finalPaymentStatus = nextPaymentStatus || existing.payment_status;
+
+    await env.DB.prepare(`
+      UPDATE orders
+      SET
+        status = ?,
+        payment_status = ?,
+        updated_at = ?
+      WHERE id = ?
+    `)
+      .bind(finalStatus, finalPaymentStatus, updatedAt, orderId)
+      .run();
+
+    const updated = await env.DB.prepare(`
+      SELECT
+        id,
+        created_at,
+        updated_at,
+        status,
+        payment_status,
+        payment_provider,
+        payment_reference,
+        customer_name,
+        customer_email,
+        customer_phone,
+        address_line1,
+        address_line2,
+        postal_code,
+        city,
+        country,
+        notes,
+        items_json,
+        total_amount,
+        currency
+      FROM orders
+      WHERE id = ?
+      LIMIT 1
+    `)
+      .bind(orderId)
+      .first<OrderRow>();
+
+    if (!updated) {
+      return json({ ok: false, error: 'Encomenda não encontrada' }, { status: 404 });
+    }
+
+    return json({
+      ok: true,
+      order: mapOrderRow(updated)
+    });
+  }
+
+  return methodNotAllowed();
+}
+
 export default {
   async fetch(request: Request, env: WorkerEnv): Promise<Response> {
     const url = new URL(request.url);
@@ -460,6 +747,20 @@ export default {
 
       if (url.pathname === '/api/admin/logout') {
         return await handleAdminLogout(request);
+      }
+
+      if (url.pathname === '/api/admin/orders') {
+        return await handleAdminOrders(request, env, url);
+      }
+
+      if (url.pathname.startsWith('/api/admin/orders/')) {
+        const orderId = decodeURIComponent(url.pathname.replace('/api/admin/orders/', '').trim());
+
+        if (!orderId || orderId.includes('/')) {
+          return json({ ok: false, error: 'ID de encomenda inválido' }, { status: 400 });
+        }
+
+        return await handleAdminOrderDetail(request, env, orderId);
       }
 
       if (url.pathname === '/api/chat') {

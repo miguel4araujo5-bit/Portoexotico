@@ -51,8 +51,8 @@ const paymentOptions: Array<{
   },
 ];
 
-const logoSvgSrc = '/favicon.svg';
-const logoFallbackSrc = '/favicon-96x96.png';
+const logoPrimarySrc = '/logo.png';
+const logoFallbackSrc = '/favicon.ico';
 const siteUrl = 'https://www.portoexotico.pt';
 const canonicalUrl = `${siteUrl}/checkout`;
 const mbwayPhoneNumber = '938777576';
@@ -310,14 +310,15 @@ const Checkout: React.FC = () => {
             to="/"
             className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white px-4 py-3 shadow-[0_14px_36px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_42px_rgba(143,53,93,0.14)]"
           >
-            <picture>
-              <source srcSet={logoSvgSrc} type="image/svg+xml" />
-              <img
-                src={logoFallbackSrc}
-                alt="Porto Exótico"
-                className="h-8 w-8 object-contain"
-              />
-            </picture>
+            <img
+              src={logoPrimarySrc}
+              alt="Porto Exótico"
+              className="h-8 w-8 object-contain"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = logoFallbackSrc;
+              }}
+            />
 
             <div className="min-w-0">
               <span className="block font-serif text-lg font-semibold leading-none tracking-[0.01em] text-[#7a2f4f]">
@@ -393,14 +394,15 @@ const Checkout: React.FC = () => {
                 to="/"
                 className="inline-flex items-center gap-3 rounded-full border border-[#8f355d]/10 bg-white/95 px-4 py-3 shadow-[0_14px_38px_rgba(143,53,93,0.08)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_46px_rgba(143,53,93,0.14)]"
               >
-                <picture>
-                  <source srcSet={logoSvgSrc} type="image/svg+xml" />
-                  <img
-                    src={logoFallbackSrc}
-                    alt="Porto Exótico"
-                    className="h-8 w-8 object-contain"
-                  />
-                </picture>
+                <img
+                  src={logoPrimarySrc}
+                  alt="Porto Exótico"
+                  className="h-8 w-8 object-contain"
+                  onError={(event) => {
+                    event.currentTarget.onerror = null;
+                    event.currentTarget.src = logoFallbackSrc;
+                  }}
+                />
 
                 <div className="min-w-0">
                   <span className="block font-serif text-lg font-semibold leading-none tracking-[0.01em] text-[#7a2f4f]">

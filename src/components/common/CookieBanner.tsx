@@ -1,30 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Cookie, ShieldCheck } from 'lucide-react';
-import { disableGA, enableGA } from '../../lib/analytics';
+import { disableGA, enableGA, updateGoogleConsent } from '../../lib/analytics';
 
 type CookieConsentRecord = {
   cookiesAccepted: boolean;
   acceptedAt: string;
 };
 
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-  }
-}
-
 const STORAGE_KEY = 'portoexotico-cookie-consent-v1';
 const COOKIE_SETTINGS_EVENT = 'portoexotico:open-cookie-settings';
-
-const updateGoogleConsent = (accepted: boolean) => {
-  window.gtag?.('consent', 'update', {
-    analytics_storage: accepted ? 'granted' : 'denied',
-    ad_storage: accepted ? 'granted' : 'denied',
-    ad_user_data: accepted ? 'granted' : 'denied',
-    ad_personalization: accepted ? 'granted' : 'denied',
-  });
-};
+const COOKIE_CONSENT_CHANGED_EVENT = 'portoexotico:cookie-consent-changed';
 
 const CookieBanner: React.FC = () => {
   const location = useLocation();
@@ -103,7 +89,7 @@ const CookieBanner: React.FC = () => {
     };
   }, [isAdminRoute]);
 
-  const handleAccept = () => {
+  const handleAccept = async () => {
     const payload: CookieConsentRecord = {
       cookiesAccepted: true,
       acceptedAt: new Date().toISOString(),
@@ -113,7 +99,8 @@ const CookieBanner: React.FC = () => {
     setHasSavedChoice(true);
     setHasAccepted(true);
     updateGoogleConsent(true);
-    void enableGA();
+    await enableGA();
+    window.dispatchEvent(new Event(COOKIE_CONSENT_CHANGED_EVENT));
     setIsVisible(false);
   };
 
@@ -128,6 +115,7 @@ const CookieBanner: React.FC = () => {
     setHasAccepted(false);
     updateGoogleConsent(false);
     disableGA();
+    window.dispatchEvent(new Event(COOKIE_CONSENT_CHANGED_EVENT));
     setIsVisible(false);
   };
 

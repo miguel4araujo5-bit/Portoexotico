@@ -6,10 +6,34 @@ declare global {
   }
 }
 
-const GA_MEASUREMENT_ID = 'G-Z5G94LR7D7';
+const GA_MEASUREMENT_ID = 'G-6QB707Y0JZ';
 
 let gaInitialized = false;
 let scriptLoadingPromise: Promise<void> | null = null;
+
+const ensureGtag = () => {
+  window.dataLayer = window.dataLayer || [];
+  window.gtag =
+    window.gtag ||
+    function (...args: unknown[]) {
+      window.dataLayer.push(args);
+    };
+};
+
+export const updateGoogleConsent = (accepted: boolean) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  ensureGtag();
+
+  window.gtag?.('consent', 'update', {
+    analytics_storage: accepted ? 'granted' : 'denied',
+    ad_storage: accepted ? 'granted' : 'denied',
+    ad_user_data: accepted ? 'granted' : 'denied',
+    ad_personalization: accepted ? 'granted' : 'denied',
+  });
+};
 
 const clearGACookies = () => {
   const hostnameParts = window.location.hostname.split('.').filter(Boolean);
@@ -75,16 +99,11 @@ export const initGA = async (measurementId: string = GA_MEASUREMENT_ID) => {
 
   await loadGAScript(measurementId);
 
-  window.dataLayer = window.dataLayer || [];
-  window.gtag =
-    window.gtag ||
-    function (...args: unknown[]) {
-      window.dataLayer.push(args);
-    };
+  ensureGtag();
 
   if (!gaInitialized) {
-    window.gtag('js', new Date());
-    window.gtag('config', measurementId, {
+    window.gtag?.('js', new Date());
+    window.gtag?.('config', measurementId, {
       send_page_view: false,
     });
     gaInitialized = true;
@@ -97,6 +116,7 @@ export const enableGA = async (measurementId: string = GA_MEASUREMENT_ID) => {
   }
 
   window[`ga-disable-${measurementId}`] = false;
+  updateGoogleConsent(true);
   await initGA(measurementId);
 };
 
@@ -106,6 +126,7 @@ export const disableGA = (measurementId: string = GA_MEASUREMENT_ID) => {
   }
 
   window[`ga-disable-${measurementId}`] = true;
+  updateGoogleConsent(false);
   clearGACookies();
 };
 

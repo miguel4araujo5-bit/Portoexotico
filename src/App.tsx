@@ -27,6 +27,24 @@ const defaultTitle = 'Porto Exótico | Boutique Íntima Online';
 const defaultDescription =
   'Loja online discreta e elegante para produtos íntimos, com uma experiência premium, navegação simples e pagamentos seguros.';
 const defaultImage = `${siteUrl}/og-image.jpg?v=1`;
+const cookieConsentStorageKey = 'portoexotico-cookie-consent-v1';
+const cookieConsentChangedEvent = 'portoexotico:cookie-consent-changed';
+
+const hasAnalyticsConsent = () => {
+  try {
+    const raw = window.localStorage.getItem(cookieConsentStorageKey);
+
+    if (!raw) {
+      return false;
+    }
+
+    const parsed = JSON.parse(raw) as { cookiesAccepted?: boolean };
+
+    return parsed.cookiesAccepted === true;
+  } catch {
+    return false;
+  }
+};
 
 const PlaceholderPage: React.FC<{ title: string; description?: string }> = ({
   title,
@@ -64,7 +82,31 @@ const App: React.FC = () => {
       return;
     }
 
+    if (!hasAnalyticsConsent()) {
+      return;
+    }
+
     trackPageView(location.pathname + location.search + location.hash, document.title);
+  }, [isAdminRoute, location.pathname, location.search, location.hash]);
+
+  useEffect(() => {
+    if (isAdminRoute) {
+      return;
+    }
+
+    const handleConsentChanged = () => {
+      if (!hasAnalyticsConsent()) {
+        return;
+      }
+
+      trackPageView(location.pathname + location.search + location.hash, document.title);
+    };
+
+    window.addEventListener(cookieConsentChangedEvent, handleConsentChanged);
+
+    return () => {
+      window.removeEventListener(cookieConsentChangedEvent, handleConsentChanged);
+    };
   }, [isAdminRoute, location.pathname, location.search, location.hash]);
 
   return (
@@ -88,7 +130,7 @@ const App: React.FC = () => {
         <meta property="og:url" content={currentUrl} />
         <meta property="og:image" content={defaultImage} />
         <meta property="og:image:secure_url" content={defaultImage} />
-        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:type" content="image/jpeg" />
         <meta property="og:image:alt" content="Porto Exótico - Boutique Íntima Online" />
 
         <meta name="twitter:card" content="summary_large_image" />

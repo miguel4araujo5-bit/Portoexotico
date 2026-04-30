@@ -8,8 +8,23 @@ type CookieConsentRecord = {
   acceptedAt: string;
 };
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 const STORAGE_KEY = 'portoexotico-cookie-consent-v1';
 const COOKIE_SETTINGS_EVENT = 'portoexotico:open-cookie-settings';
+
+const updateGoogleConsent = (accepted: boolean) => {
+  window.gtag?.('consent', 'update', {
+    analytics_storage: accepted ? 'granted' : 'denied',
+    ad_storage: accepted ? 'granted' : 'denied',
+    ad_user_data: accepted ? 'granted' : 'denied',
+    ad_personalization: accepted ? 'granted' : 'denied',
+  });
+};
 
 const CookieBanner: React.FC = () => {
   const location = useLocation();
@@ -21,6 +36,7 @@ const CookieBanner: React.FC = () => {
 
   useEffect(() => {
     if (isAdminRoute) {
+      updateGoogleConsent(false);
       setIsVisible(false);
       disableGA();
       return;
@@ -30,6 +46,7 @@ const CookieBanner: React.FC = () => {
       const raw = window.localStorage.getItem(STORAGE_KEY);
 
       if (!raw) {
+        updateGoogleConsent(false);
         disableGA();
         setHasSavedChoice(false);
         setHasAccepted(false);
@@ -44,6 +61,7 @@ const CookieBanner: React.FC = () => {
 
         setHasSavedChoice(true);
         setHasAccepted(accepted);
+        updateGoogleConsent(accepted);
 
         if (accepted) {
           void enableGA();
@@ -55,11 +73,13 @@ const CookieBanner: React.FC = () => {
         return;
       }
 
+      updateGoogleConsent(false);
       disableGA();
       setHasSavedChoice(false);
       setHasAccepted(false);
       setIsVisible(true);
     } catch {
+      updateGoogleConsent(false);
       disableGA();
       setHasSavedChoice(false);
       setHasAccepted(false);
@@ -92,6 +112,7 @@ const CookieBanner: React.FC = () => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     setHasSavedChoice(true);
     setHasAccepted(true);
+    updateGoogleConsent(true);
     void enableGA();
     setIsVisible(false);
   };
@@ -105,6 +126,7 @@ const CookieBanner: React.FC = () => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     setHasSavedChoice(true);
     setHasAccepted(false);
+    updateGoogleConsent(false);
     disableGA();
     setIsVisible(false);
   };

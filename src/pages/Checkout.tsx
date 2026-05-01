@@ -36,20 +36,20 @@ const paymentOptions: Array<{
   {
     id: 'paypal',
     label: 'PayPal',
-    status: 'available',
-    description: 'Método prioritário para conclusão segura da encomenda.',
+    status: 'soon',
+    description: 'Método de pagamento temporariamente indisponível.',
   },
   {
     id: 'stripe',
     label: 'Stripe',
     status: 'soon',
-    description: 'Disponível brevemente após conclusão da configuração.',
+    description: 'Método de pagamento temporariamente indisponível.',
   },
   {
     id: 'mbway',
     label: 'MB WAY',
-    status: 'available',
-    description: 'Pagamento disponível por MB WAY com validação manual da encomenda.',
+    status: 'soon',
+    description: 'Método de pagamento temporariamente indisponível.',
   },
 ];
 
@@ -86,6 +86,11 @@ const Checkout: React.FC = () => {
   const selectedOption = useMemo(
     () => paymentOptions.find((option) => option.id === selectedPayment),
     [selectedPayment]
+  );
+
+  const hasAvailablePaymentMethods = useMemo(
+    () => paymentOptions.some((option) => option.status === 'available'),
+    []
   );
 
   const analyticsItems = useMemo(
@@ -236,7 +241,7 @@ const Checkout: React.FC = () => {
     }
 
     if (!isSelectedPaymentAvailable) {
-      setCheckoutError('O método selecionado ainda não está disponível.');
+      setCheckoutError('Os métodos de pagamento estão temporariamente indisponíveis.');
       return;
     }
 
@@ -395,7 +400,7 @@ const Checkout: React.FC = () => {
         <title>Checkout | Porto Exótico</title>
         <meta
           name="description"
-          content="Finalize a sua encomenda na Porto Exótico com discrição, elegância e confiança. Confirme os dados, escolha o método disponível e conclua a compra."
+          content="Finalize a sua encomenda na Porto Exótico com discrição, elegância e confiança. Confirme os dados e consulte o estado atual dos métodos de pagamento."
         />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content="Checkout | Porto Exótico" />
@@ -465,8 +470,8 @@ const Checkout: React.FC = () => {
             </h1>
 
             <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-700 md:text-lg">
-              Confirme os seus dados, escolha o método de pagamento disponível e conclua a sua compra
-              de forma simples, reservada e segura.
+              Confirme os seus dados e consulte o estado atual dos métodos de pagamento antes de
+              avançar com a sua compra.
             </p>
           </div>
 
@@ -705,7 +710,7 @@ const Checkout: React.FC = () => {
                         key={option.id}
                         type="button"
                         aria-pressed={isSelected}
-                        aria-label={`Selecionar ${option.label}`}
+                        aria-label={`${option.label} temporariamente indisponível`}
                         onClick={() => {
                           if (!isSoon) {
                             setSelectedPayment(option.id);
@@ -742,13 +747,13 @@ const Checkout: React.FC = () => {
 
                               <span
                                 className={[
-                                  'w-[120px] rounded-full border py-1 text-center text-[10px] uppercase tracking-[0.25em]',
+                                  'w-[145px] rounded-full border py-1 text-center text-[10px] uppercase tracking-[0.2em]',
                                   isSoon
                                     ? 'border-[#8f355d]/10 bg-white text-amber-700'
                                     : 'border-[#8f355d]/10 bg-white text-emerald-700',
                                 ].join(' ')}
                               >
-                                {isSoon ? 'Brevemente' : 'Disponível'}
+                                {isSoon ? 'Indisponível' : 'Disponível'}
                               </span>
                             </div>
 
@@ -756,7 +761,7 @@ const Checkout: React.FC = () => {
                               {option.description}
                             </p>
 
-                            {option.id === 'mbway' && isSelected ? (
+                            {option.id === 'mbway' && isSelected && !isSoon ? (
                               <div className="mt-4 rounded-[1.1rem] border border-[#8f355d]/10 bg-white px-4 py-4">
                                 <p className="text-xs uppercase tracking-[0.24em] text-[#9b5a79]">
                                   Número MB WAY
@@ -788,11 +793,13 @@ const Checkout: React.FC = () => {
                   </div>
 
                   <p className="mt-3 text-sm leading-6 text-neutral-700">
-                    {selectedOption?.id === 'paypal'
-                      ? 'O PayPal é atualmente o método selecionado para a conclusão da encomenda.'
-                      : selectedOption?.id === 'mbway'
-                        ? `O MB WAY está selecionado. O pagamento deverá ser realizado para o número ${mbwayPhoneNumber}.`
-                        : 'Este método ficará disponível assim que a respetiva configuração estiver concluída.'}
+                    {hasAvailablePaymentMethods
+                      ? selectedOption?.id === 'paypal'
+                        ? 'O PayPal é atualmente o método selecionado para a conclusão da encomenda.'
+                        : selectedOption?.id === 'mbway'
+                          ? `O MB WAY está selecionado. O pagamento deverá ser realizado para o número ${mbwayPhoneNumber}.`
+                          : 'Este método ficará disponível assim que a respetiva configuração estiver concluída.'
+                      : 'Todos os métodos de pagamento estão temporariamente indisponíveis. A finalização da encomenda ficará disponível novamente assim que a configuração estiver concluída.'}
                   </p>
                 </div>
               </div>
@@ -875,7 +882,7 @@ const Checkout: React.FC = () => {
                 </div>
               </div>
 
-              {selectedPayment === 'mbway' ? (
+              {selectedPayment === 'mbway' && isSelectedPaymentAvailable ? (
                 <div className="mt-6 rounded-[1.5rem] border border-[#8f355d]/10 bg-[#fffafb] p-5">
                   <p className="text-xs uppercase tracking-[0.24em] text-[#9b5a79]">
                     Pagamento MB WAY
@@ -928,6 +935,8 @@ const Checkout: React.FC = () => {
                   ) : (
                     'Continuar com PayPal'
                   )
+                ) : !hasAvailablePaymentMethods ? (
+                  'Pagamentos temporariamente indisponíveis'
                 ) : (
                   'Reveja os requisitos para continuar'
                 )}
@@ -941,11 +950,11 @@ const Checkout: React.FC = () => {
 
               {acceptedLegal && !isSelectedPaymentAvailable ? (
                 <p className="mt-4 text-xs leading-6 text-[#8f355d]">
-                  O método selecionado ainda não está disponível para conclusão da encomenda.
+                  Os métodos de pagamento estão temporariamente indisponíveis.
                 </p>
               ) : null}
 
-              {selectedPayment === 'mbway' ? (
+              {selectedPayment === 'mbway' && isSelectedPaymentAvailable ? (
                 <p className="mt-4 text-xs leading-6 text-neutral-500">
                   Após o pagamento por MB WAY, a validação poderá ser confirmada manualmente antes
                   do processamento da encomenda.

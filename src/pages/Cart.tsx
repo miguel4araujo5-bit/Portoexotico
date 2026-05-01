@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Minus,
@@ -12,12 +12,40 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { productCategories } from '../data/products';
+import { trackViewCart } from '../lib/analytics';
 
 const fallbackImage = '/produtos/Satisfyer.webp';
 const logoSrc = '/logo.png';
 
 const Cart: React.FC = () => {
   const { items, subtotal, updateQuantity, removeFromCart, clearCart } = useCart();
+
+  const analyticsItems = useMemo(
+    () =>
+      items.map((item) => {
+        const categoryLabel =
+          productCategories.find((category) => category.value === item.product.category)?.label ??
+          item.product.category;
+
+        return {
+          item_id: String(item.product.id),
+          item_name: item.product.name,
+          item_category: categoryLabel,
+          item_brand: 'Porto Exótico',
+          price: item.product.price,
+          quantity: item.quantity,
+        };
+      }),
+    [items]
+  );
+
+  useEffect(() => {
+    if (items.length === 0) {
+      return;
+    }
+
+    trackViewCart(analyticsItems, subtotal);
+  }, [analyticsItems, items.length, subtotal]);
 
   const totalQuantity = useMemo(
     () => items.reduce((total, item) => total + item.quantity, 0),

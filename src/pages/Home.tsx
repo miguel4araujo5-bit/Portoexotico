@@ -24,6 +24,24 @@ const categoryDescriptions: Record<string, string> = {
   excitacao: 'Soluções para intensificar, prolongar e tornar cada momento mais memorável.',
 };
 
+const paymentMethods = [
+  {
+    name: 'PayPal',
+    logo: '/paypal.svg',
+    logoClassName: 'h-[34px] w-auto object-contain',
+  },
+  {
+    name: 'Stripe',
+    logo: '/stripe.svg',
+    logoClassName: 'h-[34px] w-auto object-contain',
+  },
+  {
+    name: 'MB WAY',
+    logo: '/mbway.svg',
+    logoClassName: 'h-[30px] w-auto object-contain',
+  },
+];
+
 const Home: React.FC = () => {
   const highlightedProducts = products.filter((product) => product.isBestSeller || product.isNew);
   const featuredProducts =
@@ -141,8 +159,8 @@ const Home: React.FC = () => {
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
-              <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-emerald-700">
-                Checkout protegido
+              <span className="rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-amber-700">
+                Pagamentos indisponíveis
               </span>
               <span className="rounded-full border border-[#8f355d]/10 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-[#7a2f4f]">
                 Embalagem discreta
@@ -173,38 +191,30 @@ const Home: React.FC = () => {
               <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.3em] text-[#a55b7d]">
-                    Pagamentos em destaque
+                    Pagamentos temporariamente indisponíveis
                   </p>
                   <p className="mt-2 max-w-xl text-sm leading-6 text-neutral-700">
-                    Uma jornada de compra criada para transmitir confiança, discrição e simplicidade
-                    do primeiro clique até ao checkout.
+                    Os métodos de pagamento estão temporariamente indisponíveis enquanto finalizamos
+                    a configuração. A loja mantém o catálogo disponível para consulta.
                   </p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                    <img
-                      src="/paypal.svg"
-                      alt="PayPal"
-                      className="h-[34px] w-auto object-contain"
-                    />
-                  </div>
+                  {paymentMethods.map((method) => (
+                    <div key={method.name} className="flex flex-col items-center gap-2">
+                      <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] opacity-75 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                        <img
+                          src={method.logo}
+                          alt={method.name}
+                          className={method.logoClassName}
+                        />
+                      </div>
 
-                  <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                    <img
-                      src="/stripe.svg"
-                      alt="Stripe"
-                      className="h-[34px] w-auto object-contain"
-                    />
-                  </div>
-
-                  <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                    <img
-                      src="/mbway.svg"
-                      alt="MB WAY"
-                      className="h-[30px] w-auto object-contain"
-                    />
-                  </div>
+                      <span className="rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-1 text-[9px] uppercase tracking-[0.18em] text-amber-700">
+                        Indisponível
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -360,7 +370,7 @@ const Home: React.FC = () => {
                             Pagamento
                           </p>
                           <p className="mt-2 text-sm leading-6 text-neutral-700">
-                            Seguro e simples
+                            Temporariamente indisponível
                           </p>
                         </div>
                       </div>
@@ -596,29 +606,21 @@ const Home: React.FC = () => {
                 </p>
 
                 <div className="mt-6 flex flex-wrap items-center gap-3">
-                  <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                    <img
-                      src="/paypal.svg"
-                      alt="PayPal"
-                      className="h-[34px] w-auto object-contain"
-                    />
-                  </div>
+                  {paymentMethods.map((method) => (
+                    <div key={method.name} className="flex flex-col items-center gap-2">
+                      <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] opacity-75 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
+                        <img
+                          src={method.logo}
+                          alt={method.name}
+                          className={method.logoClassName}
+                        />
+                      </div>
 
-                  <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                    <img
-                      src="/stripe.svg"
-                      alt="Stripe"
-                      className="h-[34px] w-auto object-contain"
-                    />
-                  </div>
-
-                  <div className="flex h-11 w-[72px] items-center justify-center rounded-[0.95rem] border border-[#8f355d]/10 bg-[#f4f1eb] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ring-1 ring-black/5">
-                    <img
-                      src="/mbway.svg"
-                      alt="MB WAY"
-                      className="h-[30px] w-auto object-contain"
-                    />
-                  </div>
+                      <span className="rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-1 text-[9px] uppercase tracking-[0.18em] text-amber-700">
+                        Indisponível
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -635,7 +637,7 @@ const Home: React.FC = () => {
                   to="/checkout"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-[#8f355d]/15 bg-white px-6 py-3.5 text-sm font-medium uppercase tracking-[0.14em] text-[#7a2f4f] transition duration-300 hover:border-[#8f355d]/30 hover:bg-[#fff7fb]"
                 >
-                  Finalizar compra
+                  Consultar checkout
                 </Link>
               </div>
             </div>

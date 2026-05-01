@@ -130,20 +130,28 @@ export const disableGA = (measurementId: string = GA_MEASUREMENT_ID) => {
   clearGACookies();
 };
 
+const canTrack = (measurementId: string = GA_MEASUREMENT_ID) => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return false;
+  }
+
+  if (typeof window.gtag !== 'function') {
+    return false;
+  }
+
+  if (window[`ga-disable-${measurementId}`]) {
+    return false;
+  }
+
+  return true;
+};
+
 export const trackPageView = (
   pagePath?: string,
   pageTitle?: string,
   measurementId: string = GA_MEASUREMENT_ID
 ) => {
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
-    return;
-  }
-
-  if (typeof window.gtag !== 'function') {
-    return;
-  }
-
-  if (window[`ga-disable-${measurementId}`]) {
+  if (!canTrack(measurementId)) {
     return;
   }
 
@@ -152,14 +160,14 @@ export const trackPageView = (
 
   const resolvedPageTitle = pageTitle || document.title;
 
-  window.gtag('event', 'page_view', {
+  window.gtag?.('event', 'page_view', {
     page_path: resolvedPagePath,
     page_location: window.location.href,
     page_title: resolvedPageTitle,
   });
 };
 
-type TrackCartItem = {
+export type AnalyticsItem = {
   item_id?: string;
   item_name: string;
   item_category?: string;
@@ -173,39 +181,133 @@ type TrackCartItem = {
   quantity?: number;
 };
 
-export const trackAddToCart = (
-  item: TrackCartItem,
+export type TrackCartItem = AnalyticsItem;
+
+const normalizeItems = (items: AnalyticsItem[]) => {
+  return items.map((item) => ({
+    item_id: item.item_id,
+    item_name: item.item_name,
+    item_category: item.item_category,
+    item_category2: item.item_category2,
+    item_category3: item.item_category3,
+    item_category4: item.item_category4,
+    item_category5: item.item_category5,
+    item_brand: item.item_brand,
+    item_variant: item.item_variant,
+    price: item.price,
+    quantity: item.quantity ?? 1,
+  }));
+};
+
+export const trackViewItem = (
+  item: AnalyticsItem,
   measurementId: string = GA_MEASUREMENT_ID
 ) => {
-  if (typeof window === 'undefined') {
+  if (!canTrack(measurementId)) {
     return;
   }
 
-  if (typeof window.gtag !== 'function') {
+  window.gtag?.('event', 'view_item', {
+    currency: 'EUR',
+    value: typeof item.price === 'number' ? item.price : undefined,
+    items: normalizeItems([{ ...item, quantity: item.quantity ?? 1 }]),
+  });
+};
+
+export const trackAddToCart = (
+  item: AnalyticsItem,
+  measurementId: string = GA_MEASUREMENT_ID
+) => {
+  if (!canTrack(measurementId)) {
     return;
   }
 
-  if (window[`ga-disable-${measurementId}`]) {
-    return;
-  }
-
-  window.gtag('event', 'add_to_cart', {
+  window.gtag?.('event', 'add_to_cart', {
     currency: 'EUR',
     value: typeof item.price === 'number' ? item.price * (item.quantity ?? 1) : undefined,
-    items: [
-      {
-        item_id: item.item_id,
-        item_name: item.item_name,
-        item_category: item.item_category,
-        item_category2: item.item_category2,
-        item_category3: item.item_category3,
-        item_category4: item.item_category4,
-        item_category5: item.item_category5,
-        item_brand: item.item_brand,
-        item_variant: item.item_variant,
-        price: item.price,
-        quantity: item.quantity ?? 1,
-      },
-    ],
+    items: normalizeItems([{ ...item, quantity: item.quantity ?? 1 }]),
+  });
+};
+
+export const trackViewCart = (
+  items: AnalyticsItem[],
+  value: number,
+  measurementId: string = GA_MEASUREMENT_ID
+) => {
+  if (!canTrack(measurementId)) {
+    return;
+  }
+
+  window.gtag?.('event', 'view_cart', {
+    currency: 'EUR',
+    value,
+    items: normalizeItems(items),
+  });
+};
+
+export const trackBeginCheckout = (
+  items: AnalyticsItem[],
+  value: number,
+  measurementId: string = GA_MEASUREMENT_ID
+) => {
+  if (!canTrack(measurementId)) {
+    return;
+  }
+
+  window.gtag?.('event', 'begin_checkout', {
+    currency: 'EUR',
+    value,
+    items: normalizeItems(items),
+  });
+};
+
+export const trackAddPaymentInfo = (
+  items: AnalyticsItem[],
+  value: number,
+  paymentType: string,
+  measurementId: string = GA_MEASUREMENT_ID
+) => {
+  if (!canTrack(measurementId)) {
+    return;
+  }
+
+  window.gtag?.('event', 'add_payment_info', {
+    currency: 'EUR',
+    value,
+    payment_type: paymentType,
+    items: normalizeItems(items),
+  });
+};
+
+export const trackPurchase = (
+  transactionId: string,
+  items: AnalyticsItem[],
+  value: number,
+  paymentType?: string,
+  measurementId: string = GA_MEASUREMENT_ID
+) => {
+  if (!canTrack(measurementId)) {
+    return;
+  }
+
+  window.gtag?.('event', 'purchase', {
+    transaction_id: transactionId,
+    currency: 'EUR',
+    value,
+    payment_type: paymentType,
+    items: normalizeItems(items),
+  });
+};
+
+export const trackContact = (
+  contactType: string,
+  measurementId: string = GA_MEASUREMENT_ID
+) => {
+  if (!canTrack(measurementId)) {
+    return;
+  }
+
+  window.gtag?.('event', 'generate_lead', {
+    method: contactType,
   });
 };

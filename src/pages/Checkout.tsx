@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
@@ -13,6 +13,8 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { trackAddPaymentInfo, trackBeginCheckout } from '../lib/analytics';
+import { productCategories } from '../data/products';
 
 type PaymentMethod = 'paypal' | 'stripe' | 'mbway';
 
@@ -68,6 +70,7 @@ const initialFormData: CheckoutFormData = {
 
 const Checkout: React.FC = () => {
   const { items, subtotal } = useCart();
+  const beginCheckoutTrackedRef = useRef(false);
 
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>('paypal');
   const [acceptedLegal, setAcceptedLegal] = useState(false);
@@ -84,6 +87,38 @@ const Checkout: React.FC = () => {
     () => paymentOptions.find((option) => option.id === selectedPayment),
     [selectedPayment]
   );
+
+  const analyticsItems = useMemo(
+    () =>
+      items.map((item) => {
+        const categoryLabel =
+          productCategories.find((category) => category.value === item.product.category)?.label ??
+          item.product.category;
+
+        return {
+          item_id: String(item.product.id),
+          item_name: item.product.name,
+          item_category: categoryLabel,
+          item_brand: 'Porto Exótico',
+          price: item.product.price,
+          quantity: item.quantity,
+        };
+      }),
+    [items]
+  );
+
+  useEffect(() => {
+    if (beginCheckoutTrackedRef.current) {
+      return;
+    }
+
+    if (items.length === 0) {
+      return;
+    }
+
+    trackBeginCheckout(analyticsItems, subtotal);
+    beginCheckoutTrackedRef.current = true;
+  }, [analyticsItems, items.length, subtotal]);
 
   const isSelectedPaymentAvailable = selectedOption?.status === 'available';
   const canProceed = acceptedLegal && isSelectedPaymentAvailable && !isSubmitting;
@@ -221,6 +256,7 @@ const Checkout: React.FC = () => {
 
     try {
       setIsSubmitting(true);
+      trackAddPaymentInfo(analyticsItems, subtotal, selectedPayment);
 
       if (selectedPayment === 'paypal') {
         const response = await fetch('/api/payments/paypal/create-order', {

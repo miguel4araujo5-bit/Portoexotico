@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 import {
@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { getProductBySlug, productCategories } from '../data/products';
 import { useCart } from '../context/CartContext';
+import { trackAddToCart, trackViewItem } from '../lib/analytics';
 
 const logoSvgSrc = '/favicon.svg';
 const logoFallbackSrc = '/favicon-96x96.png';
@@ -22,6 +23,25 @@ const Product: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const product = slug ? getProductBySlug(slug) : undefined;
   const { addToCart, isInCart, getItemQuantity } = useCart();
+
+  useEffect(() => {
+    if (!product) {
+      return;
+    }
+
+    const analyticsCategoryLabel =
+      productCategories.find((category) => category.value === product.category)?.label ??
+      product.category;
+
+    trackViewItem({
+      item_id: String(product.id),
+      item_name: product.name,
+      item_category: analyticsCategoryLabel,
+      item_brand: 'Porto Exótico',
+      price: product.price,
+      quantity: 1,
+    });
+  }, [product]);
 
   if (!product) {
     return (
@@ -102,6 +122,19 @@ const Product: React.FC = () => {
   const productImageUrl = productImage.startsWith('http')
     ? productImage
     : `${siteUrl}${productImage}`;
+
+  const handleAddToCart = () => {
+    addToCart(product);
+
+    trackAddToCart({
+      item_id: String(product.id),
+      item_name: product.name,
+      item_category: categoryLabel,
+      item_brand: 'Porto Exótico',
+      price: product.price,
+      quantity: 1,
+    });
+  };
 
   const productSchema = {
     '@context': 'https://schema.org',
@@ -367,7 +400,7 @@ const Product: React.FC = () => {
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <button
               type="button"
-              onClick={() => addToCart(product)}
+              onClick={handleAddToCart}
               className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#8f355d_0%,#a84f78_100%)] px-6 py-3 text-sm font-medium text-white shadow-[0_16px_38px_rgba(143,53,93,0.24)] transition duration-300 hover:-translate-y-0.5"
             >
               {alreadyInCart ? 'Adicionar mais ao carrinho' : 'Adicionar ao carrinho'}

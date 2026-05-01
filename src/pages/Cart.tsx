@@ -142,7 +142,7 @@ const Cart: React.FC = () => {
                 Reveja a sua seleção antes de finalizar a compra.
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-7 text-neutral-700 md:text-lg">
-                Ajuste quantidades, confirme os artigos e avance para checkout com total discrição,
+                Ajuste quantidades, confirme os artigos e consulte o checkout com total discrição,
                 conforto e confiança.
               </p>
             </div>
@@ -165,9 +165,9 @@ const Cart: React.FC = () => {
             </div>
 
             <div className="rounded-[1.5rem] border border-[#8f355d]/10 bg-white/80 p-4 shadow-[0_12px_28px_rgba(143,53,93,0.05)] backdrop-blur-md">
-              <p className="text-sm font-medium text-[#6f2947]">Compra segura</p>
+              <p className="text-sm font-medium text-[#6f2947]">Pagamentos indisponíveis</p>
               <p className="mt-1 text-sm leading-6 text-neutral-600">
-                Um processo simples, claro e pensado para gerar confiança.
+                Os métodos de pagamento estão temporariamente indisponíveis.
               </p>
             </div>
 
@@ -343,7 +343,7 @@ const Cart: React.FC = () => {
                     <p className="text-[11px] uppercase tracking-[0.24em] text-[#a55b7d]">
                       Pagamento
                     </p>
-                    <p className="mt-2 text-sm text-neutral-700">Seguro no checkout</p>
+                    <p className="mt-2 text-sm text-neutral-700">Temporariamente indisponível</p>
                   </div>
                   <div>
                     <p className="text-[11px] uppercase tracking-[0.24em] text-[#a55b7d]">
@@ -357,13 +357,14 @@ const Cart: React.FC = () => {
               <div className="mt-8 space-y-3">
                 <Link
                   to="/checkout"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#8f355d_0%,#a84f78_100%)] px-6 py-3.5 text-sm font-medium text-white shadow-[0_16px_38px_rgba(143,53,93,0.24)] transition duration-300 hover:-translate-y-0.5"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-neutral-300 px-6 py-3.5 text-sm font-medium text-white shadow-none transition duration-300"
                 >
-                  Finalizar compra com discrição
+                  Pagamentos temporariamente indisponíveis
                 </Link>
 
                 <p className="text-center text-xs leading-6 text-neutral-500">
-                  Embalagem discreta, checkout protegido e uma experiência reservada do início ao fim.
+                  Embalagem discreta, experiência reservada e métodos de pagamento temporariamente
+                  indisponíveis.
                 </p>
 
                 <Link
@@ -376,7 +377,7 @@ const Cart: React.FC = () => {
 
               <div className="mt-6 rounded-[1.5rem] border border-[#8f355d]/10 bg-[#fffafb] p-4">
                 <p className="text-[11px] uppercase tracking-[0.28em] text-[#a55b7d]">
-                  Pagamentos disponíveis
+                  Pagamentos temporariamente indisponíveis
                 </p>
 
                 <div className="mt-4 space-y-3">
@@ -392,8 +393,8 @@ const Cart: React.FC = () => {
                       <span className="text-sm text-[#6f2947]">PayPal</span>
                     </div>
 
-                    <span className="w-[120px] rounded-full border border-[#8f355d]/10 bg-[#fffafb] py-1 text-center text-[10px] uppercase tracking-[0.22em] text-emerald-700">
-                      Disponível
+                    <span className="w-[120px] rounded-full border border-[#8f355d]/10 bg-[#fffafb] py-1 text-center text-[10px] uppercase tracking-[0.22em] text-amber-700">
+                      Indisponível
                     </span>
                   </div>
 
@@ -410,7 +411,7 @@ const Cart: React.FC = () => {
                     </div>
 
                     <span className="w-[120px] rounded-full border border-[#8f355d]/10 bg-[#fffafb] py-1 text-center text-[10px] uppercase tracking-[0.22em] text-amber-700">
-                      Brevemente
+                      Indisponível
                     </span>
                   </div>
 
@@ -427,14 +428,14 @@ const Cart: React.FC = () => {
                     </div>
 
                     <span className="w-[120px] rounded-full border border-[#8f355d]/10 bg-[#fffafb] py-1 text-center text-[10px] uppercase tracking-[0.22em] text-amber-700">
-                      Brevemente
+                      Indisponível
                     </span>
                   </div>
                 </div>
 
                 <p className="mt-4 text-sm leading-6 text-neutral-600">
-                  Checkout protegido com opções de pagamento práticas, seguras e adequadas a uma
-                  compra discreta.
+                  Os métodos de pagamento estão temporariamente indisponíveis enquanto finalizamos
+                  a configuração do checkout.
                 </p>
               </div>
 
@@ -455,9 +456,12 @@ const Cart: React.FC = () => {
                   <div className="flex items-start gap-3">
                     <CreditCard className="mt-0.5 h-5 w-5 shrink-0 text-[#8f355d]" />
                     <div>
-                      <p className="font-medium text-[#6f2947]">Compra segura</p>
+                      <p className="font-medium text-[#6f2947]">
+                        Checkout temporariamente indisponível
+                      </p>
                       <p className="mt-1 leading-6">
-                        Um processo de checkout simples, claro e pensado para gerar confiança.
+                        Os métodos de pagamento estão temporariamente indisponíveis enquanto
+                        finalizamos a configuração.
                       </p>
                     </div>
                   </div>

@@ -205,10 +205,25 @@ const Footer: React.FC = () => {
       <div className="relative border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-5 text-xs text-white/40 md:px-10">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <p>© 2026 Porto Exótico. Todos os direitos reservados.</p>
-            <p>Privacidade em primeiro lugar. Envio discreto. Checkout protegido.</p>
-          </div>
 
+  <p>© 2026 Porto Exótico. Todos os direitos reservados.</p>
+
+  <p>Privacidade em primeiro lugar. Envio discreto. Checkout protegido.</p>
+
+  <p>
+    Desenvolvido por:{' '}
+    <a
+      href="https://www.ma-code.pt"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-semibold text-white/65 transition hover:text-white"
+      aria-label="Site desenvolvido pela MA-CODE.PT"
+    >
+      MA-CODE.PT
+    </a>
+  </p>
+
+</div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-white/50">
             <Link to="/politica-privacidade" className="transition hover:text-white">
               Política de Privacidade
